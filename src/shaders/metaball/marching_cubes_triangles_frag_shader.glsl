@@ -226,10 +226,6 @@ void main() {
     /* Distance to light source. */
     const float light_distance = 5.0;
 
-    /* Add some movement to light source. */
-    float theta = float(time);
-    float phi   = float(time)/3.0;
-
     vec3 light_location = vec3
     (
       0.0, 0.0, -1.0 + lightZ
@@ -242,7 +238,7 @@ void main() {
 
     /* Normalize directions. */
     vec3 normal_direction = normalize(phong_vertex_normal_vector);
-    vec3 view_direction   = normalize(vec3(vec4(0.0, 0.0, 1.0, 0.0) - phong_vertex_position));
+    vec3 view_direction   = normalize(vec3(vec4(0.0, 0.0, -5.0, 0.0) - phong_vertex_position));
     vec3 light_direction  = normalize(light_location);
 
     /** Calculate ambient lighting component of directional light. */

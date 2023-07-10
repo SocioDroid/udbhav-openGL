@@ -6,8 +6,6 @@
 #include "../../utils/model_using_assim/model.h"
 #include "../../utils/common.h"
 
-#include "../environmentMap/EnvironmentMap.h"
-
 class ModelShaderCommon
 {
 

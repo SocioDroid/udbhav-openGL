@@ -537,12 +537,12 @@ public:
 
     BOOL initialize(void)
     {
-        initializeBloom();
+        // initializeBloom();
 
         /// INITIALIZATION
         /* Specify one byte alignment for pixels rows in memory for pack and unpack buffers. */
-        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-        glPixelStorei(GL_PACK_ALIGNMENT, 1);
+        // glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+        // glPixelStorei(GL_PACK_ALIGNMENT, 1);
 
         /* 1. Calculate sphere positions stage. */
         /* Create sphere updater program object. */
@@ -800,9 +800,9 @@ public:
         glBindVertexArray(marching_cubes_triangles_vao_id);
 
         /* Enable facet culling, depth testing and specify front face for polygons. */
-        glEnable(GL_DEPTH_TEST);
-        glEnable(GL_CULL_FACE);
-        glFrontFace(GL_CW);
+        // glEnable(GL_DEPTH_TEST);
+        // glEnable(GL_CULL_FACE);
+        // glFrontFace(GL_CW);
 
         // Bloom
         return TRUE;
@@ -814,7 +814,7 @@ public:
 
     void display()
     {
-       
+
         displayMetaball();
     }
 
@@ -993,14 +993,14 @@ public:
          * amount of cells the scalar field is split to) triangle vertices.
          * Then render triangularized geometry.
          */
-        glActiveTexture(GL_TEXTURE0);
 
-        
         drawMetaballs();
     }
 
     void drawMetaballs()
     {
+        glActiveTexture(GL_TEXTURE0);
+
         /* Activate triangle generating and rendering program. */
         glUseProgram(marching_cubes_triangles_program_id);
 
