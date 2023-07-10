@@ -1,0 +1,551 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="build.bat" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\effects\cloth\Cloth.h" />
+    <ClInclude Include="src\effects\cloud\Cloud.h" />
+    <ClInclude Include="src\effects\cubemap\Cubemap.h" />
+    <ClInclude Include="src\effects\DOF\DOF copy.h" />
+    <ClInclude Include="src\effects\DOF\DOF.h" />
+    <ClInclude Include="src\effects\fire\Fire.h" />
+    <ClInclude Include="src\effects\Flag\Flag.h" />
+    <ClInclude Include="src\effects\Road\RoadBezierStrips.h" />
+    <ClInclude Include="src\effects\shadow\Shadow.h" />
+    <ClInclude Include="src\effects\shadow\Shadow_bkp.h" />
+    <ClInclude Include="src\effects\shadow\Shadow_bkp_windows.h" />
+    <ClInclude Include="src\effects\terrain\Terrian.h" />
+    <ClInclude Include="src\effects\VolumetricLight\SingleVolumetricLight.h" />
+    <ClInclude Include="src\effects\Water\JishDeshMaiGanga.h" />
+    <ClInclude Include="src\effects\Water\WaterBedQuad_Shader.h" />
+    <ClInclude Include="src\effects\Water\WaterMain.h" />
+    <ClInclude Include="src\effects\Water\WaterQuad_Shader.h" />
+    <ClInclude Include="src\effects\Water\Water_Shader.h" />
+    <ClInclude Include="src\includes\3DModels.h" />
+    <ClInclude Include="src\includes\helper_timer.h" />
+    <ClInclude Include="src\includes\OpenAL.h" />
+    <ClInclude Include="src\includes\Primitive3DGeometry.h" />
+    <ClInclude Include="src\includes\Primitive3DGeometryMesh.h" />
+    <ClInclude Include="src\includes\Sphere.h" />
+    <ClInclude Include="src\includes\SphereAish.h" />
+    <ClInclude Include="src\includes\stb_image.h" />
+    <ClInclude Include="src\includes\vmath.h" />
+    <ClInclude Include="src\OGLMain.h" />
+    <ClInclude Include="src\scenes\Aag\Aag.h" />
+    <ClInclude Include="src\scenes\Awara\Awara.h" />
+    <ClInclude Include="src\scenes\Barsaat\Barsaat.h" />
+    <ClInclude Include="src\scenes\JisDesh\JisDesh.h" />
+    <ClInclude Include="src\scenes\MainScene\IntroScene.h" />
+    <ClInclude Include="src\scenes\MainScene\MainScene.h" />
+    <ClInclude Include="src\scenes\MeraNaamJoker\MeraNaamJoker.h" />
+    <ClInclude Include="src\scenes\Opening\JokerFace.h" />
+    <ClInclude Include="src\scenes\Opening\Opening.h" />
+    <ClInclude Include="src\scenes\Sangam\Sangam.h" />
+    <ClInclude Include="src\scenes\Shree420\Road.h" />
+    <ClInclude Include="src\scenes\Shree420\Shree420.h" />
+    <ClInclude Include="src\scenes\Studio\Studio.h" />
+    <ClInclude Include="src\shaders\cloth\ClothShader.h" />
+    <ClInclude Include="src\shaders\color\ColorShader.h" />
+    <ClInclude Include="src\shaders\CommonModels.h" />
+    <ClInclude Include="src\shaders\CommonShaders.h" />
+    <ClInclude Include="src\shaders\cubemap\CubemapShader.h" />
+    <ClInclude Include="src\shaders\environmentMap\EnvironmentMap.h" />
+    <ClInclude Include="src\shaders\environmentMap\ReflectionShader.h" />
+    <ClInclude Include="src\shaders\flag\FlagShader.h" />
+    <ClInclude Include="src\shaders\model\Model_Shader.h" />
+    <ClInclude Include="src\shaders\model\Model_ShaderOld.h" />
+    <ClInclude Include="src\shaders\model\Model_ShaderShadow.h" />
+    <ClInclude Include="src\shaders\Road\RoadShader.h" />
+    <ClInclude Include="src\shaders\SpotLight\SpotlightShader.h" />
+    <ClInclude Include="src\shaders\texture\TextureShader.h" />
+    <ClInclude Include="src\shaders\videoRendering\videoRendering.h" />
+    <ClInclude Include="src\shaders\volumeCloud\VolumeCloudShader.h" />
+    <ClInclude Include="src\utils\camera\BezierCamera.h" />
+    <ClInclude Include="src\utils\camera\Camera.h" />
+    <ClInclude Include="src\utils\common.h" />
+    <ClInclude Include="src\utils\model\mesh.h" />
+    <ClInclude Include="src\utils\model_using_assim\mesh.h" />
+    <ClInclude Include="src\utils\model_using_assim\model.h" />
+    <ClInclude Include="src\utils\opencv.hpp" />
+    <ClInclude Include="src\utils\OpenGL\DDSLoader.h" />
+    <ClInclude Include="src\utils\OpenGL\GLHeadersAndMacros.h" />
+    <ClInclude Include="src\utils\OpenGL\GLLog.h" />
+    <ClInclude Include="src\utils\OpenGL\GLShaders.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\effects\Water\JishDeshMaiGanga.cpp" />
+    <ClCompile Include="src\OGLMain.cpp" />
+    <ClCompile Include="src\utils\common.cpp" />
+    <ClCompile Include="src\utils\OpenGL\GLLog.cpp" />
+    <ClCompile Include="src\utils\OpenGL\GLShaders.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="src\OGLMain.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="assets\models\Aag\BackWallTexture.png" />
+    <Image Include="assets\models\Aag\FloorWoodenTexture.jpg" />
+    <Image Include="assets\models\Aag\Mirror\texture-old-wood.png" />
+    <Image Include="assets\models\Aag\PillarDesign.png" />
+    <Image Include="assets\models\Aag\table\1001_albedo.jpg" />
+    <Image Include="assets\models\Aag\table\1001_AO.jpg" />
+    <Image Include="assets\models\Aag\table\1001_metallic.jpg" />
+    <Image Include="assets\models\Aag\table\1001_normal.png" />
+    <Image Include="assets\models\Aag\table\1001_roughness.jpg" />
+    <Image Include="assets\models\Aag\TheatreWall.jpg" />
+    <Image Include="assets\models\Aag\truck-art.jpg" />
+    <Image Include="assets\models\backpack\ao.jpg" />
+    <Image Include="assets\models\backpack\diffuse.jpg" />
+    <Image Include="assets\models\backpack\normal.png" />
+    <Image Include="assets\models\backpack\roughness.jpg" />
+    <Image Include="assets\models\backpack\specular.jpg" />
+    <Image Include="assets\models\Barsat\Boat\BoatTexture.jpg" />
+    <Image Include="assets\models\Barsat\Boat\BoatTexture.png" />
+    <Image Include="assets\models\Barsat\House\back.jpg" />
+    <Image Include="assets\models\Barsat\House\back.png" />
+    <Image Include="assets\models\Barsat\House\BalconyWall.jpg" />
+    <Image Include="assets\models\Barsat\House\BalconyWall.png" />
+    <Image Include="assets\models\Barsat\House\Column.jpg" />
+    <Image Include="assets\models\Barsat\House\Column.png" />
+    <Image Include="assets\models\Barsat\House\ConcreteTexture.jpg" />
+    <Image Include="assets\models\Barsat\House\ConcreteTexture.png" />
+    <Image Include="assets\models\Barsat\House\concretetextureold.jpg" />
+    <Image Include="assets\models\Barsat\House\concretetextureold.png" />
+    <Image Include="assets\models\Barsat\House\front.jpg" />
+    <Image Include="assets\models\Barsat\House\front.png" />
+    <Image Include="assets\models\Barsat\House\geometric-pattern-wood.jpg" />
+    <Image Include="assets\models\Barsat\House\geometric-pattern-wood.png" />
+    <Image Include="assets\models\Barsat\House\geometricWood.jpg" />
+    <Image Include="assets\models\Barsat\House\geometricWood.png" />
+    <Image Include="assets\models\Barsat\House\geometricWoodDoor.jpg" />
+    <Image Include="assets\models\Barsat\House\geometricWoodDoor.png" />
+    <Image Include="assets\models\Barsat\House\oakply1.jpg" />
+    <Image Include="assets\models\Barsat\House\oakply1.png" />
+    <Image Include="assets\models\Barsat\House\oakply2.jpg" />
+    <Image Include="assets\models\Barsat\House\oakply2.png" />
+    <Image Include="assets\models\Barsat\House\OldConcrete.jpg" />
+    <Image Include="assets\models\Barsat\House\OldConcrete.png" />
+    <Image Include="assets\models\Barsat\House\OldConcrete2.jpg" />
+    <Image Include="assets\models\Barsat\House\OldConcrete2.png" />
+    <Image Include="assets\models\Barsat\House\OldFloor.jpg" />
+    <Image Include="assets\models\Barsat\House\OldFloor.png" />
+    <Image Include="assets\models\Barsat\House\parafet.jpg" />
+    <Image Include="assets\models\Barsat\House\parafet.png" />
+    <Image Include="assets\models\Barsat\House\Roof.jpg" />
+    <Image Include="assets\models\Barsat\House\Roof.png" />
+    <Image Include="assets\models\Barsat\House\RoofTexture.png" />
+    <Image Include="assets\models\Barsat\House\Room.jpg" />
+    <Image Include="assets\models\Barsat\House\Room.png" />
+    <Image Include="assets\models\Barsat\House\saif.jpg" />
+    <Image Include="assets\models\Barsat\House\saif.png" />
+    <Image Include="assets\models\Barsat\House\StiltColumn.jpg" />
+    <Image Include="assets\models\Barsat\House\StiltColumn.png" />
+    <Image Include="assets\models\Barsat\House\Tile.jpg" />
+    <Image Include="assets\models\Barsat\House\Tile.png" />
+    <Image Include="assets\models\Barsat\House\Wood.jpg" />
+    <Image Include="assets\models\Barsat\House\Wood.png" />
+    <Image Include="assets\models\Barsat\House\WoodColumn.jpg" />
+    <Image Include="assets\models\Barsat\House\WoodColumn.png" />
+    <Image Include="assets\models\Barsat\House\woodenDoor.jpg" />
+    <Image Include="assets\models\Barsat\House\woodenDoor.png" />
+    <Image Include="assets\models\Barsat\Pose\back.jpg" />
+    <Image Include="assets\models\Barsat\Pose\back.png" />
+    <Image Include="assets\models\Barsat\Pose\front.jpg" />
+    <Image Include="assets\models\Barsat\Pose\front.png" />
+    <Image Include="assets\models\Barsat\Pose\oakply1.jpg" />
+    <Image Include="assets\models\Barsat\Pose\oakply1.png" />
+    <Image Include="assets\models\Barsat\Pose\oakply2 бамп.jpg" />
+    <Image Include="assets\models\Barsat\Pose\oakply2 бамп.png" />
+    <Image Include="assets\models\Barsat\Pose\oakply2.jpg" />
+    <Image Include="assets\models\Barsat\Pose\oakply2.png" />
+    <Image Include="assets\models\Barsat\Pose\saif met.jpg" />
+    <Image Include="assets\models\Barsat\Pose\saif met.png" />
+    <Image Include="assets\models\Barsat\Pose\Tile 30s.jpg" />
+    <Image Include="assets\models\Barsat\Pose\Tile 30s.png" />
+    <Image Include="assets\models\Barsat\Pose\перед бамп.jpg" />
+    <Image Include="assets\models\Barsat\Pose\перед бамп.png" />
+    <Image Include="assets\models\Barsat\Pose\светлое дерево.jpg" />
+    <Image Include="assets\models\Barsat\Pose\светлое дерево.png" />
+    <Image Include="assets\models\Barsat\Pose\черное дерево бамп.jpg" />
+    <Image Include="assets\models\Barsat\Pose\черное дерево бамп.png" />
+    <Image Include="assets\models\Barsat\Pose\черное дерево.jpg" />
+    <Image Include="assets\models\Barsat\Pose\черное дерево.png" />
+    <Image Include="assets\models\Boat\BoatTexture.jpg" />
+    <Image Include="assets\models\Joker\FBHead_baked_tex.bmp" />
+    <Image Include="assets\models\Joker\FBHead_baked_tex.png" />
+    <Image Include="assets\models\sangamRoom\Base1_baseColor.jpeg" />
+    <Image Include="assets\models\sangamRoom\BigPhoto.jpg" />
+    <Image Include="assets\models\sangamRoom\BigPhoto.png" />
+    <Image Include="assets\models\sangamRoom\BlackOxalis_4K_Albedo.jpg" />
+    <Image Include="assets\models\sangamRoom\Carpet5.png" />
+    <Image Include="assets\models\sangamRoom\Dial1_baseColor.png" />
+    <Image Include="assets\models\sangamRoom\diffuse.jpeg" />
+    <Image Include="assets\models\sangamRoom\FabricTextures.jpg" />
+    <Image Include="assets\models\sangamRoom\Floor.jpg" />
+    <Image Include="assets\models\sangamRoom\Floor.png" />
+    <Image Include="assets\models\sangamRoom\FlowerVase.jpg" />
+    <Image Include="assets\models\sangamRoom\Glass.png" />
+    <Image Include="assets\models\sangamRoom\Image_0.jpg" />
+    <Image Include="assets\models\sangamRoom\Image_0.png" />
+    <Image Include="assets\models\sangamRoom\Image_1.jpg" />
+    <Image Include="assets\models\sangamRoom\Image_10.jpg" />
+    <Image Include="assets\models\sangamRoom\Image_11.jpg" />
+    <Image Include="assets\models\sangamRoom\Image_12.jpg" />
+    <Image Include="assets\models\sangamRoom\Image_13.jpg" />
+    <Image Include="assets\models\sangamRoom\Image_14.jpg" />
+    <Image Include="assets\models\sangamRoom\Image_2.jpg" />
+    <Image Include="assets\models\sangamRoom\Image_3.jpg" />
+    <Image Include="assets\models\sangamRoom\Image_4.jpg" />
+    <Image Include="assets\models\sangamRoom\Image_5.jpg" />
+    <Image Include="assets\models\sangamRoom\Image_6.jpg" />
+    <Image Include="assets\models\sangamRoom\Image_7.jpg" />
+    <Image Include="assets\models\sangamRoom\Image_8.jpg" />
+    <Image Include="assets\models\sangamRoom\Image_9.jpg" />
+    <Image Include="assets\models\sangamRoom\material_baseColor.png" />
+    <Image Include="assets\models\sangamRoom\OvalFrame1.png" />
+    <Image Include="assets\models\sangamRoom\OvalPhoto.png" />
+    <Image Include="assets\models\sangamRoom\PianoBody.jpg" />
+    <Image Include="assets\models\sangamRoom\RK&amp;RajendraKumar.png" />
+    <Image Include="assets\models\sangamRoom\Sangam3.png" />
+    <Image Include="assets\models\sangamRoom\SofaCushionTexture.jpg" />
+    <Image Include="assets\models\sangamRoom\SofaCushionTexture.png" />
+    <Image Include="assets\models\sangamRoom\SofaPillow.jpg" />
+    <Image Include="assets\models\sangamRoom\Square2.jpg" />
+    <Image Include="assets\models\sangamRoom\StandWoodTexture.jpg" />
+    <Image Include="assets\models\sangamRoom\tajmahal.png" />
+    <Image Include="assets\models\sangamRoom\Teapoy.png" />
+    <Image Include="assets\models\sangamRoom\Wadrobe.jpg" />
+    <Image Include="assets\models\sangamRoom\WallPaper10.jpg" />
+    <Image Include="assets\models\sangamRoom\WallPaper10.png" />
+    <Image Include="assets\models\sangamRoom\WallPaper9.jpg" />
+    <Image Include="assets\models\sangamRoom\WallPaper9.png" />
+    <Image Include="assets\models\sangamRoom\WindowGlass.jpg" />
+    <Image Include="assets\models\sangamRoom\WoodenFrame3.png" />
+    <Image Include="assets\models\sangamRoom\WoodenFrame4.png" />
+    <Image Include="assets\models\ShootingStage-new\Amplion.jpg" />
+    <Image Include="assets\models\ShootingStage-new\Amplion.png" />
+    <Image Include="assets\models\ShootingStage-new\BlueWire.jpg" />
+    <Image Include="assets\models\ShootingStage-new\BlueWire.png" />
+    <Image Include="assets\models\ShootingStage-new\Cable.jpg" />
+    <Image Include="assets\models\ShootingStage-new\Cable.png" />
+    <Image Include="assets\models\ShootingStage-new\Camera.jpg" />
+    <Image Include="assets\models\ShootingStage-new\Camera.png" />
+    <Image Include="assets\models\ShootingStage-new\CameraBox.jpg" />
+    <Image Include="assets\models\ShootingStage-new\CameraBox.png" />
+    <Image Include="assets\models\ShootingStage-new\Clapper.jpg" />
+    <Image Include="assets\models\ShootingStage-new\Clapper.png" />
+    <Image Include="assets\models\ShootingStage-new\ClapperFlap.jpg" />
+    <Image Include="assets\models\ShootingStage-new\ClapperFlap.png" />
+    <Image Include="assets\models\ShootingStage-new\FabricTextures.jpg" />
+    <Image Include="assets\models\ShootingStage-new\FabricTextures.png" />
+    <Image Include="assets\models\ShootingStage-new\Freqency.jpg" />
+    <Image Include="assets\models\ShootingStage-new\Freqency.png" />
+    <Image Include="assets\models\ShootingStage-new\Ghoda.jpeg" />
+    <Image Include="assets\models\ShootingStage-new\IntercomSpeackerAO.png" />
+    <Image Include="assets\models\ShootingStage-new\Mic Box.jpg" />
+    <Image Include="assets\models\ShootingStage-new\Mic Box.png" />
+    <Image Include="assets\models\ShootingStage-new\Mic.jpg" />
+    <Image Include="assets\models\ShootingStage-new\Mic.png" />
+    <Image Include="assets\models\ShootingStage-new\Murphy.jpg" />
+    <Image Include="assets\models\ShootingStage-new\Murphy.png" />
+    <Image Include="assets\models\ShootingStage-new\Photo1.jpg" />
+    <Image Include="assets\models\ShootingStage-new\Photo1.png" />
+    <Image Include="assets\models\ShootingStage-new\Photo10.jpg" />
+    <Image Include="assets\models\ShootingStage-new\Photo10.png" />
+    <Image Include="assets\models\ShootingStage-new\Photo11.jpg" />
+    <Image Include="assets\models\ShootingStage-new\Photo11.png" />
+    <Image Include="assets\models\ShootingStage-new\Photo12.jpg" />
+    <Image Include="assets\models\ShootingStage-new\Photo12.png" />
+    <Image Include="assets\models\ShootingStage-new\Photo13.jpg" />
+    <Image Include="assets\models\ShootingStage-new\Photo13.png" />
+    <Image Include="assets\models\ShootingStage-new\Photo14.jpg" />
+    <Image Include="assets\models\ShootingStage-new\Photo14.png" />
+    <Image Include="assets\models\ShootingStage-new\Photo15.jpg" />
+    <Image Include="assets\models\ShootingStage-new\Photo15.png" />
+    <Image Include="assets\models\ShootingStage-new\Photo16.jpg" />
+    <Image Include="assets\models\ShootingStage-new\Photo16.png" />
+    <Image Include="assets\models\ShootingStage-new\Photo2.jpg" />
+    <Image Include="assets\models\ShootingStage-new\Photo2.png" />
+    <Image Include="assets\models\ShootingStage-new\Photo3.jpg" />
+    <Image Include="assets\models\ShootingStage-new\Photo3.png" />
+    <Image Include="assets\models\ShootingStage-new\Photo4.jpg" />
+    <Image Include="assets\models\ShootingStage-new\Photo4.png" />
+    <Image Include="assets\models\ShootingStage-new\Photo5.jpg" />
+    <Image Include="assets\models\ShootingStage-new\Photo5.png" />
+    <Image Include="assets\models\ShootingStage-new\Photo6.jpg" />
+    <Image Include="assets\models\ShootingStage-new\Photo6.png" />
+    <Image Include="assets\models\ShootingStage-new\Photo7.jpg" />
+    <Image Include="assets\models\ShootingStage-new\Photo7.png" />
+    <Image Include="assets\models\ShootingStage-new\Photo8.jpg" />
+    <Image Include="assets\models\ShootingStage-new\Photo8.png" />
+    <Image Include="assets\models\ShootingStage-new\Photo9.jpg" />
+    <Image Include="assets\models\ShootingStage-new\Photo9.png" />
+    <Image Include="assets\models\ShootingStage-new\RajKapoor.jpg" />
+    <Image Include="assets\models\ShootingStage-new\RajKapoor.png" />
+    <Image Include="assets\models\ShootingStage-new\RedWire.jpg" />
+    <Image Include="assets\models\ShootingStage-new\RedWire.png" />
+    <Image Include="assets\models\ShootingStage-new\Rust.jpg" />
+    <Image Include="assets\models\ShootingStage-new\Rust.png" />
+    <Image Include="assets\models\ShootingStage-new\ScaffholdingTexture.jpg" />
+    <Image Include="assets\models\ShootingStage-new\ScaffholdingTexture.png" />
+    <Image Include="assets\models\ShootingStage-new\Sennheiser.jpg" />
+    <Image Include="assets\models\ShootingStage-new\Sennheiser.png" />
+    <Image Include="assets\models\ShootingStage-new\Shell_Wood_Base_Color.png" />
+    <Image Include="assets\models\ShootingStage-new\StandWoodTexture.jpg" />
+    <Image Include="assets\models\ShootingStage-new\StandWoodTexture.png" />
+    <Image Include="assets\models\ShootingStage-new\StudioFloor.jpg" />
+    <Image Include="assets\models\ShootingStage-new\StudioFloor.png" />
+    <Image Include="assets\models\ShootingStage-new\StudioWall.jpg" />
+    <Image Include="assets\models\ShootingStage-new\StudioWall.png" />
+    <Image Include="assets\models\ShootingStage-new\UmbrellaDiffuser.jpg" />
+    <Image Include="assets\models\ShootingStage-new\UmbrellaDiffuser.png" />
+    <Image Include="assets\models\ShootingStage-new\Wire.jpg" />
+    <Image Include="assets\models\ShootingStage-new\Wire.png" />
+    <Image Include="assets\models\ShootingStage-new\wireBundle.jpg" />
+    <Image Include="assets\models\ShootingStage-new\wireBundle.png" />
+    <Image Include="assets\models\ShootingStage-new\WireCylinder.jpg" />
+    <Image Include="assets\models\ShootingStage-new\WireCylinder.png" />
+    <Image Include="assets\models\ShootingStage-new\WoodenFrame1.png" />
+    <Image Include="assets\models\ShootingStage-new\WoodenFrame4.png" />
+    <Image Include="assets\models\ShootingStage-new\YellowWire.jpg" />
+    <Image Include="assets\models\ShootingStage-new\YellowWire.png" />
+    <Image Include="assets\models\Shree420\Bench\vas_Bench.jpg" />
+    <Image Include="assets\models\Shree420\Brick\modular_wall01_DefaultMaterial_BaseColor.png" />
+    <Image Include="assets\models\Shree420\Brick\modular_wall01_DefaultMaterial_Height.png" />
+    <Image Include="assets\models\Shree420\Brick\modular_wall01_DefaultMaterial_Normal.png" />
+    <Image Include="assets\models\Shree420\Brick\modular_wall01_DefaultMaterial_Roughness.png" />
+    <Image Include="assets\models\Shree420\CupSaucer\CupSaucer.jpg" />
+    <Image Include="assets\models\Shree420\CupSaucer\CupSaucer.png" />
+    <Image Include="assets\models\Shree420\RoadWall\BRICK.jpg" />
+    <Image Include="assets\models\Shree420\StreetLight\classoc light bulb.png" />
+    <Image Include="assets\models\Shree420\StreetLight\classoc light glass.png" />
+    <Image Include="assets\models\Shree420\StreetLight\classoc light glass_alpha.png" />
+    <Image Include="assets\models\Shree420\StreetLight\classoc light pole - Copy.png" />
+    <Image Include="assets\models\Shree420\StreetLight\classoc light pole.png" />
+    <Image Include="assets\models\Shree420\Table\Table.jpeg" />
+    <Image Include="assets\models\Shree420\Table\Table.png" />
+    <Image Include="assets\models\Shree420\Table\Table1.jpeg" />
+    <Image Include="assets\models\Shree420\Tapri\bamboo.png" />
+    <Image Include="assets\models\Shree420\Tapri\brick.png" />
+    <Image Include="assets\models\Shree420\Tapri\patra.png" />
+    <Image Include="assets\models\Shree420\Teapot\teapot_texture.png" />
+    <Image Include="assets\textures\Aag\AagPoster.png" />
+    <Image Include="assets\textures\cloth\AagCurtain\Aag_Curtain.png" />
+    <Image Include="assets\textures\cloth\BarsaatCurtain\Barsaat_Curtain.png" />
+    <Image Include="assets\textures\cloth\BarsaatDupatta\BarsaatDupatta.png" />
+    <Image Include="assets\textures\cloth\JisDeshMeinDupatta\JisDeshMeinDupatta.png" />
+    <Image Include="assets\textures\cloth\SangamCurtain\Sangam_Curtain_01.png" />
+    <Image Include="assets\textures\cloth\SangamCurtain\Sangam_Curtain_02.png" />
+    <Image Include="assets\textures\cloth\SangamCurtain\Sangam_Curtain_03.png" />
+    <Image Include="assets\textures\cloth\SangamCurtain\Sangam_Curtain_04.png" />
+    <Image Include="assets\textures\cloth\SangamCurtain\Sangam_Curtain_05.png" />
+    <Image Include="assets\textures\cloth\SangamCurtain\Sangam_Curtain_06.png" />
+    <Image Include="assets\textures\cloth\SangamCurtain\Sangam_Curtain_07.png" />
+    <Image Include="assets\textures\cloth\SangamCurtain\Sangam_Curtain_08.png" />
+    <Image Include="assets\textures\cloth\SangamCurtain\Sangam_Curtain_09.png" />
+    <Image Include="assets\textures\cloth\SangamCurtain\Sangam_Curtain_10.png" />
+    <Image Include="assets\textures\cubemap\nx.png" />
+    <Image Include="assets\textures\cubemap\ny.png" />
+    <Image Include="assets\textures\cubemap\nz.png" />
+    <Image Include="assets\textures\cubemap\px.png" />
+    <Image Include="assets\textures\cubemap\py.png" />
+    <Image Include="assets\textures\cubemap\pz.png" />
+    <Image Include="assets\textures\cubemap_jisdesh\nx.png" />
+    <Image Include="assets\textures\cubemap_jisdesh\ny.png" />
+    <Image Include="assets\textures\cubemap_jisdesh\nz.png" />
+    <Image Include="assets\textures\cubemap_jisdesh\px.png" />
+    <Image Include="assets\textures\cubemap_jisdesh\py.png" />
+    <Image Include="assets\textures\cubemap_jisdesh\pz.png" />
+    <Image Include="assets\textures\fire\alpha.dds" />
+    <Image Include="assets\textures\flag\BhagwaJhenda.png" />
+    <Image Include="assets\textures\flag\orangeFlag.jpg" />
+    <Image Include="assets\textures\flag\orangeFlag1.jpg" />
+    <Image Include="assets\textures\Intro\IntroTexture.png" />
+    <Image Include="assets\textures\Intro\Intro_Eng.png" />
+    <Image Include="assets\textures\Intro\Intro_Mar.png" />
+    <Image Include="assets\textures\Intro\Intro_Urdu.png" />
+    <Image Include="assets\textures\Intro\Matrix_Group.png" />
+    <Image Include="assets\textures\matrix_logo.ico" />
+    <Image Include="assets\textures\roadCubeMap\nx.png" />
+    <Image Include="assets\textures\roadCubeMap\ny.png" />
+    <Image Include="assets\textures\roadCubeMap\nz.png" />
+    <Image Include="assets\textures\roadCubeMap\px.png" />
+    <Image Include="assets\textures\roadCubeMap\py.png" />
+    <Image Include="assets\textures\roadCubeMap\pz.png" />
+    <Image Include="assets\textures\Road\BRICK.jpg" />
+    <Image Include="assets\textures\Road\BRICKDark.jpg" />
+    <Image Include="assets\textures\Road\foothPathNormalMap.jpg" />
+    <Image Include="assets\textures\Road\FoothPathNormalMap.png" />
+    <Image Include="assets\textures\Road\foothPathNormalMap1.jpg" />
+    <Image Include="assets\textures\Road\roadNormal.jpg" />
+    <Image Include="assets\textures\Road\roadNormal4.jpg" />
+    <Image Include="assets\textures\Road\roadTexture2.jpg" />
+    <Image Include="assets\textures\sand.png" />
+    <Image Include="assets\textures\shadow\wood.bmp" />
+    <Image Include="assets\textures\shadow\wood.png" />
+    <Image Include="assets\textures\shadow\wood_1.bmp" />
+    <Image Include="assets\textures\TerrainBarsat\diffuseMap.png" />
+    <Image Include="assets\textures\TerrainBarsat\diffuseMap_old.png" />
+    <Image Include="assets\textures\TerrainBarsat\heightMap.bmp" />
+    <Image Include="assets\textures\TerrainBarsat\heightMap.png" />
+    <Image Include="assets\textures\TerrainBarsat\New Project Height Output-1025.png" />
+    <Image Include="assets\textures\TerrainBarsat\normalMap.png" />
+    <Image Include="assets\textures\terrain\diffuse.bmp" />
+    <Image Include="assets\textures\terrain\diffuse.png" />
+    <Image Include="assets\textures\terrain\New Project Bitmap Output-1025.bmp" />
+    <Image Include="assets\textures\terrain\normalMap.png" />
+    <Image Include="assets\textures\terrain\normalMap3.png" />
+    <Image Include="assets\textures\terrain\normalMap_.png" />
+    <Image Include="assets\textures\water\waterDUDV.png" />
+    <Image Include="assets\textures\water\waterNormalMap.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="assets\video\AwaliyaVideo.mp4" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="src\lib\3DModels.lib" />
+    <Library Include="src\lib\assimp-vc143-mtd.lib" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{e746edae-1be8-4fa2-aa8a-af8b34951d42}</ProjectGuid>
+    <RootNamespace>Awaliya</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\Program Files (x86)\OpenAL 1.1 SDK\include;C:\assimp\include;C:\opencv\build\include; C:\glew\include; C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.1\include</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\Program Files (x86)\OpenAL 1.1 SDK\libs\Win64;C:\assimp\lib;C:\opencv\build\x64\vc16\lib;C:\glew\lib\Release\x64;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.1\lib\x64;D:\Astromedicomp\Awaliya\_Main\src\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\Program Files (x86)\OpenAL 1.1 SDK\include;C:\assimp\include;C:\opencv\build\include; C:\glew\include; C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.1\include</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\Program Files (x86)\OpenAL 1.1 SDK\libs\Win64;C:\assimp\lib;C:\opencv\build\x64\vc16\lib;C:\glew\lib\Release\x64;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.1\lib\x64;D:\Astromedicomp\Awaliya\_Main\src\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\Program Files (x86)\OpenAL 1.1 SDK\include;C:\assimp\include;C:\opencv\build\include; C:\glew\include; C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.1\include</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\Program Files (x86)\OpenAL 1.1 SDK\libs\Win64;C:\assimp\lib;C:\opencv\build\x64\vc16\lib;C:\glew\lib\Release\x64;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.1\lib\x64;D:\Astromedicomp\Awaliya\_Main\src\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\Program Files (x86)\OpenAL 1.1 SDK\include;C:\assimp\include;C:\opencv\build\include; C:\glew\include; C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.1\include</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\Program Files (x86)\OpenAL 1.1 SDK\libs\Win64;C:\assimp\lib;C:\opencv\build\x64\vc16\lib;C:\glew\lib\Release\x64;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.1\lib\x64;D:\Astromedicomp\Awaliya\_Main\src\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

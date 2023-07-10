@@ -1,0 +1,239 @@
+#version 460 core
+
+layout(triangles, equal_spacing, ccw) in;
+
+uniform sampler2D heightMap;
+uniform mat4 u_modelMatrix;
+uniform mat4 u_viewMatrix;
+uniform mat4 u_projectionMatrix;
+
+uniform vec3 lightPosition;
+uniform vec3 viewPosition;
+
+uniform vec4 u_plane;
+
+in vec2 a_texcoord_tcs_out[];
+in vec3 FragPos_tcs_out[];
+
+out float Height;
+out vec2 a_texcoord_tes_out;
+out vec3 FragPos_tes_out;
+out vec3 TangentLightPos_tes_out;
+out vec3 TangentViewPos_tes_out;
+out vec3 TangentFragPos_tes_out;
+out vec3 DOF_View_transformed;
+
+uniform mat4 gVP;                                                                               
+uniform float gDispFactor;      
+uniform float freq;
+uniform int octaves;
+
+uniform vec3 gEyeWorldPos;  
+uniform vec3 seed;
+uniform vec4 clipPlane;
+				                                                                                 
+out float distFromPos;
+out float dispFactor;
+out float height;
+
+float Noise(int ind, int x, int y) {
+
+const int primes[39] = int[39](995615039, 600173719, 701464987,
+					831731269, 162318869, 136250887, 
+					174329291, 946737083, 245679977,
+				 362489573, 795918041, 350777237, 
+				 457025711, 880830799, 909678923, 
+				 787070341, 177340217, 593320781,	
+				 405493717, 291031019, 391950901, 
+				 458904767, 676625681, 424452397, 
+				 531736441, 939683957, 810651871,
+				997169939, 842027887, 423882827,
+				192405871, 129403928, 102948294,
+				102948203, 912030912, 910204948,
+				958730910, 759204855, 859302983);
+
+	int n = x + y * 57;
+	n = (n << 13) ^ n;
+	int a = primes[ind*3], b = primes[ind*3 + 1], c = primes[ind*3 + 2];
+	//int a = 787070341, b = 177340217, c = 593320781;
+	int t = (n * (n * n * a + b) + c) & 0x7fffffff;
+	return float(1.0 - t/1073741824.0);
+}
+                                                                                                
+vec2 interpolate2D(vec2 v0, vec2 v1, vec2 v2)                                                   
+{                                                                                               
+    return vec2(gl_TessCoord.x) * v0 + vec2(gl_TessCoord.y) * v1 + vec2(gl_TessCoord.z) * v2;   
+}                                                                                               
+                                                                                                
+vec3 interpolate3D(vec3 v0, vec3 v1, vec3 v2)                                                   
+{                                                                                               
+    return vec3(gl_TessCoord.x) * v0 + vec3(gl_TessCoord.y) * v1 + vec3(gl_TessCoord.z) * v2;   
+}
+
+float Random2D(in vec2 st)
+{
+	return fract(sin(dot(st.xy, vec2(12.9898, 78.233) + seed.xy)) * 43758.5453123);
+}
+
+float Interpolate(float a, float b, float x) {  // cosine interpolation
+	float ft = x * 3.1415927f;
+	float f = (1 - cos(ft)) * 0.5;
+	return  a * (1 - f) + b * f;
+}
+
+float InterpolatedNoise(int ind, float x, float y) {
+	int integer_X = int(floor(x));
+	float fractional_X = fract(x);
+	int integer_Y = int(floor(y));
+	float fractional_Y = fract(y);
+	vec2 randomInput = vec2(integer_X, integer_Y);
+	float a = Random2D(randomInput);
+	float b = Random2D(randomInput + vec2(1.0, 0.0));
+	float c = Random2D(randomInput + vec2(0.0, 1.0));
+	float d = Random2D(randomInput + vec2(1.0, 1.0));
+	//float v1 = Random2D(randomInput);
+	//float v2 = Random2D(randomInput + vec2(1.0, 0.0));
+	//float v3 = Random2D(randomInput + vec2(0.0, 1.0));
+	//float v4 = Random2D(randomInput + vec2(1.0, 1.0));
+
+	vec2 w = vec2(fractional_X, fractional_Y);
+	w = w*w*w*(10.0 + w*(-15.0 + 6.0*w));
+
+	//fractional_X = smoothstep(0.0, 1.0, fractional_X);
+	//fractional_Y = smoothstep(0.0, 1.0, fractional_Y);
+	//return a + fractional_X*(b-a) + fractional_Y*c + fractional_X*fractional_Y*(d-c) - a*fractional_Y - fractional_X*fractional_Y*(b-a);
+	float k0 = a, 
+	k1 = b - a, 
+	k2 = c - a, 
+	k3 = d - c - b + a;
+
+	return k0 + k1*w.x + k2*w.y + k3*w.x*w.y;
+}
+
+const mat2 m = mat2(0.8,-0.6,0.6,0.8);
+
+uniform float power;
+
+
+float perlin(float x, float y){
+	
+    int numOctaves = octaves;
+	float persistence = 0.5;
+	float total = 0,
+		frequency = 0.005*freq,
+		amplitude = gDispFactor;
+	for (int i = 0; i < numOctaves; ++i) {
+		frequency *= 2.;
+		amplitude *= persistence;
+		
+		total += InterpolatedNoise( 0, x * frequency, y * frequency) * amplitude;
+	}
+	return pow(total, power);
+}
+
+float perlin(vec2 st){
+    
+    //st *= freq;
+    
+    //int numOctaves = 10;
+	float persistence = 0.5;
+	float total = 0.0,
+		frequency = 0.005*freq,
+		amplitude = gDispFactor;
+	for (int i = 0; i < octaves; ++i) {
+		frequency *= 2.0;
+		amplitude *= persistence;
+
+        //st = frequency*m*st;
+
+		vec2 v = frequency*m*st;
+
+		total += InterpolatedNoise(0, v.x,v.y) * amplitude;
+	}
+	return pow(total, power);
+}
+
+out float gl_ClipDistance[1];
+
+void main()
+{
+	// CalculateTexcoord
+    //float u = gl_TessCoord.x;
+    //float v = gl_TessCoord.y;
+
+    vec2 t00 = a_texcoord_tcs_out[0];
+    vec2 t01 = a_texcoord_tcs_out[1];
+    vec2 t10 = a_texcoord_tcs_out[2];
+    //vec2 t11 = a_texcoord_tcs_out[3];
+
+    //vec2 t0 = mix(t00, t01, gl_TessCoord.x);
+    //vec2 t1 = mix(t10, t11, gl_TessCoord.x);
+    //vec2 texCoord = mix(t0, t1, gl_TessCoord.y);
+
+    a_texcoord_tes_out = interpolate2D(t00, t01, t10);   
+
+    vec3 p00 = gl_in[0].gl_Position.xyz;
+    vec3 p01 = gl_in[1].gl_Position.xyz;
+    vec3 p10 = gl_in[2].gl_Position.xyz;
+
+    // vec4 uVec = p01 - p00;
+    // vec4 vVec = p10 - p00;
+    // vec4 normal = normalize( vec4(cross(vVec.xyz, uVec.xyz), 0) );
+
+	vec3 normal = interpolate3D(p00, p01, p10);            
+    normal = normalize(normal); 
+
+    //vec4 p0 = (p01 - p00) * u + p00;
+    //vec4 p1 = (p11 - p10) * u + p10;
+
+	// Calculate Height and Position
+	vec4 p = vec4(interpolate3D(p00, p01, p10), 1.0);    
+    Height = texture(heightMap, a_texcoord_tes_out).y * 300.0 - 16.0;
+    p += vec4(normal, 1.0) * Height;
+
+    FragPos_tes_out = vec3(u_modelMatrix * p); // worldPosition
+
+    float totalMapSize = 400.0;
+    float totalPixels = 2048.0;
+    float cellSize = totalMapSize/totalPixels;
+
+    // Need To Calculate a_tangent & a_normal
+    float heightL = texture(heightMap,a_texcoord_tes_out - vec2(1.0/totalPixels,0)).r*10.0;
+    float heightR = texture(heightMap,a_texcoord_tes_out + vec2(1.0/totalPixels,0)).r*10.0;
+    float heightD = texture(heightMap,a_texcoord_tes_out - vec2(0,1.0/totalPixels)).r*10.0;
+    float heightU = texture(heightMap,a_texcoord_tes_out + vec2(0,1.0/totalPixels)).r*10.0;
+	vec3 tangent = normalize(vec3(cellSize,heightL - heightR,0));
+    vec3 bitangent = normalize(vec3(0,heightD - heightU,cellSize));
+   
+    mat3 normalMatrix = transpose(inverse(mat3(u_modelMatrix)));
+	vec3 T = normalize(normalMatrix * tangent);
+	vec3 N = normalize(normalMatrix * vec3(normal));
+	T = normalize(T - dot(T, N) * N);
+	vec3 B = cross(N, T);
+
+	mat3 TBN = transpose(mat3(T, B, N));
+	TangentLightPos_tes_out = TBN * lightPosition;
+	TangentViewPos_tes_out = TBN * viewPosition;
+	TangentFragPos_tes_out = TBN * FragPos_tes_out;
+
+    //WorldPos = interpolate3D(FragPos_tcs_out[0], FragPos_tcs_out[1], FragPos_tcs_out[2]);    
+    //WorldPos  = vec3(p);
+
+    // Displace the vertex along the normal                                                     
+	//float Displacement = perlin(WorldPos.xz);
+	//float Displacement = Height;
+
+	//WorldPos += normal * Displacement;
+	//gl_ClipDistance[0] = dot(clipPlane, vec4(WorldPos, 1.0));
+
+	distFromPos = distance(vec3(p),  gEyeWorldPos);
+	dispFactor = gDispFactor;
+	height = p.y;
+
+    vec4 DOF_P = u_viewMatrix * u_modelMatrix * p;
+    DOF_View_transformed = -DOF_P.xyz;
+
+    gl_Position = u_projectionMatrix * u_viewMatrix * u_modelMatrix * p;
+    gl_ClipDistance[0] = dot(u_modelMatrix * p, u_plane);
+
+}

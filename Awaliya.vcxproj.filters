@@ -1,0 +1,1202 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="build.bat">
+      <Filter>Source Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\effects\cloth\Cloth.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\effects\cloud\Cloud.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\effects\cubemap\Cubemap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\effects\DOF\DOF copy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\effects\DOF\DOF.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\effects\fire\Fire.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\effects\Flag\Flag.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\effects\Road\RoadBezierStrips.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\effects\shadow\Shadow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\effects\shadow\Shadow_bkp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\effects\shadow\Shadow_bkp_windows.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\effects\terrain\Terrian.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\effects\VolumetricLight\SingleVolumetricLight.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\effects\Water\JishDeshMaiGanga.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\effects\Water\Water_Shader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\effects\Water\WaterBedQuad_Shader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\effects\Water\WaterMain.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\effects\Water\WaterQuad_Shader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\includes\3DModels.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\includes\helper_timer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\includes\OpenAL.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\includes\Primitive3DGeometry.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\includes\Primitive3DGeometryMesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\includes\Sphere.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\includes\SphereAish.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\includes\stb_image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\includes\vmath.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scenes\Aag\Aag.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scenes\Awara\Awara.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scenes\Barsaat\Barsaat.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scenes\JisDesh\JisDesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scenes\MainScene\IntroScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scenes\MainScene\MainScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scenes\MeraNaamJoker\MeraNaamJoker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scenes\Opening\JokerFace.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scenes\Opening\Opening.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scenes\Sangam\Sangam.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scenes\Shree420\Road.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scenes\Shree420\Shree420.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scenes\Studio\Studio.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shaders\cloth\ClothShader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shaders\color\ColorShader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shaders\cubemap\CubemapShader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shaders\environmentMap\EnvironmentMap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shaders\environmentMap\ReflectionShader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shaders\flag\FlagShader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shaders\model\Model_Shader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shaders\model\Model_ShaderOld.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shaders\model\Model_ShaderShadow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shaders\Road\RoadShader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shaders\SpotLight\SpotlightShader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shaders\texture\TextureShader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shaders\videoRendering\videoRendering.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shaders\volumeCloud\VolumeCloudShader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shaders\CommonShaders.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\camera\BezierCamera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\camera\Camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\model\mesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\model_using_assim\mesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\model_using_assim\model.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\OpenGL\DDSLoader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\OpenGL\GLHeadersAndMacros.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\OpenGL\GLLog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\OpenGL\GLShaders.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\common.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\opencv.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OGLMain.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shaders\CommonModels.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\effects\Water\JishDeshMaiGanga.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\OpenGL\GLLog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\OpenGL\GLShaders.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\common.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OGLMain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="src\OGLMain.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="assets\models\Joker\FBHead_baked_tex.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Joker\FBHead_baked_tex.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Aag\BackWallTexture.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Aag\FloorWoodenTexture.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Aag\PillarDesign.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Aag\TheatreWall.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Aag\truck-art.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Aag\table\1001_albedo.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Aag\table\1001_AO.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Aag\table\1001_metallic.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Aag\table\1001_normal.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Aag\table\1001_roughness.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Aag\Mirror\texture-old-wood.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\backpack\ao.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\backpack\diffuse.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\backpack\normal.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\backpack\roughness.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\backpack\specular.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\Boat\BoatTexture.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\Boat\BoatTexture.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\House\back.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\House\back.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\House\BalconyWall.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\House\BalconyWall.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\House\Column.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\House\Column.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\House\ConcreteTexture.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\House\ConcreteTexture.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\House\concretetextureold.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\House\concretetextureold.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\House\front.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\House\front.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\House\geometric-pattern-wood.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\House\geometric-pattern-wood.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\House\geometricWood.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\House\geometricWood.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\House\geometricWoodDoor.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\House\geometricWoodDoor.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\House\oakply1.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\House\oakply1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\House\oakply2.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\House\oakply2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\House\OldConcrete.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\House\OldConcrete.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\House\OldConcrete2.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\House\OldConcrete2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\House\OldFloor.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\House\OldFloor.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\House\parafet.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\House\parafet.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\House\Roof.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\House\Roof.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\House\RoofTexture.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\House\Room.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\House\Room.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\House\saif.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\House\saif.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\House\StiltColumn.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\House\StiltColumn.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\House\Tile.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\House\Tile.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\House\Wood.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\House\Wood.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\House\WoodColumn.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\House\WoodColumn.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\House\woodenDoor.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\House\woodenDoor.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\Pose\back.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\Pose\back.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\Pose\front.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\Pose\front.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\Pose\oakply1.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\Pose\oakply1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\Pose\oakply2 бамп.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\Pose\oakply2 бамп.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\Pose\oakply2.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\Pose\oakply2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\Pose\saif met.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\Pose\saif met.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\Pose\Tile 30s.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\Pose\Tile 30s.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\Pose\перед бамп.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\Pose\перед бамп.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\Pose\светлое дерево.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\Pose\светлое дерево.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\Pose\черное дерево бамп.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\Pose\черное дерево бамп.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\Pose\черное дерево.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Barsat\Pose\черное дерево.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Boat\BoatTexture.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\sangamRoom\Base1_baseColor.jpeg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\sangamRoom\BigPhoto.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\sangamRoom\BigPhoto.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\sangamRoom\BlackOxalis_4K_Albedo.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\sangamRoom\Carpet5.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\sangamRoom\Dial1_baseColor.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\sangamRoom\diffuse.jpeg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\sangamRoom\FabricTextures.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\sangamRoom\Floor.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\sangamRoom\Floor.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\sangamRoom\FlowerVase.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\sangamRoom\Glass.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\sangamRoom\Image_0.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\sangamRoom\Image_0.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\sangamRoom\Image_1.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\sangamRoom\Image_2.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\sangamRoom\Image_3.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\sangamRoom\Image_4.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\sangamRoom\Image_5.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\sangamRoom\Image_6.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\sangamRoom\Image_7.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\sangamRoom\Image_8.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\sangamRoom\Image_9.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\sangamRoom\Image_10.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\sangamRoom\Image_11.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\sangamRoom\Image_12.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\sangamRoom\Image_13.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\sangamRoom\Image_14.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\sangamRoom\material_baseColor.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\sangamRoom\OvalFrame1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\sangamRoom\OvalPhoto.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\sangamRoom\PianoBody.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\sangamRoom\RK&amp;RajendraKumar.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\sangamRoom\Sangam3.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\sangamRoom\SofaCushionTexture.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\sangamRoom\SofaCushionTexture.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\sangamRoom\SofaPillow.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\sangamRoom\Square2.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\sangamRoom\StandWoodTexture.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\sangamRoom\tajmahal.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\sangamRoom\Teapoy.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\sangamRoom\Wadrobe.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\sangamRoom\WallPaper9.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\sangamRoom\WallPaper9.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\sangamRoom\WallPaper10.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\sangamRoom\WallPaper10.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\sangamRoom\WindowGlass.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\sangamRoom\WoodenFrame3.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\sangamRoom\WoodenFrame4.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\Amplion.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\Amplion.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\BlueWire.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\BlueWire.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\Cable.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\Cable.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\Camera.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\Camera.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\CameraBox.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\CameraBox.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\Clapper.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\Clapper.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\ClapperFlap.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\ClapperFlap.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\FabricTextures.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\FabricTextures.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\Freqency.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\Freqency.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\Ghoda.jpeg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\IntercomSpeackerAO.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\Mic Box.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\Mic Box.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\Mic.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\Mic.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\Murphy.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\Murphy.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\Photo1.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\Photo1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\Photo2.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\Photo2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\Photo3.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\Photo3.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\Photo4.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\Photo4.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\Photo5.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\Photo5.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\Photo6.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\Photo6.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\Photo7.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\Photo7.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\Photo8.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\Photo8.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\Photo9.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\Photo9.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\Photo10.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\Photo10.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\Photo11.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\Photo11.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\Photo12.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\Photo12.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\Photo13.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\Photo13.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\Photo14.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\Photo14.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\Photo15.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\Photo15.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\Photo16.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\Photo16.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\RajKapoor.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\RajKapoor.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\RedWire.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\RedWire.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\Rust.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\Rust.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\ScaffholdingTexture.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\ScaffholdingTexture.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\Sennheiser.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\Sennheiser.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\Shell_Wood_Base_Color.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\StandWoodTexture.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\StandWoodTexture.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\StudioFloor.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\StudioFloor.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\StudioWall.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\StudioWall.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\UmbrellaDiffuser.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\UmbrellaDiffuser.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\Wire.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\Wire.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\wireBundle.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\wireBundle.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\WireCylinder.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\WireCylinder.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\WoodenFrame1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\WoodenFrame4.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\YellowWire.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\ShootingStage-new\YellowWire.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Shree420\Teapot\teapot_texture.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Shree420\Bench\vas_Bench.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Shree420\Brick\modular_wall01_DefaultMaterial_BaseColor.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Shree420\Brick\modular_wall01_DefaultMaterial_Height.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Shree420\Brick\modular_wall01_DefaultMaterial_Normal.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Shree420\Brick\modular_wall01_DefaultMaterial_Roughness.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Shree420\CupSaucer\CupSaucer.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Shree420\CupSaucer\CupSaucer.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Shree420\RoadWall\BRICK.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Shree420\StreetLight\classoc light bulb.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Shree420\StreetLight\classoc light glass.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Shree420\StreetLight\classoc light glass_alpha.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Shree420\StreetLight\classoc light pole - Copy.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Shree420\StreetLight\classoc light pole.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Shree420\Table\Table.jpeg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Shree420\Table\Table.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Shree420\Table\Table1.jpeg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Shree420\Tapri\bamboo.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Shree420\Tapri\brick.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\Shree420\Tapri\patra.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\matrix_logo.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\sand.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\Aag\AagPoster.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\cloth\AagCurtain\Aag_Curtain.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\cloth\BarsaatCurtain\Barsaat_Curtain.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\cloth\BarsaatDupatta\BarsaatDupatta.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\cloth\JisDeshMeinDupatta\JisDeshMeinDupatta.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\cloth\SangamCurtain\Sangam_Curtain_01.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\cloth\SangamCurtain\Sangam_Curtain_02.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\cloth\SangamCurtain\Sangam_Curtain_03.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\cloth\SangamCurtain\Sangam_Curtain_04.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\cloth\SangamCurtain\Sangam_Curtain_05.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\cloth\SangamCurtain\Sangam_Curtain_06.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\cloth\SangamCurtain\Sangam_Curtain_07.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\cloth\SangamCurtain\Sangam_Curtain_08.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\cloth\SangamCurtain\Sangam_Curtain_09.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\cloth\SangamCurtain\Sangam_Curtain_10.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\cubemap\nx.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\cubemap\ny.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\cubemap\nz.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\cubemap\px.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\cubemap\py.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\cubemap\pz.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\cubemap_jisdesh\nx.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\cubemap_jisdesh\ny.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\cubemap_jisdesh\nz.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\cubemap_jisdesh\px.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\cubemap_jisdesh\py.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\cubemap_jisdesh\pz.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\fire\alpha.dds" />
+    <Image Include="assets\textures\flag\BhagwaJhenda.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\flag\orangeFlag.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\flag\orangeFlag1.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\Intro\Intro_Eng.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\Intro\Intro_Mar.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\Intro\Intro_Urdu.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\Intro\IntroTexture.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\Intro\Matrix_Group.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\Road\BRICK.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\Road\BRICKDark.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\Road\foothPathNormalMap.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\Road\FoothPathNormalMap.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\Road\foothPathNormalMap1.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\Road\roadNormal.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\Road\roadNormal4.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\Road\roadTexture2.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\roadCubeMap\nx.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\roadCubeMap\ny.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\roadCubeMap\nz.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\roadCubeMap\px.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\roadCubeMap\py.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\roadCubeMap\pz.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\shadow\wood.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\shadow\wood.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\shadow\wood_1.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\terrain\diffuse.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\terrain\diffuse.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\terrain\New Project Bitmap Output-1025.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\terrain\normalMap.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\terrain\normalMap_.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\terrain\normalMap3.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\TerrainBarsat\diffuseMap.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\TerrainBarsat\diffuseMap_old.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\TerrainBarsat\heightMap.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\TerrainBarsat\heightMap.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\TerrainBarsat\New Project Height Output-1025.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\TerrainBarsat\normalMap.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\water\waterDUDV.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\textures\water\waterNormalMap.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="assets\video\AwaliyaVideo.mp4" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="src\lib\3DModels.lib" />
+    <Library Include="src\lib\assimp-vc143-mtd.lib" />
+  </ItemGroup>
+</Project>
