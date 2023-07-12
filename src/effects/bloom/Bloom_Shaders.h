@@ -107,14 +107,14 @@ public:
     {
         // 2. blur bright fragments with two-pass Gaussian Blur
         bool first_iteration = true;
-        unsigned int amount = 10;
+        unsigned int amount = 15;
 
         glUseProgram(blurShader.shaderProgramObject);
         {
             // --------------------------------------------------
             for (unsigned int i = 0; i < amount; i++)
             {
-                float radius = 5.0f;
+                float radius = 3.0f;
                 glBindFramebuffer(GL_FRAMEBUFFER, pingpongFBO[horizontal]);
                 glViewport(0, 0, FBO_WIDTH_BLOOM, FBO_HEIGHT_BLOOM);
                 glUniform1i(blurShader.isHorizontalUniform, horizontal);
