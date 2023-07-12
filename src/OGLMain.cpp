@@ -69,7 +69,7 @@ CommonModels *commonModels;
 float objX = 0.0f;
 float objY = 0.0f;
 float objZ = 0.0f;
-float objIncrement = 0.1f;
+float objIncrement = 1.0f;
 
 // Scale
 float scaleX = 0.0;

@@ -8,7 +8,7 @@ using namespace vmath;
 
 const float YAW = -90.0;
 const float PITCH = 0.0;
-const float SPEED = 5.5;
+const float SPEED = 0.2;
 const float SENSITIVITY = 0.4;
 const float ZOOM = 45.0;
 
@@ -105,7 +105,7 @@ public:
         float distance = 2.0f * (position[1] - 0.0f);
         position[1] -= distance;
     }
-    
+
     void updateInversCameraVectors_Mirror()
     {
         pitch = -pitch;
@@ -120,7 +120,7 @@ public:
         up = vmath::normalize(vmath::cross(right, front));
 
         // float distance = 2.0f * (position[2] - 0.0f);
-        //position[0] -= distance;
+        // position[0] -= distance;
         position[0] = -position[0];
     }
 
@@ -186,7 +186,6 @@ public:
         // pitch = -pitch;
         updateInversCameraVectors_Mirror();
     }
-
 
     ///////////////// TO DO IN WINDOWS
     // Detects shift key up to decrease the movementSpeed

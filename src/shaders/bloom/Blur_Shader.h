@@ -11,7 +11,7 @@ public:
 
     GLuint textureSamplerUniform;
     GLuint isHorizontalUniform;
-
+    GLuint directionUniform;
     BOOL initialize(void)
     {
         // vertex Shader
@@ -35,10 +35,11 @@ public:
 
         if (bShaderLinkStatus == FALSE)
             return FALSE;
-            
+
         // post link - getting
         textureSamplerUniform = glGetUniformLocation(shaderProgramObject, "u_textureSampler");
         isHorizontalUniform = glGetUniformLocation(shaderProgramObject, "horizontal");
+        directionUniform = glGetUniformLocation(shaderProgramObject, "direction");
 
         return TRUE;
     }
