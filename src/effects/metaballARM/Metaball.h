@@ -1,6 +1,5 @@
 #pragma once
 #include "../../utils/common.h"
-#include "../../effects/bloom/Bloom_Shaders.h"
 
 class Metaball
 {

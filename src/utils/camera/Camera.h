@@ -8,7 +8,7 @@ using namespace vmath;
 
 const float YAW = -90.0;
 const float PITCH = 0.0;
-const float SPEED = 0.2;
+const float SPEED = 3.2;
 const float SENSITIVITY = 0.4;
 const float ZOOM = 45.0;
 

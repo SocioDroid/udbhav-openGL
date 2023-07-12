@@ -108,7 +108,7 @@ public:
             glBindVertexArray(0);
             glBindTexture(GL_TEXTURE_2D, 0);
             glDisable(GL_BLEND);
-            glEnable(GL_DEPTH_TEST);
+
         }
         glUseProgram(0);
     }

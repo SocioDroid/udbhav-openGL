@@ -1,6 +1,8 @@
 #pragma once
 #include "vmath.h"
 #include "3DModels.h"
+#include "../utils/OpenGL/GLHeadersAndMacros.h"
+#include "../utils/OpenGL/GLShaders.h"
 using namespace vmath;
 
 const int MAX_VERTICES_SPHERE = 100000;
@@ -19,12 +21,53 @@ public:
     int verticesPointer = 0;
     int normalsPointer = 0;
 
-    // methods
+    // SPHERE
+    GLuint vao_sphere;
+    GLuint vbo_sphere_position;
+    GLuint vbo_sphere_texcoord;
+    GLuint vbo_sphere_normal;
+    GLuint vbo_sphere_element;
 
     SphereAish(float radius, int slices, int stacks)
     {
         // code
         generateSphereData(radius, slices, stacks);
+
+        // Building VAO & VBO
+        glGenVertexArrays(1, &vao_sphere); //  Create vertex array object
+        glBindVertexArray(vao_sphere);     // Bind with vertex array buffer
+        {
+            // Position VBO
+            glGenBuffers(1, &vbo_sphere_position);              // Create vertex data buffer
+            glBindBuffer(GL_ARRAY_BUFFER, vbo_sphere_position); // Bind with vertex data buffer
+            {
+                glBufferData(GL_ARRAY_BUFFER, (getNumberOfSphereVertices() * 3) * sizeof(float), getSphereVertex(), GL_STATIC_DRAW); // Create storage for buffer data for a particular target
+                glVertexAttribPointer(MATRIX_ATTRIBUTE_POSITION, 3, GL_FLOAT, GL_FALSE, 0, NULL);
+                glEnableVertexAttribArray(MATRIX_ATTRIBUTE_POSITION); // Enable the respective buffer binding vertex array target
+            }
+            glBindBuffer(GL_ARRAY_BUFFER, 0); // Unbind with the respective vertex data buffer
+
+            // Texcoord VBO
+            glGenBuffers(1, &vbo_sphere_texcoord);              // Create vertex data buffer
+            glBindBuffer(GL_ARRAY_BUFFER, vbo_sphere_texcoord); // Bind with vertex data buffer
+            {
+                glBufferData(GL_ARRAY_BUFFER, getNumberOfSphereTexcoords() * sizeof(float), getSphereTexCoord(), GL_STATIC_DRAW); // Create storage for buffer data for a particular target
+                glVertexAttribPointer(MATRIX_ATTRIBUTE_TEXTURE0, 2, GL_FLOAT, GL_FALSE, 0, NULL);
+                glEnableVertexAttribArray(MATRIX_ATTRIBUTE_TEXTURE0);
+            }
+            glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+            // NORMALS VBO
+            glGenBuffers(1, &vbo_sphere_normal);              // Create vertex data buffer
+            glBindBuffer(GL_ARRAY_BUFFER, vbo_sphere_normal); // Bind with vertex data buffer
+            {
+                glBufferData(GL_ARRAY_BUFFER, getNumberOfSphereNormals() * sizeof(float), getSphereNormals(), GL_STATIC_DRAW); // Create storage for buffer data for a particular target
+                glVertexAttribPointer(MATRIX_ATTRIBUTE_NORMAL, 3, GL_FLOAT, GL_FALSE, 0, NULL);
+                glEnableVertexAttribArray(MATRIX_ATTRIBUTE_NORMAL);
+            }
+            glBindBuffer(GL_ARRAY_BUFFER, 0);
+        }
+        glBindVertexArray(0); // A6 Unbind with the vertex array object & so stop the recording
     }
 
     void addSphereVertex(double x, double y, double z)

@@ -75,7 +75,7 @@ float objIncrement = 1.0f;
 float scaleX = 0.0;
 float scaleY = 0.0;
 float scaleZ = 0.0;
-float scaleIncrement = 1.0f;
+float scaleIncrement = 0.1f;
 
 float globalTime = 0.0f;
 float ELAPSED_TIME;

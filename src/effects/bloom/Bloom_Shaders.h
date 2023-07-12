@@ -89,8 +89,6 @@ public:
     {
     }
 
-    void *funPtr = NULL;
-
     void bindBloomFBO(void)
     {
         glBindFramebuffer(GL_FRAMEBUFFER, hdrFBO);

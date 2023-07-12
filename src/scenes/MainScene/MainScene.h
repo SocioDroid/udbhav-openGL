@@ -3,7 +3,8 @@
 #include "../../utils/camera/BezierCamera.h"
 
 // SCENES
-#include "../MetaballScene/MetaballScene.h"
+#include "../EarthBirthScene/EarthBirthScene.h"
+#include "../EarthCooldownScene/EarthCooldownScene.h"
 
 void setGlobalBezierCamera(BezierCamera *bezierCamera);
 
@@ -18,13 +19,15 @@ public:
     bool START_E2E_DEMO;
 
     // Scenes
-    MetaballScene *metaballScene;
+    EarthBirthScene *earthBirthScene;
+    EarthCooldownScene *earthCooldownScene;
 
     // member functions
     MainScene()
     {
         // SCENE
-        metaballScene = new MetaballScene();
+        earthBirthScene = new EarthBirthScene();
+        earthCooldownScene = new EarthCooldownScene();
 
         // SCENE CONTROLS
         START_E2E_DEMO = false;
@@ -34,7 +37,8 @@ public:
     BOOL initialize()
     {
         // SCENES
-        metaballScene->initialize();
+        earthBirthScene->initialize();
+        earthCooldownScene->initialize();
 
         // if (START_E2E_DEMO)
         // {
@@ -55,7 +59,8 @@ public:
     void display()
     {
 
-        metaballScene->display();
+        // earthBirthScene->display();
+        earthCooldownScene->display();
 
         // displayScene();
         // switch (selected_scene)
@@ -73,7 +78,8 @@ public:
 
     void update()
     {
-        metaballScene->update();
+        // earthBirthScene->update();
+        earthCooldownScene->update();
         // SCENE SWITCHER
         // if (START_E2E_DEMO) // Switch scenes only if end to end demo is played
         // {
@@ -89,6 +95,7 @@ public:
     }
     void uninitialize()
     {
-        metaballScene->uninitialize();
+        // earthBirthScene->uninitialize();
+        earthCooldownScene->uninitialize();
     }
 };

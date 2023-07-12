@@ -1,7 +1,6 @@
 #pragma once
 #include "color/ColorShader.h"
 #include "texture/TextureShader.h"
-#include "textureDisintegrate/TextureDisintegrateShader.h"
 #include "model/Model_ShaderCommon.h"
 #include "model/Model_ShaderParticleCommon.h"
 #include "overlayTexture/OverlayTextureShader.h"
@@ -13,7 +12,6 @@ public:
     // Variables
     ColorShader *colorShader;
     TextureShader *textureShader;
-    TextureDisintegrateShader *textureDisintegrateShader;
     ModelShaderCommon *modelShaderCommon;
     OverlayTextureShader *overlayTextureShader;
     OverlayColorShader *overlayColorShader;
@@ -24,7 +22,6 @@ public:
     {
         colorShader = new ColorShader();
         textureShader = new TextureShader();
-        textureDisintegrateShader = new TextureDisintegrateShader();
         modelShaderCommon = new ModelShaderCommon();
         overlayTextureShader = new OverlayTextureShader();
         overlayColorShader = new OverlayColorShader();
@@ -38,11 +35,6 @@ public:
         if (!textureShader->initialize())
         {
             PrintLog("Error in initializing textureShader");
-        }
-
-        if (!textureDisintegrateShader->initialize())
-        {
-            PrintLog("Error in initializing textureDisintegrateShader");
         }
 
         if (!modelShaderCommon->initialize())
@@ -80,12 +72,6 @@ public:
         {
             textureShader->uninitialize();
             free(textureShader);
-        }
-
-        if (textureDisintegrateShader)
-        {
-            textureDisintegrateShader->uninitialize();
-            free(textureDisintegrateShader);
         }
 
         if (modelShaderCommon)
