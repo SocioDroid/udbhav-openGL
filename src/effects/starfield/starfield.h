@@ -85,7 +85,7 @@ public:
             glUniformMatrix4fv(starfieldShader->modelMatrixUniform, 1, GL_FALSE, modelMatrix);
             glUniformMatrix4fv(starfieldShader->viewMatrixUniform, 1, GL_FALSE, viewMatrix);
             glUniformMatrix4fv(starfieldShader->projectionMatrixUniform, 1, GL_FALSE, perspectiveProjectionMatrix);
-            glUniform1f(starfieldShader->timeUniform, ELAPSED_TIME * 0.001f);
+            glUniform1f(starfieldShader->timeUniform, ELAPSED_TIME * 0.005f);
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, starFieldTexture);
 

@@ -6,7 +6,9 @@
 #include "../../effects/starfield/starfield.h"
 #include "../../shaders/bloom/HDR_Shader.h"
 #include "../../shaders/noiseSun/NoiseSunShader.h"
+#include "../../shaders/smokeEarth/SmokeEarthShader.h"
 #include "../../effects/bloom/Bloom_Shaders.h"
+#include "../../shaders/textureLight/TextureLightShader.h"
 
 void setGlobalBezierCamera(BezierCamera *bezierCamera);
 
@@ -14,6 +16,9 @@ class EarthCooldownScene
 {
 
 public:
+    // constants
+    static const int EARTH_STONE = 0;
+    static const int EARTH_CLOUD = 1;
     // member variables
     int selected_scene;
     bool START_E2E_DEMO;
@@ -29,9 +34,12 @@ public:
     GLuint rbo_UserMap; // RENDER BUFFER OBJECT
     GLuint fbo_texture_UserMap;
     GLuint texture_stoneEarth;
+    GLuint texture_cloudEarth;
 
     // shaders
     NoiseSunShader noiseSunShader;
+    SmokeEarthShader smokeEarthShader;
+    TextureLightShader textureLightShader;
 
     // member functions
     EarthCooldownScene()
@@ -72,11 +80,18 @@ public:
 
         // Spheres
         noiseSunShader.initialize();
-        sunSphere = new SphereAish(1.0f, 100, 100);
-        earthSphere = new SphereAish(0.3f, 100, 100);
+        smokeEarthShader.initialize();
+        textureLightShader.initialize();
+        sunSphere = new SphereAish(5.0f, 100, 100);
+        earthSphere = new SphereAish(1.0f, 100, 100);
         if (LoadPNGImage(&texture_stoneEarth, "./assets/textures/earth/cooledEarth3.png") == FALSE)
         {
             PrintLog("Failed to load stoneEarth texture\n");
+            return FALSE;
+        }
+        if (LoadPNGImage(&texture_cloudEarth, "./assets/textures/earth/clouds2.png") == FALSE)
+        {
+            PrintLog("Failed to load clouds texture\n");
             return FALSE;
         }
         return TRUE;
@@ -144,8 +159,15 @@ public:
         modelMatrix = popMatrix();
         pushMatrix(modelMatrix);
         {
-            modelMatrix = modelMatrix * translate(3.0f, 0.0f, 0.0f);
-            drawEarth();
+            modelMatrix = modelMatrix * translate(15.0f, 0.0f, 0.0f);
+            drawEarth(EARTH_STONE);
+        }
+        modelMatrix = popMatrix();
+        // Cloud earth
+        pushMatrix(modelMatrix);
+        {
+            modelMatrix = modelMatrix * translate(15.0f, 0.0f, 0.0f);
+            drawEarth(EARTH_CLOUD);
         }
         modelMatrix = popMatrix();
     }
@@ -167,30 +189,78 @@ public:
         modelMatrix = popMatrix();
         glUseProgram(0);
     }
-    void drawEarth()
+    void drawEarth(const int EARTH_TYPE)
     {
-        glUseProgram(commonShaders->textureShader->shaderProgramObject);
-        pushMatrix(modelMatrix);
+        switch (EARTH_TYPE)
         {
-            modelMatrix = modelMatrix * vmath::rotate(-90.0f, 1.0f, 0.0f, 0.0f);
-            /* Initialize uniforms constant throughout rendering loop. */
-            glUniformMatrix4fv(commonShaders->textureShader->modelMatrixUniform, 1, GL_FALSE, modelMatrix);
-            glUniformMatrix4fv(commonShaders->textureShader->viewMatrixUniform, 1, GL_FALSE, viewMatrix);
-            glUniformMatrix4fv(commonShaders->textureShader->projectionMatrixUniform, 1, GL_FALSE, perspectiveProjectionMatrix);
+        case EARTH_STONE:
+            glUseProgram(textureLightShader.shaderProgramObject);
+            pushMatrix(modelMatrix);
+            {
+                modelMatrix = modelMatrix * vmath::rotate(-90.0f, 1.0f, 0.0f, 0.0f);
+                modelMatrix = modelMatrix * vmath::rotate(-90.0f - (ELAPSED_TIME * 0.2f), 0.0f, 0.0f, 1.0f);
+                /* Initialize uniforms constant throughout rendering loop. */
+                glUniformMatrix4fv(textureLightShader.modelMatrixUniform, 1, GL_FALSE, modelMatrix);
+                glUniformMatrix4fv(textureLightShader.viewMatrixUniform, 1, GL_FALSE, viewMatrix);
+                glUniformMatrix4fv(textureLightShader.projectionMatrixUniform, 1, GL_FALSE, perspectiveProjectionMatrix);
 
-            glEnable(GL_TEXTURE_2D);
+                glEnable(GL_TEXTURE_2D);
 
-            glActiveTexture(GL_TEXTURE0);
-            glBindTexture(GL_TEXTURE_2D, texture_stoneEarth);
-            glUniform1i(commonShaders->textureShader->textureSamplerUniform, 0);
+                glActiveTexture(GL_TEXTURE0);
+                glBindTexture(GL_TEXTURE_2D, texture_stoneEarth);
+                glUniform1i(textureLightShader.textureSamplerUniform, 0);
 
-            glBindVertexArray(earthSphere->vao_sphere);
-            glDrawArrays(GL_TRIANGLE_STRIP, 0, earthSphere->getNumberOfSphereVertices());
-            glBindVertexArray(0);
-            glBindTexture(GL_TEXTURE_2D, 0);
+                // Controlling Light position
+                glUniform1f(glGetUniformLocation(textureLightShader.shaderProgramObject, "lightX"), -2.0f + 2.300000f);
+                glUniform1f(glGetUniformLocation(textureLightShader.shaderProgramObject, "lightY"), -1.0f + 0.300000f);
+                glUniform1f(glGetUniformLocation(textureLightShader.shaderProgramObject, "lightZ"), 1.0f + -0.100000f);
+
+                glBindVertexArray(earthSphere->vao_sphere);
+                glDrawArrays(GL_TRIANGLE_STRIP, 0, earthSphere->getNumberOfSphereVertices());
+                glBindVertexArray(0);
+                glBindTexture(GL_TEXTURE_2D, 0);
+            }
+            modelMatrix = popMatrix();
+            glUseProgram(0);
+            break;
+        case EARTH_CLOUD:
+
+            glUseProgram(textureLightShader.shaderProgramObject);
+            pushMatrix(modelMatrix);
+            {
+                modelMatrix = modelMatrix * vmath::rotate(-90.0f, 1.0f, 0.0f, 0.0f);
+                modelMatrix = modelMatrix * vmath::rotate(-90.0f + ELAPSED_TIME, 0.0f, 0.0f, 1.0f);
+                modelMatrix = modelMatrix * vmath::scale(1.02f, 1.02f, 1.02f);
+                /* Initialize uniforms constant throughout rendering loop. */
+                glUniformMatrix4fv(textureLightShader.modelMatrixUniform, 1, GL_FALSE, modelMatrix);
+                glUniformMatrix4fv(textureLightShader.viewMatrixUniform, 1, GL_FALSE, viewMatrix);
+                glUniformMatrix4fv(textureLightShader.projectionMatrixUniform, 1, GL_FALSE, perspectiveProjectionMatrix);
+
+                glEnable(GL_BLEND);
+                glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+                glEnable(GL_TEXTURE_2D);
+
+                glActiveTexture(GL_TEXTURE0);
+                glBindTexture(GL_TEXTURE_2D, texture_cloudEarth);
+                glUniform1i(textureLightShader.textureSamplerUniform, 0);
+                glUniform1f(textureLightShader.alphaValueUniform, 0.5f);
+
+                // Controlling Light position
+                glUniform1f(glGetUniformLocation(textureLightShader.shaderProgramObject, "lightX"), -2.0f + 2.300000f);
+                glUniform1f(glGetUniformLocation(textureLightShader.shaderProgramObject, "lightY"), -1.0f + 0.300000f);
+                glUniform1f(glGetUniformLocation(textureLightShader.shaderProgramObject, "lightZ"), 1.0f + -0.100000f);
+
+                glBindVertexArray(earthSphere->vao_sphere);
+                glDrawArrays(GL_TRIANGLE_STRIP, 0, earthSphere->getNumberOfSphereVertices());
+                glBindVertexArray(0);
+                glBindTexture(GL_TEXTURE_2D, 0);
+
+                glDisable(GL_BLEND);
+            }
+            modelMatrix = popMatrix();
+            glUseProgram(0);
+            break;
         }
-        modelMatrix = popMatrix();
-        glUseProgram(0);
     }
     void update()
     {

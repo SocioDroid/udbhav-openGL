@@ -61,7 +61,6 @@ using namespace vmath;
 #define START_TIME_OUTRO_UTKARSH (64.0f)
 #define START_TIME_OUTRO_END (68.0f)
 
-
 #define START_TIME_LOGO_11 480.0f
 
 #define STOP_TIME_RADIOKATA 126.0f
@@ -136,3 +135,6 @@ float osc(float time, float minRange, float maxRange, float frequency);
 void setSelectedScene(int selScene);
 void setCurrentPhase(int phase);
 extern BOOL start_fade_out_opening;
+
+void initializePlaneVAO(const int res, const int width, GLuint *planeVAO, GLuint *planeVBO, GLuint *planeEBO);
+vmath::vec3 genRandomVec3();

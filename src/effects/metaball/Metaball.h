@@ -53,7 +53,7 @@ public:
 
             /* flytt de faktiske ballene */
             // mb->move_ball(0, cos(movement) * movement_factor, sin(movement) * movement_factor, cos(movement * 2) * movement_factor);
-            mb->move_ball(0, objX, objY, objZ);
+            // mb->move_ball(0, objX, objY, objZ);
             mb->move_ball(1, sin(movement) * movement_factor, cos(movement) * movement_factor, sin(movement * 2) * movement_factor);
 
             mc->computeMetaBalls();

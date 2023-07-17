@@ -1,14 +1,18 @@
 #pragma once
 #include "../../utils/common.h"
+#include "../../utils/camera/Camera.h"  
 #include "../../utils/camera/BezierCamera.h"
 
 // SCENES
 #include "../EarthBirthScene/EarthBirthScene.h"
 #include "../EarthCooldownScene/EarthCooldownScene.h"
 
+#include "../../effects/terrain/Terrain.h"
+
 void setGlobalBezierCamera(BezierCamera *bezierCamera);
 
 BOOL bDoneAllInitialization = FALSE;
+extern Camera camera;
 
 class MainScene
 {
@@ -21,6 +25,7 @@ public:
     // Scenes
     EarthBirthScene *earthBirthScene;
     EarthCooldownScene *earthCooldownScene;
+    Terrain *terrain;
 
     // member functions
     MainScene()
@@ -28,6 +33,9 @@ public:
         // SCENE
         earthBirthScene = new EarthBirthScene();
         earthCooldownScene = new EarthCooldownScene();
+
+        // Terrain
+        terrain = new Terrain();
 
         // SCENE CONTROLS
         START_E2E_DEMO = false;
@@ -37,8 +45,8 @@ public:
     BOOL initialize()
     {
         // SCENES
-        earthBirthScene->initialize();
         earthCooldownScene->initialize();
+        // earthBirthScene->initialize();
 
         // if (START_E2E_DEMO)
         // {
@@ -60,7 +68,21 @@ public:
     {
 
         // earthBirthScene->display();
-        earthCooldownScene->display();
+        // earthCooldownScene->display();
+        // Terrain
+        glEnable(GL_DEPTH_TEST);
+        glEnable(GL_CULL_FACE);
+        glCullFace(GL_BACK);
+        
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        // camera.invertPitch();
+		// camera.getEye()[1] -= 2 * (camera.getEye()[1] - 100.0f);
+		
+        terrain->updateTilesPositions();
+        terrain->up = 1.0;
+        terrain->draw();
 
         // displayScene();
         // switch (selected_scene)
