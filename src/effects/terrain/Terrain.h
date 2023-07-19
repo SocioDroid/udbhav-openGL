@@ -33,6 +33,10 @@ float sign(float x)
 class Terrain
 {
 public:
+    vmath::vec2 position, eps;
+    float up = 0.0;
+    static const int tileW = 10. * 100.;
+
     Terrain()
     {
         int gl = 120;
@@ -46,7 +50,7 @@ public:
         tessMultiplier = 1.0f;
         dispFactor = 20.0f;
 
-        fogFalloff = 1.5f;
+        fogFalloff = 0.5f;
 
         posBuffer = 0;
 
@@ -61,29 +65,52 @@ public:
         res = 4;
         initializePlaneVAO(res, tileW, &planeVAO, &planeVBO, &planeEBO);
 
-        // load a bunch of textures
-        this->textures = new GLuint[6];
-        if (LoadPNGImage(&textures[0], "./assets/textures/terrain/sand.png") == FALSE)
+        // Load Green Textures
+        this->textures_green = new GLuint[6];
+        if (LoadPNGImage(&textures_green[0], "./assets/textures/terrain/green/sand.png") == FALSE)
         {
             PrintLog("\t\t IMAGE LOADING FAILED FOR sand");
         }
-        if (LoadPNGImage(&textures[1], "./assets/textures/terrain/grass.png") == FALSE)
+        if (LoadPNGImage(&textures_green[1], "./assets/textures/terrain/green/grass.png") == FALSE)
         {
             PrintLog("\t\t IMAGE LOADING FAILED FOR grass");
         }
-        if (LoadPNGImage(&textures[2], "./assets/textures/terrain/rdiffuse.png") == FALSE)
+        if (LoadPNGImage(&textures_green[2], "./assets/textures/terrain/green/rdiffuse.png") == FALSE)
         {
             PrintLog("\t\t IMAGE LOADING FAILED FOR rdiffuse");
         }
-        if (LoadPNGImage(&textures[3], "./assets/textures/terrain/snow2.png") == FALSE)
+        if (LoadPNGImage(&textures_green[3], "./assets/textures/terrain/green/snow2.png") == FALSE)
         {
             PrintLog("\t\t IMAGE LOADING FAILED FOR snow2");
         }
-        if (LoadPNGImage(&textures[4], "./assets/textures/terrain/rnormal.png") == FALSE)
+        if (LoadPNGImage(&textures_green[4], "./assets/textures/terrain/green/rnormal.png") == FALSE)
         {
             PrintLog("\t\t IMAGE LOADING FAILED FOR rnormal");
         }
-        if (LoadPNGImage(&textures[5], "./assets/textures/terrain/terrainTexture.png") == FALSE)
+        if (LoadPNGImage(&textures_green[5], "./assets/textures/terrain/green/terrainTexture.png") == FALSE)
+        {
+            PrintLog("\t\t IMAGE LOADING FAILED FOR terrainTexture");
+        }
+
+        // Load Dark Textures
+        this->textures_dark = new GLuint[5];
+        if (LoadPNGImage(&textures_dark[0], "./assets/textures/terrain/dark/sand.png") == FALSE)
+        {
+            PrintLog("\t\t IMAGE LOADING FAILED FOR sand");
+        }
+        if (LoadPNGImage(&textures_dark[1], "./assets/textures/terrain/dark/grass.png") == FALSE)
+        {
+            PrintLog("\t\t IMAGE LOADING FAILED FOR grass");
+        }
+        if (LoadPNGImage(&textures_dark[2], "./assets/textures/terrain/dark/rdiffuse.png") == FALSE)
+        {
+            PrintLog("\t\t IMAGE LOADING FAILED FOR rdiffuse");
+        }
+        if (LoadPNGImage(&textures_dark[3], "./assets/textures/terrain/dark/snow2.png") == FALSE)
+        {
+            PrintLog("\t\t IMAGE LOADING FAILED FOR snow2");
+        }
+        if (LoadPNGImage(&textures_dark[4], "./assets/textures/terrain/dark/terrainTexture.png") == FALSE)
         {
             PrintLog("\t\t IMAGE LOADING FAILED FOR terrainTexture");
         }
@@ -93,7 +120,6 @@ public:
 
         setPositionsArray(positionVec);
 
-        rockColor = vmath::vec3(255.0f * 1.5f, 255.0f * 1.5f, 255.0f * 1.5f) / 255.f;
         power = 3.0f;
     }
 
@@ -109,57 +135,54 @@ public:
         vmath::mat4 gVP = perspectiveProjectionMatrix * viewMatrix;
 
         glUseProgram(shad->shaderProgramObject);
-        shad->setVec3("gEyeWorldPos", camera.getEye() * 5.0f);
-        shad->setMat4("gWorld", gWorld);
-        shad->setMat4("gVP", gVP);
-        shad->setFloat("gDispFactor", dispFactor);
+        shad->setVec3("u_gEyeWorldPos", camera.getEye() * 5.0f);
+        shad->setMat4("u_gWorld", gWorld);
+        shad->setMat4("u_gVP", gVP);
+        shad->setFloat("u_gDispFactor", dispFactor);
 
         // float waterHeight = (waterPtr ? waterPtr->getModelMatrix()[3][1] : 100.0);
-        float waterHeight = 100.0f;
+        float waterHeight = 0.0f + scaleX;
         vmath::vec4 clipPlane(0.0f, 1.0f * up, 0.0f, -waterHeight * up);
-        shad->setVec4("clipPlane", clipPlane);
+        shad->setVec4("u_clipPlane", clipPlane);
         shad->setVec3("u_LightColor", vec3(255.0f, 255.0f, 230.0f) / 255.0f);
 
         // Calculating light direction
-        vec3 terrainLightDirection = vmath::normalize(vec3(0.0f, 10.0f, objY));
+        vec3 terrainLightDirection = vmath::normalize(vec3(0.0f, 3.0f, 0.0f));
 
         shad->setVec3("u_LightPosition", terrainLightDirection * 1e6f + camera.getEye());
         shad->setVec3("u_ViewPosition", camera.getEye());
-        shad->setVec3("fogColor", vec3(0.5f, 0.6f, 0.7f));
-        shad->setVec3("rockColor", rockColor);
-        shad->setVec3("seed", vec3(0.0f, 0.0f, 0.0f));
+        shad->setVec3("u_fogColor", vec3(0.5f, 0.6f, 0.7f));
+        shad->setVec3("u_seed", vec3(0.0f, 0.0f, 10.0f));
 
-        shad->setInt("octaves", octaves);
-        shad->setFloat("freq", frequency);
+        shad->setInt("u_octaves", octaves);
+        shad->setFloat("u_freq", frequency);
         shad->setFloat("u_grassCoverage", grassCoverage);
-        shad->setFloat("waterHeight", waterHeight);
-        shad->setFloat("tessMultiplier", tessMultiplier);
-        shad->setFloat("fogFalloff", fogFalloff * 1.e-6);
-        shad->setFloat("power", power);
+        shad->setFloat("u_waterHeight", waterHeight);
+        shad->setFloat("u_tessMultiplier", tessMultiplier);
+        shad->setFloat("u_fogFalloff", fogFalloff * 1.e-6);
+        shad->setFloat("u_power", power);
+        shad->setFloat("u_transitionFactor", objX);
 
-        shad->setBool("normals", true);
-        shad->setBool("drawFog", drawFog);
+        shad->setBool("u_normals", true);
+        shad->setBool("u_drawFog", drawFog);
 
         // set textures
-        glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D, textures[0]);
-        shad->setInt("sand", 1);
+        // Green Textures
+        shad->setSampler2D("sand_green", textures_green[0], 1);
+        shad->setSampler2D("grass_green", textures_green[1], 2);
+        shad->setSampler2D("rock_green", textures_green[2], 3);
+        shad->setSampler2D("snow_green", textures_green[3], 4);
+        shad->setSampler2D("grass1_green", textures_green[5], 5);
 
-        glActiveTexture(GL_TEXTURE2);
-        glBindTexture(GL_TEXTURE_2D, textures[1]);
-        shad->setInt("grass", 2);
+        // Normal Texture
+        shad->setSampler2D("rockNormal", textures_green[4], 6);
 
-        glActiveTexture(GL_TEXTURE3);
-        glBindTexture(GL_TEXTURE_2D, textures[2]);
-        shad->setInt("rock", 3);
-
-        glActiveTexture(GL_TEXTURE4);
-        glBindTexture(GL_TEXTURE_2D, textures[3]);
-        shad->setInt("snow", 4);
-
-        shad->setSampler2D("grass1", textures[5], 5);
-
-        shad->setSampler2D("rockNormal", textures[4], 6);
+        // Dark Textures
+        shad->setSampler2D("sand_dark", textures_dark[0], 7);
+        shad->setSampler2D("grass_dark", textures_dark[1], 8);
+        shad->setSampler2D("rock_dark", textures_dark[2], 9);
+        shad->setSampler2D("snow_dark", textures_dark[3], 10);
+        shad->setSampler2D("grass1_dark", textures_dark[4], 11);
 
         int nIstances = positionVec.size();
 
@@ -212,9 +235,6 @@ public:
         glBindVertexArray(0);
     }
 
-    vmath::vec2 position, eps;
-    float up = 0.0;
-
     bool inTile(Camera cam, vmath::vec2 pos)
     {
         float camX = cam.getEye()[0];
@@ -236,7 +256,6 @@ public:
 
         return inX && inY;
     }
-    static const int tileW = 10. * 100.;
 
     // Model * planeModel;
     //  Water * waterPtr;
@@ -300,10 +319,9 @@ private:
     float dispFactor, scaleFactor, frequency, grassCoverage, tessMultiplier, fogFalloff, power;
     int octaves;
     int gridLength;
-    vmath::vec3 rockColor;
 
     bool drawFog;
-    GLuint *textures, posBuffer;
+    GLuint *textures_green, *textures_dark, posBuffer;
 
     TerrainShader *shad;
     vmath::mat4 modelMatrix;
@@ -365,5 +383,5 @@ private:
         row = (i - col) / gridLength;
     }
 
-    void reset();
+    void uninitialize();
 };

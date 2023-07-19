@@ -7,8 +7,17 @@
 
 enum SCENE
 {
-    SCENE_OPENING
+    SCENE_01_EARTH_BIRTH,
+    SCENE_02_EARTH_COOLDOWN,
+    SCENE_03_TERRAIN_WITH_HEAVY_RAIN,
 };
+
+// SCENE START TIMINGS
+
+#define START_TIME_SCENE_01_01_INTRO 0.0f
+#define START_TIME_SCENE_01_02_EARTH_BIRTH 20.0f
+#define START_TIME_SCENE_01_03_EARTH_BIRTH_BLANK 53.0f
+#define START_TIME_SCENE_02_01_EARTH_COOLDOWN 64.0f
 
 enum PHASE
 {
@@ -25,49 +34,6 @@ using namespace vmath;
 
 #define MODEL_VIEW_MATRIX_STACK 100
 
-// SCENE START TIMINGS
-
-// Version 4 Audio Timings
-#define START_TIME_OPENING_1 0.0f // 15 Seconds
-#define START_TIME_INTRO_2 15.0f
-#define START_TIME_GATE 60.0f
-#define START_TIME_STUDIO_3 65.0f         // 73 Seconds
-#define START_TIME_AAG_4 138.0f           // 55 Seconds
-#define START_TIME_BARSAT_5 193.0f        // 56 Seconds
-#define START_TIME_AWARA_6 249.0f         // 48 Seconds
-#define START_TIME_SHREE_420_7 297.0f     // 74 Seconds
-#define START_TIME_JIS_DESH_MEIN_8 371.0f // 81 Seconds
-#define START_TIME_SANGAM_9 452.0f        //
-
-#define START_TIME_OUTRO_10 460.0f
-
-#define START_TIME_MERA_NAAM_JOKER 617.0f
-
-#define START_TIME_OUTRO_AISH (0.0f)
-#define START_TIME_OUTRO_AMOGH (4.0f)
-#define START_TIME_OUTRO_ATHARV (8.0f)
-#define START_TIME_OUTRO_KISHOR (12.0f)
-#define START_TIME_OUTRO_MRUNAL (16.0f)
-#define START_TIME_OUTRO_PRATIK (20.0f)
-#define START_TIME_OUTRO_MADAM (25.0f)
-#define START_TIME_OUTRO_RUTVIK (30.0f)
-#define START_TIME_OUTRO_SAGAR (35.0f)
-#define START_TIME_OUTRO_SAHIL (40.0f)
-#define START_TIME_OUTRO_VARUN (45.0f)
-#define START_TIME_OUTRO_PRADNYA (50.0f)
-#define START_TIME_OUTRO_GUIDANCE (54.5f) // Slides
-#define START_TIME_OUTRO_TAUFIK (58.0f)
-#define START_TIME_OUTRO_RTRGLS (61.5f)
-#define START_TIME_OUTRO_UTKARSH (64.0f)
-#define START_TIME_OUTRO_END (68.0f)
-
-#define START_TIME_LOGO_11 480.0f
-
-#define STOP_TIME_RADIOKATA 126.0f
-
-// *** By Pradnya ***
-// To create cloth shader program objects differently for each scene - each with "Mass Spring" shader customized specifically for that scene.
-// See ClothShader.h => initializeClothMassSpringShader();
 extern mat4 perspectiveProjectionMatrix;
 
 extern vec3 eye;

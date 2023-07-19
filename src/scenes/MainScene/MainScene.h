@@ -1,15 +1,12 @@
 #pragma once
 #include "../../utils/common.h"
-#include "../../utils/camera/Camera.h"  
+#include "../../utils/camera/Camera.h"
 #include "../../utils/camera/BezierCamera.h"
 
 // SCENES
-#include "../EarthBirthScene/EarthBirthScene.h"
-#include "../EarthCooldownScene/EarthCooldownScene.h"
-
-#include "../../effects/terrain/Terrain.h"
-
-void setGlobalBezierCamera(BezierCamera *bezierCamera);
+#include "../01-EarthBirthScene/EarthBirthScene.h"
+#include "../02-EarthCooldownScene/EarthCooldownScene.h"
+#include "../03-TerrainFirstRainScene/TerrainFirstRainScene.h"
 
 BOOL bDoneAllInitialization = FALSE;
 extern Camera camera;
@@ -23,101 +20,99 @@ public:
     bool START_E2E_DEMO;
 
     // Scenes
-    EarthBirthScene *earthBirthScene;
-    EarthCooldownScene *earthCooldownScene;
-    Terrain *terrain;
-
+    EarthBirthScene *earthBirthScene01;
+    EarthCooldownScene *earthCooldownScene02;
+    TerrainFirstRainScene *terrainFirstRainScene03;
     // member functions
     MainScene()
     {
         // SCENE
-        earthBirthScene = new EarthBirthScene();
-        earthCooldownScene = new EarthCooldownScene();
-
-        // Terrain
-        terrain = new Terrain();
+        earthBirthScene01 = new EarthBirthScene();
+        earthCooldownScene02 = new EarthCooldownScene();
+        terrainFirstRainScene03 = new TerrainFirstRainScene();
 
         // SCENE CONTROLS
         START_E2E_DEMO = false;
-        selected_scene = SCENE_OPENING;
+        selected_scene = SCENE_01_EARTH_BIRTH;
     }
 
     BOOL initialize()
     {
         // SCENES
-        earthCooldownScene->initialize();
-        // earthBirthScene->initialize();
 
-        // if (START_E2E_DEMO)
-        // {
-        // }
-        // else
-        // {
-        // switch (selected_scene)
-        // {
-        // case SCENE_OPENING:
-        //     opening->initialize();
-        //     break;
-        // }
-        // }
+        if (START_E2E_DEMO)
+        {
+            terrainFirstRainScene03->initialize();
+            earthCooldownScene02->initialize();
+            // Need to initialize at the end
+            earthBirthScene01->initialize();
+        }
+        else
+        {
+            switch (selected_scene)
+            {
+            case SCENE_01_EARTH_BIRTH:
+                earthBirthScene01->initialize();
+                break;
+            case SCENE_02_EARTH_COOLDOWN:
+                earthCooldownScene02->initialize();
+                break;
+            case SCENE_03_TERRAIN_WITH_HEAVY_RAIN:
+                terrainFirstRainScene03->initialize();
+                break;
+            }
+        }
 
         return TRUE;
     }
 
     void display()
     {
-
-        // earthBirthScene->display();
-        // earthCooldownScene->display();
-        // Terrain
-        glEnable(GL_DEPTH_TEST);
-        glEnable(GL_CULL_FACE);
-        glCullFace(GL_BACK);
-        
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-        // camera.invertPitch();
-		// camera.getEye()[1] -= 2 * (camera.getEye()[1] - 100.0f);
-		
-        terrain->updateTilesPositions();
-        terrain->up = 1.0;
-        terrain->draw();
-
-        // displayScene();
-        // switch (selected_scene)
-        // {
-        // case SCENE_OPENING:
-        // {
-        //     opening->display(0);
-        // }
-        // break;
-
-        // default:
-        //     break;
-        // }
+        switch (selected_scene)
+        {
+        case SCENE_01_EARTH_BIRTH:
+            earthBirthScene01->display();
+            break;
+        case SCENE_02_EARTH_COOLDOWN:
+            earthCooldownScene02->display();
+            break;
+        case SCENE_03_TERRAIN_WITH_HEAVY_RAIN:
+            terrainFirstRainScene03->display();
+            break;
+        default:
+            break;
+        }
     }
 
     void update()
     {
-        // earthBirthScene->update();
-        earthCooldownScene->update();
         // SCENE SWITCHER
         // if (START_E2E_DEMO) // Switch scenes only if end to end demo is played
         // {
-
         // }
 
-        // switch (selected_scene)
-        // {
-        // case SCENE_OPENING:
-        //     opening->update();
-        //     break;
-        // }
+        switch (selected_scene)
+        {
+        case SCENE_01_EARTH_BIRTH:
+            earthBirthScene01->update();
+            break;
+        case SCENE_02_EARTH_COOLDOWN:
+            earthCooldownScene02->update();
+            break;
+        case SCENE_03_TERRAIN_WITH_HEAVY_RAIN:
+            terrainFirstRainScene03->update();
+            break;
+        default:
+            break;
+        }
     }
     void uninitialize()
     {
-        // earthBirthScene->uninitialize();
-        earthCooldownScene->uninitialize();
+        if (earthBirthScene01)
+            earthBirthScene01->uninitialize();
+        if (earthCooldownScene02)
+            earthCooldownScene02->uninitialize();
+        if (terrainFirstRainScene03)
+            terrainFirstRainScene03->uninitialize();
     }
 };

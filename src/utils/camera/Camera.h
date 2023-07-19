@@ -8,7 +8,7 @@ using namespace vmath;
 
 const float YAW = -90.0;
 const float PITCH = 0.0;
-const float SPEED = 9.2;
+const float SPEED = 1.2;
 const float SENSITIVITY = 0.4;
 const float ZOOM = 45.0;
 
@@ -133,7 +133,7 @@ public:
     void keyboardInputs(WPARAM keyPressed)
     {
         // in
-        float velocity = movementSpeed * 5.1;
+        float velocity = movementSpeed * 0.1;
         if (keyPressed == 'w')
         {
             position = position + (front * velocity);
@@ -242,7 +242,7 @@ public:
         if (zoom > 10000.0f)
             zoom = 10000.0f;
 
-        perspectiveProjectionMatrix = vmath::perspective(45.0f + degToRad(zoom), (GLfloat)width / (GLfloat)height, 0.1f, 1000.0f);
+        perspectiveProjectionMatrix = vmath::perspective(45.0f + degToRad(zoom), (GLfloat)width / (GLfloat)height, 0.1f, 10000000.0f);
     }
 
     float degToRad(float degrees)

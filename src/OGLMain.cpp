@@ -75,7 +75,7 @@ float objIncrement = 0.1f;
 float scaleX = 0.0;
 float scaleY = 0.0;
 float scaleZ = 0.0;
-float scaleIncrement = 0.1f;
+float scaleIncrement = 0.01f;
 
 float globalTime = 0.0f;
 float ELAPSED_TIME;
@@ -608,8 +608,8 @@ int initialize(void)
 
 	mainScene = new MainScene();
 
-	// commonModels = new CommonModels();
-	// commonModels->initialize(mainScene->selected_scene, mainScene->START_E2E_DEMO);
+	commonModels = new CommonModels();
+	commonModels->initialize(mainScene->selected_scene, mainScene->START_E2E_DEMO);
 
 	if (!mainScene->initialize())
 	{
@@ -650,8 +650,11 @@ int initialize(void)
 		{
 			switch (mainScene->selected_scene)
 			{
-			case SCENE_OPENING:
-				myMusic.playFromSeconds(START_TIME_OPENING_1);
+			case SCENE_01_EARTH_BIRTH:
+				myMusic.playFromSeconds(START_TIME_SCENE_01_01_INTRO);
+				break;
+			case SCENE_02_EARTH_COOLDOWN:
+				myMusic.playFromSeconds(START_TIME_SCENE_02_01_EARTH_COOLDOWN);
 				break;
 
 			default:
@@ -685,7 +688,7 @@ void resize(int width, int height)
 		45.0f,
 		(GLfloat)width / (GLfloat)height,
 		0.1f,
-		10000.0f);
+		10000000.0f);
 }
 
 void display(void)
