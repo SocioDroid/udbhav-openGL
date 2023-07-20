@@ -29,6 +29,7 @@ public:
     BlurShader blurShader;
     BloomFinalShader bloomFinalShader;
     bool horizontal = true;
+    unsigned int blurAmount = 15;
 
     BOOL initialize_bloomShaderObject(void)
     {
@@ -105,12 +106,11 @@ public:
     {
         // 2. blur bright fragments with two-pass Gaussian Blur
         bool first_iteration = true;
-        unsigned int amount = 15;
 
         glUseProgram(blurShader.shaderProgramObject);
         {
             // --------------------------------------------------
-            for (unsigned int i = 0; i < amount; i++)
+            for (unsigned int i = 0; i < blurAmount; i++)
             {
                 float radius = 3.0f;
                 glBindFramebuffer(GL_FRAMEBUFFER, pingpongFBO[horizontal]);

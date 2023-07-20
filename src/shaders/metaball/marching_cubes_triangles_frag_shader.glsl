@@ -6,6 +6,7 @@
 // /* Uniforms: */
 // /** Current time moment. */
 uniform float time;
+uniform float time_noise;
 
 /** Position of the vertex (and fragment) in world space. */
 in  vec4 phong_vertex_position;
@@ -183,7 +184,7 @@ void main() {
 
     vec2 uv = st;
 
-    float t = time * 0.1;
+    float t = time_noise * 0.1;
 
     vec3 spectrum[4];
     spectrum[0] = vec3(1.00, 1.00, 0.00);
@@ -202,7 +203,7 @@ void main() {
     vec3 brigth_r = vec3(0.0);
     vec3 black_q = vec3(0.0);
     vec3 black_r = vec3(0.0);
-    vec3 p2 = vec3(p.xy * 0.02, p.z * 0.1);
+    vec3 p2=vec3(p.xy*0.08,p.z*0.2);
 
     float black = pattern(p2, black_q, black_r);
     black = smoothstep(0.9, 0.1, length(black_q * black));
@@ -259,7 +260,7 @@ void main() {
     }
 
     /** Calculate fragment lighting as sum of previous three component. */
-    vec4 FragColorLight = vec4(ambient_lighting + diffuse_reflection + specular_reflection, 1.0);
-    FragColor = FragColorLight * FragColor;
+    // vec4 FragColorLight = vec4(ambient_lighting + diffuse_reflection + specular_reflection, 1.0);
+    // FragColor = FragColorLight * FragColor;
     // FragColor = vec4(1.0);
 }

@@ -121,7 +121,7 @@ public:
         if (handlePerspective && perspectivePoints.size() > 0)
         {
             fov = deCasteljau(time, perspectivePoints);
-            perspectiveProjectionMatrix = vmath::perspective(45.0f + degToRad(fov), (GLfloat)giWindowWidth / (GLfloat)giWindowHeight, 0.1f, 10000.0f);
+            perspectiveProjectionMatrix = vmath::perspective(45.0f + degToRad(fov), (GLfloat)giWindowWidth / (GLfloat)giWindowHeight, 0.1f, 10000000.0f);
         }
         // updating center [ YAW & PITCH ]
         vmath::vec3 front_ = vmath::vec3(
@@ -269,7 +269,7 @@ public:
             // set size to 5 for another group of points
             glPointSize(5);
             glBindVertexArray(vao_line);
-            glVertexAttrib4f(MATRIX_ATTRIBUTE_COLOR, 0.0, 1.0, 1.0, 1.0);
+            glVertexAttrib4f(MATRIX_ATTRIBUTE_COLOR, 1.0, 0.0, 0.0, 1.0);
             glBindBuffer(GL_ARRAY_BUFFER, vbo_line_Position);
             glBufferData(GL_ARRAY_BUFFER, sizeof(float) * bezierPoints1D.size(), bezierPoints1D.data(), GL_DYNAMIC_DRAW);
             glBindBuffer(GL_ARRAY_BUFFER, NULL);

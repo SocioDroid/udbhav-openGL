@@ -16,6 +16,8 @@ class EarthCooldownScene
 {
 
 public:
+    bool isInitialized = false;
+
     // constants
     static const int EARTH_STONE = 0;
     static const int EARTH_CLOUD = 1;
@@ -38,6 +40,71 @@ public:
     SmokeEarthShader smokeEarthShader;
     TextureLightShader textureLightShader;
 
+    // Camera
+    BezierCamera sceneCamera;
+    std::vector<std::vector<float>> bezierPointsScene = {
+        {-6.699996f, 0.000000f, 3.000000f},
+        {-6.599996f, 0.000000f, 6.499996f},
+        {-4.399998f, 0.000000f, 7.799995f},
+        {-3.199999f, -2.000000f, 7.799995f},
+        {-0.200000f, -1.900000f, 7.799995f},
+        {1.500000f, -1.300000f, 7.799995f},
+        {4.499998f, -1.300000f, 7.799995f},
+        {4.699998f, -0.600000f, 5.499997f},
+        {7.399995f, -0.300000f, 4.299998f},
+        {9.700001f, -0.300000f, 2.200000f},
+        {11.100006f, -0.300000f, 2.200000f},
+        {11.300007f, -0.300000f, 1.700000f},
+        {12.000010f, -0.300000f, 1.300000f},
+        {12.200010f, -0.200000f, 1.000000f},
+        {12.900013f, -0.900000f, -0.400000f},
+        {13.600016f, -0.900000f, -0.700000f},
+        {1.300000f, -2.300000f, -0.700000f},
+    };
+
+    // YAW GLOBAL
+    std::vector<float> yawScene = {
+        -23.000000f,
+        -23.000000f,
+        -23.000000f,
+        -23.000000f,
+        -31.000000f,
+        -31.000000f,
+        -36.000000f,
+        -36.000000f,
+        -36.000000f,
+        -24.000000f,
+        -30.000000f,
+        -23.000000f,
+        -21.000000f,
+        -17.000000f,
+        0.000000f,
+        22.000000f,
+        22.000000f,
+    };
+
+    // PITCH GLOBAL
+    std::vector<float> pitchScene = {
+        0.000000f,
+        0.000000f,
+        0.000000f,
+        0.000000f,
+        1.000000f,
+        2.000000f,
+        2.000000f,
+        -1.000000f,
+        0.000000f,
+        1.000000f,
+        1.000000f,
+        1.000000f,
+        1.000000f,
+        2.000000f,
+        15.000000f,
+        21.000000f,
+        21.000000f,
+    };
+
+    float earthTextureInterpolate = 0.0f;
     // member functions
     EarthCooldownScene()
     {
@@ -50,6 +117,7 @@ public:
         // Bloom
         bloomShader.initialize_bloomShaderObject();
         bloomShader.exposure = 0.2f;
+        bloomShader.blurAmount = 30;
         if (bloomShader.CreateSceneFBO(1920, 1080, fbo_UserMap, rbo_UserMap, fbo_texture_UserMap) == false)
         {
             PrintLog("Failed to create Scene FBO\n");
@@ -79,8 +147,8 @@ public:
         noiseSunShader.initialize();
         smokeEarthShader.initialize();
         textureLightShader.initialize();
-        sunSphere = new SphereAish(5.0f, 100, 100);
-        earthSphere = new SphereAish(1.0f, 100, 100);
+        sunSphere = new SphereAish(5.0f, 50, 50);
+        earthSphere = new SphereAish(1.0f, 70, 70);
         if (LoadPNGImage(&texture_stoneEarth, "./assets/textures/earth/cooledEarth3.png") == FALSE)
         {
             PrintLog("Failed to load stoneEarth texture\n");
@@ -91,11 +159,20 @@ public:
             PrintLog("Failed to load clouds texture\n");
             return FALSE;
         }
+        isInitialized = true;
+
+        // Camera
+        sceneCamera.initialize();
+        sceneCamera.setBezierPoints(bezierPointsScene, yawScene, pitchScene);
+        sceneCamera.update();
         return TRUE;
     }
 
     void display()
     {
+        setGlobalBezierCamera(&sceneCamera);
+        sceneCamera.update();
+
         pushMatrix(modelMatrix);
         {
             glBindFramebuffer(GL_FRAMEBUFFER, fbo_UserMap);
@@ -142,18 +219,25 @@ public:
 
         pushMatrix(modelMatrix);
         {
+            modelMatrix = modelMatrix * vmath::translate(0.0f, 0.0f, 100.102524f);
             starfield->display();
         }
         modelMatrix = popMatrix();
+
+        // Camera
+        // sceneCamera.displayBezierCurve();
     }
 
     void drawBloomObjects()
     {
-        pushMatrix(modelMatrix);
+        if (sceneCamera.time < 0.35f)
         {
-            drawSun();
+            pushMatrix(modelMatrix);
+            {
+                drawSun();
+            }
+            modelMatrix = popMatrix();
         }
-        modelMatrix = popMatrix();
         pushMatrix(modelMatrix);
         {
             modelMatrix = modelMatrix * translate(15.0f, 0.0f, 0.0f);
@@ -206,6 +290,11 @@ public:
                 glActiveTexture(GL_TEXTURE0);
                 glBindTexture(GL_TEXTURE_2D, texture_stoneEarth);
                 glUniform1i(textureLightShader.textureSamplerUniform, 0);
+
+                // Second texture
+                glUniform1i(glGetUniformLocation(textureLightShader.shaderProgramObject, "isMultiTexture"), 1);
+                glUniform1f(glGetUniformLocation(textureLightShader.shaderProgramObject, "u_time"), ELAPSED_TIME);
+                glUniform1f(glGetUniformLocation(textureLightShader.shaderProgramObject, "multiTextureInterpolation"), earthTextureInterpolate);
 
                 // Controlling Light position
                 glUniform1f(glGetUniformLocation(textureLightShader.shaderProgramObject, "lightX"), -2.0f + 2.300000f);
@@ -261,6 +350,16 @@ public:
     }
     void update()
     {
+        if (sceneCamera.time <= 1.0f)
+            sceneCamera.time += (0.000015f + 0.0005f);
+
+        if (sceneCamera.time > 0.2f)
+        {
+            if (earthTextureInterpolate < 0.97f)
+            {
+                earthTextureInterpolate += 0.001f;
+            }
+        }
     }
     void uninitialize()
     {

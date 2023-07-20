@@ -75,7 +75,7 @@ float objIncrement = 0.1f;
 float scaleX = 0.0;
 float scaleY = 0.0;
 float scaleZ = 0.0;
-float scaleIncrement = 0.01f;
+float scaleIncrement = 1.0f;
 
 float globalTime = 0.0f;
 float ELAPSED_TIME;
@@ -87,35 +87,116 @@ float lightObjIncrement = 0.1f;
 
 float objAngle = 0.0f;
 float objAngleIncrement = 1.0f;
+
 // =============================== GLOBAL CONTROLS
 int PHASE_CURRENT = PHASE_MAIN;
-BOOL USE_FPV_CAM = TRUE;
-BOOL playMusic = FALSE;
+BOOL USE_FPV_CAM = FALSE;
+BOOL playMusic = TRUE;
 BOOL enableBezierCameraControl = FALSE;
 BOOL spaceBarIsPressed = FALSE;
+float VOLUME_LEVEL = 1.0f;
 // ==============================================//
 
 BOOL start_fade_out_opening = FALSE;
-std::vector<std::vector<float>> bezierPoints = {
 
+std::vector<std::vector<float>> bezierPoints = {
+	{-6.699996f, 0.000000f, 3.000000f},
+	{-6.599996f, 0.000000f, 6.499996f},
+	{-4.399998f, 0.000000f, 7.799995f},
+	{-3.199999f, -2.000000f, 7.799995f},
+	{-0.200000f, -1.900000f, 7.799995f},
+	{1.500000f, -1.300000f, 7.799995f},
+	{4.499998f, -1.300000f, 7.799995f},
+	{4.699998f, -0.600000f, 5.499997f},
+	{7.399995f, -0.300000f, 4.299998f},
+	{9.700001f, -0.300000f, 2.200000f},
+	{11.100006f, -0.300000f, 2.200000f},
+	{11.300007f, -0.300000f, 1.700000f},
+	{12.000010f, -0.300000f, 1.300000f},
+	{12.200010f, -0.200000f, 1.000000f},
+	{12.900013f, -0.900000f, -0.400000f},
+	{13.600016f, -0.900000f, -0.700000f},
+	{13.600016f, -0.900000f, -0.700000f},
 };
 
 // YAW GLOBAL
 std::vector<float> yawGlobal = {
+	-23.000000f,
+	-23.000000f,
+	-23.000000f,
+	-23.000000f,
+	-31.000000f,
+	-31.000000f,
+	-36.000000f,
+	-36.000000f,
+	-36.000000f,
+	-24.000000f,
+	-30.000000f,
+	-23.000000f,
+	-21.000000f,
+	-17.000000f,
+	0.000000f,
+	22.000000f,
+	22.000000f,
 
 };
 
 // PITCH GLOBAL
 std::vector<float> pitchGlobal = {
-
+	0.000000f,
+	0.000000f,
+	0.000000f,
+	0.000000f,
+	1.000000f,
+	2.000000f,
+	2.000000f,
+	-1.000000f,
+	0.000000f,
+	1.000000f,
+	1.000000f,
+	1.000000f,
+	1.000000f,
+	2.000000f,
+	15.000000f,
+	21.000000f,
+	21.000000f,
 };
 
 // FOV GLOBAL
 std::vector<float> fovGlobal = {
-
+	0.000000f,
+	0.000000f,
+	0.000000f,
+	0.000000f,
+	0.000000f,
+	0.000000f,
+	0.000000f,
+	0.000000f,
+	0.000000f,
+	0.000000f,
+	0.000000f,
+	0.000000f,
+	0.000000f,
+	0.000000f,
+	0.000000f,
+	0.000000f,
+	0.000000f,
+	0.000000f,
+	0.000000f,
+	0.000000f,
+	0.000000f,
+	0.000000f,
+	0.000000f,
+	0.000000f,
+	0.000000f,
+	0.000000f,
+	0.000000f,
+	0.000000f,
+	0.000000f,
 };
 
 int vectorIndex = bezierPoints.size() - 1;
+
 // ================================= HELPING VARIABLES END
 MainScene *mainScene;
 
@@ -378,11 +459,11 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 
 		case 'i':
 		case 'I':
-			globalSpeedAdjust -= 0.0005f;
+			globalSpeedAdjust -= 0.0001f;
 			break;
 		case 'k':
 		case 'K':
-			globalSpeedAdjust += 0.0005f;
+			globalSpeedAdjust += 0.0001f;
 			break;
 
 		case 27:
@@ -662,6 +743,7 @@ int initialize(void)
 				break;
 			}
 		}
+		myMusic.setAudio(VOLUME_LEVEL);
 	}
 
 	sdkCreateTimer(&timer);
@@ -723,18 +805,26 @@ void display(void)
 	mainScene->display();
 	// ==================================== DISPLAY TEXT IN TITLE BAR
 	char titleText[255];
-	sprintf(titleText, "Time = %f Index = %d Variables | OBJ %f :: %f :: %f | SCALE %f :: %f :: %f", ELAPSED_TIME, vectorIndex, objX, objY, objZ, scaleX, scaleY, scaleZ);
+	sprintf(titleText, "CameTime = %f Time = %f Index = %d Variables | OBJ %f :: %f :: %f | SCALE %f :: %f :: %f", globalTime, ELAPSED_TIME, vectorIndex, objX, objY, objZ, scaleX, scaleY, scaleZ);
 	SetWindowTextA(ghwnd, (LPCSTR)titleText);
 	// =============================================================
 
 	SwapBuffers(ghdc);
 }
 
+float camSpeed = 0.0001f;
 void update(void)
 {
 	mainScene->update();
 	if (globalTime <= 1.0f)
 		globalTime += (0.000015f + globalSpeedAdjust);
+	// globalTime += (0.000015f + camSpeed);
+
+	// if (globalTime > 0.17f)
+	// {
+	// 	if (camSpeed < 0.0008f)
+	// 		camSpeed += 0.00003f;
+	// }
 	// globalTime = 0.8f + globalSpeedAdjust;
 }
 

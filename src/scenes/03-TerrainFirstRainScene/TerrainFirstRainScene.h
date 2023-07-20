@@ -12,6 +12,7 @@ class TerrainFirstRainScene
 {
 
 public:
+    bool isInitialized = false;
     Terrain *terrain;
     CubeMap *cubemap;
 
@@ -56,6 +57,7 @@ public:
             return FALSE;
         }
 
+        isInitialized = true;
         return TRUE;
     }
 

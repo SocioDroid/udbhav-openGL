@@ -23,7 +23,10 @@ public:
             PrintLog("alSourcePlay Failed...\n");
         }
     }
-
+    void setAudio(float newVolume)
+    {
+        alSourcef(audioSource, AL_GAIN, newVolume);
+    }
     BOOL playFromSeek(ALfloat seek)
     {
         if (seek < 0 || seek > 1)
@@ -95,7 +98,7 @@ public:
             return -1.0f;
         }
 
-        return (ALfloat)(((ALuint)size/channels/(bits/8)) / (ALfloat)frequency);
+        return (ALfloat)(((ALuint)size / channels / (bits / 8)) / (ALfloat)frequency);
     }
 
     void playFromSeconds(ALfloat seconds)

@@ -32,7 +32,7 @@ public:
         terrainFirstRainScene03 = new TerrainFirstRainScene();
 
         // SCENE CONTROLS
-        START_E2E_DEMO = false;
+        START_E2E_DEMO = true;
         selected_scene = SCENE_01_EARTH_BIRTH;
     }
 
@@ -87,9 +87,17 @@ public:
     void update()
     {
         // SCENE SWITCHER
-        // if (START_E2E_DEMO) // Switch scenes only if end to end demo is played
-        // {
-        // }
+        if (START_E2E_DEMO) // Switch scenes only if end to end demo is played
+        {
+            if (ELAPSED_TIME > START_TIME_SCENE_02_01_EARTH_COOLDOWN && ELAPSED_TIME < START_TIME_SCENE_03_01_TERRAIN_FIRST_RAIN)
+            {
+                setSelectedScene(SCENE_02_EARTH_COOLDOWN);
+            }
+            else if (ELAPSED_TIME > START_TIME_SCENE_03_01_TERRAIN_FIRST_RAIN)
+            {
+                setSelectedScene(SCENE_03_TERRAIN_WITH_HEAVY_RAIN);
+            }
+        }
 
         switch (selected_scene)
         {
@@ -108,11 +116,11 @@ public:
     }
     void uninitialize()
     {
-        if (earthBirthScene01)
+        if (earthBirthScene01->isInitialized)
             earthBirthScene01->uninitialize();
-        if (earthCooldownScene02)
+        if (earthCooldownScene02->isInitialized)
             earthCooldownScene02->uninitialize();
-        if (terrainFirstRainScene03)
+        if (terrainFirstRainScene03->isInitialized)
             terrainFirstRainScene03->uninitialize();
     }
 };

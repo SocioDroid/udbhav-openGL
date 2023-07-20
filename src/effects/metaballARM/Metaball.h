@@ -710,10 +710,11 @@ public:
     {
     }
 
+    float metaballTime = 0.0f;
     void display()
     {
         /* Update time. */
-        model_time = ELAPSED_TIME;
+        model_time = -2.0 + metaballTime;
 
         /* Activate triangle generating and rendering program. */
         glUseProgram(marching_cubes_triangles_program_id);
@@ -722,7 +723,7 @@ public:
             glUniformMatrix4fv(glGetUniformLocation(marching_cubes_triangles_program_id, "modelMatrix"), 1, GL_FALSE, modelMatrix);
             glUniformMatrix4fv(glGetUniformLocation(marching_cubes_triangles_program_id, "viewMatrix"), 1, GL_FALSE, viewMatrix);
             glUniformMatrix4fv(glGetUniformLocation(marching_cubes_triangles_program_id, "projectionMatrix"), 1, GL_FALSE, perspectiveProjectionMatrix);
-            glUniform1f(glGetUniformLocation(marching_cubes_triangles_program_id, "lightZ"), 0.0);
+            glUniform1f(glGetUniformLocation(marching_cubes_triangles_program_id, "lightZ"), 10.0);
         }
         glUseProgram(0);
         /*
@@ -753,6 +754,7 @@ public:
             /* [Stage 1 Specify input arguments to vertex shader] */
             /* Specify input arguments to vertex shader. */
             glUniform1f(spheres_updater_uniform_time_id, model_time);
+            glUniform1f(glGetUniformLocation(spheres_updater_program_id, "time_noise"), ELAPSED_TIME);
             /* [Stage 1 Specify input arguments to vertex shader] */
 
             /* [Stage 1 Activate transform feedback mode] */

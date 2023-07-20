@@ -100,8 +100,9 @@ public:
             glDisable(GL_POINT_SPRITE);
             glDisable(GL_PROGRAM_POINT_SIZE);
             glDisable(GL_BLEND);
+            glBindVertexArray(0);
         }
-        glBindVertexArray(0);
+        glUseProgram(0);
     }
 
     float random_float()

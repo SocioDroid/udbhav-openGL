@@ -152,7 +152,7 @@ public:
         shad->setVec3("u_LightPosition", terrainLightDirection * 1e6f + camera.getEye());
         shad->setVec3("u_ViewPosition", camera.getEye());
         shad->setVec3("u_fogColor", vec3(0.5f, 0.6f, 0.7f));
-        shad->setVec3("u_seed", vec3(0.0f, 0.0f, 10.0f));
+        shad->setVec3("u_seed", vec3(1.0f, 20.0f, 10.0f));
 
         shad->setInt("u_octaves", octaves);
         shad->setFloat("u_freq", frequency);
