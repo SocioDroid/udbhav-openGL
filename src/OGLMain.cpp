@@ -94,7 +94,7 @@ BOOL USE_FPV_CAM = FALSE;
 BOOL playMusic = TRUE;
 BOOL enableBezierCameraControl = FALSE;
 BOOL spaceBarIsPressed = FALSE;
-float VOLUME_LEVEL = 1.0f;
+float VOLUME_LEVEL = 0.9f;
 // ==============================================//
 
 BOOL start_fade_out_opening = FALSE;
@@ -791,15 +791,7 @@ void display(void)
 		fovGlobal[vectorIndex] = scaleZ;
 	}
 
-	if (USE_FPV_CAM)
-	{
-		viewMatrix = camera.getViewMatrix();
-	}
-	else
-	{
-		if (globalBezierCamera)
-			viewMatrix = globalBezierCamera->getViewMatrix();
-	}
+	updateGlobalViewMatrix();
 
 	// ==================================== SCENE
 	mainScene->display();
@@ -876,4 +868,16 @@ void setSelectedScene(int selScene)
 void setCurrentPhase(int phase)
 {
 	PHASE_CURRENT = phase;
+}
+void updateGlobalViewMatrix()
+{
+	if (USE_FPV_CAM)
+	{
+		viewMatrix = camera.getViewMatrix();
+	}
+	else
+	{
+		if (globalBezierCamera)
+			viewMatrix = globalBezierCamera->getViewMatrix();
+	}
 }

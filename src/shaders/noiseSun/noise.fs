@@ -107,14 +107,12 @@ float fbm4(vec3 p, float theta, float f, float lac, float r) {
 
     float accum = 0.0;
     vec3 X = p * frequency;
-    for(int i = 0; i < 4; i++) {
-        accum += amp * snoise(X);
-        X *= (lacunarity + (snoise(X) + 0.1) * 0.006);
-        X = mtx * X;
+    accum += amp * snoise(X);
+    X *= (lacunarity + (snoise(X) + 0.1) * 0.006);
+    X = mtx * X;
 
-        total_amp += amp;
-        amp *= roughness;
-    }
+    total_amp += amp;
+    amp *= roughness;
 
     return accum / total_amp;
 }
@@ -165,10 +163,10 @@ void main() {
     vec3 p2 = vec3(p.xy * 0.02, p.z * 0.1);
 
     float black = pattern(p2, black_q, black_r);
-    black = smoothstep(0.9, 0.1, length(black_q * black));
+    black = smoothstep(1.0,0.4,length(black_q*black));
 
     float brigth = pattern(p2 * 2., brigth_q, brigth_r);
-    brigth = smoothstep(0.0, 0.8, brigth * length(brigth_q));
+    brigth = smoothstep(0.0,1.8,brigth*length(brigth_q));
 
     p += min(length(brigth_q), length(black_q)) * 5.;
 

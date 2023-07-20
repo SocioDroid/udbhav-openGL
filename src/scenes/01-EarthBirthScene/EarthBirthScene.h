@@ -35,6 +35,7 @@ public:
     ModelShader intro_prastut;
     ModelShader intro_bharatEkKhoj;
 
+    float fadeAlpha = 1.0f;
     // Camera
     BezierCamera sceneCamera;
     std::vector<std::vector<float>> bezierPointsScene = {
@@ -190,6 +191,7 @@ public:
         isInitialized = true;
         return TRUE;
     }
+
     float vibrationStrength = 1.0f; // Adjust this value to control the intensity of vibration
 
     // Global variables
@@ -227,6 +229,7 @@ public:
         // Camera
         setGlobalBezierCamera(&sceneCamera);
         sceneCamera.update();
+        updateGlobalViewMatrix();
 
         // Vibrate camera
         float currentTime = ELAPSED_TIME; // Convert milliseconds to seconds
@@ -275,6 +278,14 @@ public:
                 bloomShader.renderFinalBloomScene(fbo_texture_UserMap);
             }
             modelMatrix = popMatrix();
+        }
+        modelMatrix = popMatrix();
+
+        // FADE IN
+        pushMatrix(modelMatrix);
+        {
+            modelMatrix = vmath::scale(1.0f, 1.0f, 1.0f);
+            commonShaders->overlayColorShader->draw(modelMatrix, 0.0f, 0.0f, 0.0f, fadeAlpha);
         }
         modelMatrix = popMatrix();
     }
@@ -338,11 +349,31 @@ public:
         // sceneCamera.displayBezierCurve();
     }
     float camSpeed = 0.0001f;
-
+    bool isFadeout = false;
     void update()
     {
+        ////////////////////////////////// FADING
+        // Fade In
+        if (!isFadeout)
+        {
+            if (fadeAlpha > 0.0f)
+                fadeAlpha -= 0.01f;
+        }
+        else
+        {
+            // ////// FADEOUT SPEED
+            if (fadeAlpha <= 1.0f)
+                fadeAlpha += 0.008f;
+        }
+        // Trigger fadeout
+        if (ELAPSED_TIME > (START_TIME_SCENE_02_01_EARTH_COOLDOWN - 3))
+        {
+            isFadeout = true;
+        }
+
+        ////////////////////////////////// SCENE UPDATE
         if (sceneCamera.time <= 1.0f)
-            sceneCamera.time += (0.000015f + camSpeed);
+            sceneCamera.time += (0.000013f + camSpeed);
         else
         {
             // Starting metaball
@@ -353,8 +384,8 @@ public:
         }
         if (sceneCamera.time > 0.17f)
         {
-            if (camSpeed < 0.00078f)
-                camSpeed += 0.00001f;
+            if (camSpeed < 0.00058f)
+                camSpeed += 0.0000013f;
         }
 
         metaball->update();

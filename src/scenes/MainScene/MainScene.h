@@ -93,10 +93,10 @@ public:
             {
                 setSelectedScene(SCENE_02_EARTH_COOLDOWN);
             }
-            else if (ELAPSED_TIME > START_TIME_SCENE_03_01_TERRAIN_FIRST_RAIN)
-            {
-                setSelectedScene(SCENE_03_TERRAIN_WITH_HEAVY_RAIN);
-            }
+            // else if (ELAPSED_TIME > START_TIME_SCENE_03_01_TERRAIN_FIRST_RAIN)
+            // {
+            //     setSelectedScene(SCENE_03_TERRAIN_WITH_HEAVY_RAIN);
+            // }
         }
 
         switch (selected_scene)

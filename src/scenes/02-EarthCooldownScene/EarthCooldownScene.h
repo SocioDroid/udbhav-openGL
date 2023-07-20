@@ -40,6 +40,9 @@ public:
     SmokeEarthShader smokeEarthShader;
     TextureLightShader textureLightShader;
 
+    // Fadin Fadeout
+    float fadeAlpha = 1.0f;
+
     // Camera
     BezierCamera sceneCamera;
     std::vector<std::vector<float>> bezierPointsScene = {
@@ -58,8 +61,9 @@ public:
         {12.000010f, -0.300000f, 1.300000f},
         {12.200010f, -0.200000f, 1.000000f},
         {12.900013f, -0.900000f, -0.400000f},
+        {12.900013f, -0.900000f, -0.400000f},
         {13.600016f, -0.900000f, -0.700000f},
-        {1.300000f, -2.300000f, -0.700000f},
+        {13.600016f, -0.900000f, -0.700000f},
     };
 
     // YAW GLOBAL
@@ -79,6 +83,7 @@ public:
         -21.000000f,
         -17.000000f,
         0.000000f,
+        22.000000f,
         22.000000f,
         22.000000f,
     };
@@ -102,6 +107,7 @@ public:
         15.000000f,
         21.000000f,
         21.000000f,
+        21.000000f,
     };
 
     float earthTextureInterpolate = 0.0f;
@@ -116,8 +122,8 @@ public:
     {
         // Bloom
         bloomShader.initialize_bloomShaderObject();
-        bloomShader.exposure = 0.2f;
-        bloomShader.blurAmount = 30;
+        bloomShader.exposure = 0.9f;
+        bloomShader.blurAmount = 10;
         if (bloomShader.CreateSceneFBO(1920, 1080, fbo_UserMap, rbo_UserMap, fbo_texture_UserMap) == false)
         {
             PrintLog("Failed to create Scene FBO\n");
@@ -147,8 +153,8 @@ public:
         noiseSunShader.initialize();
         smokeEarthShader.initialize();
         textureLightShader.initialize();
-        sunSphere = new SphereAish(5.0f, 50, 50);
-        earthSphere = new SphereAish(1.0f, 70, 70);
+        sunSphere = new SphereAish(5.0f, 100, 100);
+        earthSphere = new SphereAish(1.0f, 100, 100);
         if (LoadPNGImage(&texture_stoneEarth, "./assets/textures/earth/cooledEarth3.png") == FALSE)
         {
             PrintLog("Failed to load stoneEarth texture\n");
@@ -172,6 +178,7 @@ public:
     {
         setGlobalBezierCamera(&sceneCamera);
         sceneCamera.update();
+        updateGlobalViewMatrix();
 
         pushMatrix(modelMatrix);
         {
@@ -197,6 +204,14 @@ public:
 
             bloomShader.renderBlurFBO();
             bloomShader.renderFinalBloomScene(fbo_texture_UserMap);
+        }
+        modelMatrix = popMatrix();
+
+        // FADE IN
+        pushMatrix(modelMatrix);
+        {
+            modelMatrix = vmath::scale(1.0f, 1.0f, 1.0f);
+            commonShaders->overlayColorShader->draw(modelMatrix, 0.0f, 0.0f, 0.0f, fadeAlpha);
         }
         modelMatrix = popMatrix();
     }
@@ -315,7 +330,7 @@ public:
             pushMatrix(modelMatrix);
             {
                 modelMatrix = modelMatrix * vmath::rotate(-90.0f, 1.0f, 0.0f, 0.0f);
-                modelMatrix = modelMatrix * vmath::rotate(-90.0f + ELAPSED_TIME, 0.0f, 0.0f, 1.0f);
+                modelMatrix = modelMatrix * vmath::rotate(-190.0f + ELAPSED_TIME, 0.0f, 0.0f, 1.0f);
                 modelMatrix = modelMatrix * vmath::scale(1.02f, 1.02f, 1.02f);
                 /* Initialize uniforms constant throughout rendering loop. */
                 glUniformMatrix4fv(textureLightShader.modelMatrixUniform, 1, GL_FALSE, modelMatrix);
@@ -348,16 +363,36 @@ public:
             break;
         }
     }
+    bool isFadeout = false;
     void update()
     {
+        ////////////////////////////////// FADING
+        // Fade In
+        if (!isFadeout)
+        {
+            if (fadeAlpha > 0.0f)
+                fadeAlpha -= 0.01f;
+        }
+        else
+        {
+            // ////// FADEOUT SPEED
+            if (fadeAlpha <= 1.0f)
+                fadeAlpha += 0.008f;
+        }
+        // Trigger fadeout
+        if (ELAPSED_TIME > (START_TIME_SCENE_03_01_TERRAIN_FIRST_RAIN - 3))
+        {
+            isFadeout = true;
+        }
+
         if (sceneCamera.time <= 1.0f)
-            sceneCamera.time += (0.000015f + 0.0005f);
+            sceneCamera.time += (0.000015f + 0.00034f);
 
         if (sceneCamera.time > 0.2f)
         {
             if (earthTextureInterpolate < 0.97f)
             {
-                earthTextureInterpolate += 0.001f;
+                earthTextureInterpolate += 0.0007f;
             }
         }
     }

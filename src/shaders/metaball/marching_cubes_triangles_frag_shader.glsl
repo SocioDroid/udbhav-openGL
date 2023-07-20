@@ -9,13 +9,13 @@ uniform float time;
 uniform float time_noise;
 
 /** Position of the vertex (and fragment) in world space. */
-in  vec4 phong_vertex_position;
+in vec4 phong_vertex_position;
 
 /** Surface normal vector in world space. */
-in  vec3 phong_vertex_normal_vector;
+in vec3 phong_vertex_normal_vector;
 
 /** Color passed from vertex shader. */
-in  vec3 phong_vertex_color;
+in vec3 phong_vertex_color;
 
 // /* Output data: */
 // /** Fragment color. */
@@ -24,7 +24,7 @@ uniform float lightZ;
 // /** Shader entry point. Main steps are described in comments below. */
 // void main()
 // {
-  
+
 // };
 
 //Based on : https://www.shadertoy.com/view/4sBfDw
@@ -144,14 +144,13 @@ float fbm4(vec3 p, float theta, float f, float lac, float r) {
 
     float accum = 0.0;
     vec3 X = p * frequency;
-    for(int i = 0; i < 4; i++) {
-        accum += amp * snoise(X);
-        X *= (lacunarity + (snoise(X) + 0.1) * 0.006);
-        X = mtx * X;
 
-        total_amp += amp;
-        amp *= roughness;
-    }
+    accum += amp * snoise(X);
+    X *= (lacunarity + (snoise(X) + 0.1) * 0.006);
+    X = mtx * X;
+
+    total_amp += amp;
+    amp *= roughness;
 
     return accum / total_amp;
 }
@@ -203,13 +202,13 @@ void main() {
     vec3 brigth_r = vec3(0.0);
     vec3 black_q = vec3(0.0);
     vec3 black_r = vec3(0.0);
-    vec3 p2=vec3(p.xy*0.08,p.z*0.2);
+    vec3 p2 = vec3(p.xy * 0.08, p.z * 0.2);
 
     float black = pattern(p2, black_q, black_r);
-    black = smoothstep(0.9, 0.1, length(black_q * black));
+    black = smoothstep(1.0, 0.4, length(black_q * black));
 
     float brigth = pattern(p2 * 2., brigth_q, brigth_r);
-    brigth = smoothstep(0.0, 0.8, brigth * length(brigth_q));
+    brigth = smoothstep(0.0,1.8,brigth*length(brigth_q));
 
     p += min(length(brigth_q), length(black_q)) * 5.;
 
@@ -227,36 +226,30 @@ void main() {
     /* Distance to light source. */
     const float light_distance = 5.0;
 
-    vec3 light_location = vec3
-    (
-      0.0, 0.0, -1.0 + lightZ
-    );
+    vec3 light_location = vec3(0.0, 0.0, -1.0 + lightZ);
 
     /* Scene ambient color. */
-    const vec3  ambient_color = vec3(0.1, 0.1, 0.1);
-    const float attenuation   = 1.0;
-    const float shiness       = 1.0;
+    const vec3 ambient_color = vec3(0.1, 0.1, 0.1);
+    const float attenuation = 1.0;
+    const float shiness = 1.0;
 
     /* Normalize directions. */
     vec3 normal_direction = normalize(phong_vertex_normal_vector);
-    vec3 view_direction   = normalize(vec3(vec4(0.0, 0.0, -5.0, 0.0) - phong_vertex_position));
-    vec3 light_direction  = normalize(light_location);
+    vec3 view_direction = normalize(vec3(vec4(0.0, 0.0, -5.0, 0.0) - phong_vertex_position));
+    vec3 light_direction = normalize(light_location);
 
     /** Calculate ambient lighting component of directional light. */
-    vec3 ambient_lighting    = ambient_color * phong_vertex_color;
+    // vec3 ambient_lighting = ambient_color * phong_vertex_color;
 
     /** Calculate diffuse reflection lighting component of directional light. */
-    vec3 diffuse_reflection  = attenuation * phong_vertex_color
-                             * max(0.0, dot(normal_direction, light_direction));
+    // vec3 diffuse_reflection = attenuation * phong_vertex_color * max(0.0, dot(normal_direction, light_direction));
 
     /** Calculate specular reflection lighting component of directional light. */
     vec3 specular_reflection = vec3(0.0, 0.0, 0.0);
 
-    if (dot(normal_direction, light_direction) >= 0.0)
-    {
+    if(dot(normal_direction, light_direction) >= 0.0) {
         /* Light source on the right side. */
-        specular_reflection = attenuation * phong_vertex_color
-                            * pow(max(0.0, dot(reflect(-light_direction, normal_direction), view_direction)), shiness);
+        specular_reflection = attenuation * phong_vertex_color * pow(max(0.0, dot(reflect(-light_direction, normal_direction), view_direction)), shiness);
     }
 
     /** Calculate fragment lighting as sum of previous three component. */

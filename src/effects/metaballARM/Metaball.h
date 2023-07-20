@@ -690,12 +690,12 @@ public:
         );
 
         /* Generate a vertex array object. We'll go with the explanation later. */
-        glGenVertexArrays(1, &marching_cubes_triangles_vao_id);
+        // glGenVertexArrays(1, &marching_cubes_triangles_vao_id);
 
         /* In OpenGL ES, draw calls require a bound vertex array object.
          * Even though we're not using any per-vertex attribute data, we still need to bind a vertex array object.
          */
-        glBindVertexArray(marching_cubes_triangles_vao_id);
+        // glBindVertexArray(marching_cubes_triangles_vao_id);
 
         /* Enable facet culling, depth testing and specify front face for polygons. */
         // glEnable(GL_DEPTH_TEST);
@@ -754,7 +754,6 @@ public:
             /* [Stage 1 Specify input arguments to vertex shader] */
             /* Specify input arguments to vertex shader. */
             glUniform1f(spheres_updater_uniform_time_id, model_time);
-            glUniform1f(glGetUniformLocation(spheres_updater_program_id, "time_noise"), ELAPSED_TIME);
             /* [Stage 1 Specify input arguments to vertex shader] */
 
             /* [Stage 1 Activate transform feedback mode] */
@@ -895,6 +894,7 @@ public:
 
         /* Specify input arguments to vertex shader. */
         glUniform1f(marching_cubes_triangles_uniform_time_id, model_time);
+        glUniform1f(glGetUniformLocation(marching_cubes_triangles_program_id, "time_noise"), ELAPSED_TIME);
 
         /* [Stage 4 Run triangle generating and rendering program] */
         /* Run triangle generating and rendering program. */
@@ -904,7 +904,7 @@ public:
 
     void uninitialize(void)
     {
-        glDeleteVertexArrays(1, &marching_cubes_triangles_vao_id);
+        // glDeleteVertexArrays(1, &marching_cubes_triangles_vao_id);
         glDeleteShader(marching_cubes_triangles_frag_shader_id);
         glDeleteShader(marching_cubes_triangles_vert_shader_id);
         glDeleteProgram(marching_cubes_triangles_program_id);
