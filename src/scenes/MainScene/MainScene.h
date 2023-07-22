@@ -32,7 +32,7 @@ public:
         terrainFirstRainScene03 = new TerrainFirstRainScene();
 
         // SCENE CONTROLS
-        START_E2E_DEMO = true;
+        START_E2E_DEMO = false;
         selected_scene = SCENE_01_EARTH_BIRTH;
     }
 

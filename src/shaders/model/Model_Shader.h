@@ -21,7 +21,7 @@ public:
     GLfloat lightPositions[4] = {0.0f, 100.0f, 100.0f, 1.0f};
 
     GLfloat materialAmbiant[4] = {0.2f, 0.2f, 0.2f, 1.0f};
-    GLfloat meterialDeffuse[4] = {0.5f, 0.5f, 0.5f, 1.0f};
+    GLfloat meterialDeffuse[4] = {1.0f, 1.0f, 1.0f, 1.0f};
     GLfloat materialSpecular[4] = {1.0f, 1.0f, 1.0f, 1.0f};
     GLfloat materialShineeness = 20.0f;
     float alpha = 1.0f;
@@ -45,6 +45,13 @@ public:
     {
         ourModel = new Model(path);
         return TRUE;
+    }
+
+    void setLigthPosition(float x, float y, float z)
+    {
+        lightPositions[0] = x;
+        lightPositions[1] = y;
+        lightPositions[2] = z;
     }
 
     void render_Model(void)

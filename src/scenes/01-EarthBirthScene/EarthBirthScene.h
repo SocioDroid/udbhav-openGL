@@ -182,6 +182,9 @@ public:
         intro_amc.initialize_ModelShaderObject(commonModels->model_amc);
         intro_prastut.initialize_ModelShaderObject(commonModels->model_prastut);
         intro_bharatEkKhoj.initialize_ModelShaderObject(commonModels->model_bharatEkKhoj);
+        intro_amc.setLigthPosition(0.0f, 0.0f, 0.0f);
+        intro_prastut.setLigthPosition(0.0f, 0.0f, 0.0f);
+        intro_bharatEkKhoj.setLigthPosition(0.0f, 0.0f, 0.0f);
 
         // Camera
         sceneCamera.initialize();
