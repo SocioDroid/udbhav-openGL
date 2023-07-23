@@ -20,7 +20,7 @@ uniform float u_waterHeight;
 uniform float u_fogFalloff;
 uniform float u_power;
 
-uniform sampler2D sand_green, grass1_green, grass_green, rock_green, sand_dark, grass1_dark, grass_dark, rock_dark, rockNormal;
+uniform sampler2D sand_green, grass1_green, grass_green, rock_green, sand_dark, grass1_dark, grass_dark, rock_dark, rockNormal, snow_dark;
 
 uniform float u_transitionFactor;
 
@@ -176,6 +176,17 @@ vec4 getDarkTexture(inout vec3 normal, const mat3 TBN) {
 
 	float grassCoverage = u_grassCoverage;
 
+	float transMultiplier = 4.0;
+	float snowHeight = u_gDispFactor * u_gDispFactor * u_gDispFactor * 0.3 + 1800.0 - perlinBlendingCoeff * 600.0 * 3.;
+	if(WorldPos.y > snowHeight - trans * transMultiplier && WorldPos.y < snowHeight + trans * transMultiplier) {
+		float gradient = clamp((WorldPos.y - (snowHeight - trans * transMultiplier)) / (2.0 * trans * transMultiplier), 0.0, 1.0);
+		grass_t.rgb = mix(grass_t.rgb, texture(snow_dark, texCoord * 5.0).rgb * 1.35, gradient);
+		grassCoverage = mix(grassCoverage, grassCoverage - 0.12, gradient);
+	} else if(WorldPos.y > snowHeight + trans * transMultiplier) {
+		grass_t.rgb = texture(snow_dark, texCoord * 5.0).rgb * 1.35;
+		grassCoverage = grassCoverage - 0.12;
+	}
+
 	vec4 heightColor;
 	float cosV = abs(dot(normal, vec3(0.0, 1.0, 0.0)));
 	float tenPercentGrass = grassCoverage - grassCoverage * 0.1;
@@ -216,7 +227,7 @@ void main() {
 	bool normals_fog = true;
 	float fogFactor = applyFog(distance(u_gEyeWorldPos, WorldPos), u_gEyeWorldPos, normalize(WorldPos - u_gEyeWorldPos));
 	float eps = 0.1;
-	
+
 	vec3 n;
 	mat3 TBN;
 	if(u_normals && normals_fog) {

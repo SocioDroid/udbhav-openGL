@@ -8,7 +8,7 @@ using namespace vmath;
 
 const float YAW = -90.0;
 const float PITCH = 0.0;
-const float SPEED = 1.2;
+const float SPEED = 1000.2;
 const float SENSITIVITY = 0.4;
 const float ZOOM = 45.0;
 
@@ -102,8 +102,8 @@ public:
         right = vmath::normalize(vmath::cross(front, worldUp));
         up = vmath::normalize(vmath::cross(right, front));
 
-        float distance = 2.0f * (position[1] - 0.0f);
-        position[1] -= distance;
+        // float distance = 2.0f * (position[1] - 0.0f);
+        // position[1] -= distance;
     }
 
     void updateInversCameraVectors_Mirror()

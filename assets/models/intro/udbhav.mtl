@@ -1,10 +1,10 @@
-# Blender MTL File: 'prastut.blend'
+# Blender MTL File: 'None'
 # Material Count: 1
 
-newmtl प्रस्तुत_करता_है_Front_Inflation_Ma
+newmtl उद्भव__Back_Inflation_Material.001
 Ns 250.000000
 Ka 1.000000 1.000000 1.000000
-Kd 1.000000 1.000000 1.000000
+Kd 0.984901 0.969936 1.000000
 Ks 0.500000 0.500000 0.500000
 Ke 0.000000 0.000000 0.000000
 Ni 1.000000

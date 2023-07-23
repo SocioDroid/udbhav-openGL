@@ -332,7 +332,7 @@ public:
             /// Prastut karta hai
             pushMatrix(modelMatrix);
             {
-                modelMatrix = modelMatrix * vmath::translate(3.199999f + -0.300000f, 0.20f + 1.100000f, 2.70f) * rotate(180.0f, 0.0f, 1.0f, 0.0f) * scale(0.260000f + 0.040000f, 0.260000f + 0.040000f, 0.260000f + 0.040000f);
+                modelMatrix = modelMatrix * vmath::translate(3.199999f + -0.300000f + -0.400000f, 0.20f + 1.100000f + -0.400000f, 2.70f + 0.100000f) * rotate(180.0f, 0.0f, 1.0f, 0.0f) * scale(0.260000f + 0.040000f + -0.280000f, 0.260000f + 0.040000f + -0.280000f, 0.260000f + 0.040000f + -0.280000f);
                 intro_prastut.render_Model();
             }
             modelMatrix = popMatrix();
@@ -342,7 +342,7 @@ public:
         {
             pushMatrix(modelMatrix);
             {
-                modelMatrix = modelMatrix * vmath::translate(3.199999f + -2.300000f, 0.20f + 3.699999f, 2.70f) * scale(0.260000f + 1.069999f, 0.260000f + 1.069999f, 0.260000f + 1.069999f);
+                modelMatrix = modelMatrix * vmath::translate(3.199999f + -2.300000f + 1.600000f + 0.300000f, 0.20f + 3.699999f + 0.900000f + 1.900000f, 2.70f + -25.000059f + -6.499996f) * scale(0.260000f + 1.069999f + -1.089999f, 0.260000f + 1.069999f + -1.089999f, 0.260000f + 1.069999f + -1.089999f);
                 intro_bharatEkKhoj.render_Model();
             }
             modelMatrix = popMatrix();
@@ -420,5 +420,5 @@ public:
 };
 
 // TODO
-// FADEIN , FADEOUT
+// FADEIN  + scaleX FADEOUT
 // MAKE METABALL TEXCOORDS STABLE

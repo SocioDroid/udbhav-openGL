@@ -18,6 +18,7 @@ public:
 
     // Bloom Related Variables
     float exposure = 0.0f;
+    float gamma = 0.0f;
 
     unsigned int hdrFBO;
     unsigned int rboDepth;
@@ -165,6 +166,7 @@ public:
 
             glUniform1i(bloomFinalShader.isBloomUniform, TRUE);
             glUniform1f(bloomFinalShader.exposureUniform, exposure);
+            glUniform1f(bloomFinalShader.gammaUniform, gamma);
             // glUniform1f(bloomFinalShader.exposureUniform, 15.0);
 
             glUniform1i(bloomFinalShader.sceneTextureSamplerUniform, 0);

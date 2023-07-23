@@ -336,6 +336,7 @@ void initializePlaneVAO(const int res, const int width, GLuint *planeVAO, GLuint
             }
         }
     }
+    
     glGenVertexArrays(1, planeVAO);
     glGenBuffers(1, planeVBO);
     glGenBuffers(1, planeEBO);

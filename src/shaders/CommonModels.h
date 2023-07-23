@@ -43,7 +43,7 @@ public:
     {
         model_amc->initializeModel(".\\assets\\models\\intro\\amc.obj");
         model_prastut->initializeModel(".\\assets\\models\\intro\\prastut.obj");
-        model_bharatEkKhoj->initializeModel(".\\assets\\models\\intro\\bharatEkKhoj.obj");
+        model_bharatEkKhoj->initializeModel(".\\assets\\models\\intro\\udbhav.obj");
     }
 
     void uninitialize(void)

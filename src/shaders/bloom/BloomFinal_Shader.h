@@ -13,12 +13,12 @@ public:
     GLuint viewMatrixUniform;    // model View Projection
     GLuint modelMatrixUniform;   // model View Projection
 
-
     GLuint sceneTextureSamplerUniform;
     GLuint blurTextureSamplerUniform;
     GLuint noBloomSceneTextureSamplerUniform;
     GLuint isBloomUniform;
     GLuint exposureUniform;
+    GLuint gammaUniform;
 
     BOOL initialize(void)
     {
@@ -51,9 +51,10 @@ public:
         sceneTextureSamplerUniform = glGetUniformLocation(shaderProgramObject, "scene");
         blurTextureSamplerUniform = glGetUniformLocation(shaderProgramObject, "bloomBlur");
         noBloomSceneTextureSamplerUniform = glGetUniformLocation(shaderProgramObject, "u_sceneWithoutBloom");
-        
+
         isBloomUniform = glGetUniformLocation(shaderProgramObject, "bloom");
         exposureUniform = glGetUniformLocation(shaderProgramObject, "exposure");
+        gammaUniform = glGetUniformLocation(shaderProgramObject, "u_gamma");
 
         return TRUE;
     }

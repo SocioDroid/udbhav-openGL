@@ -2,6 +2,7 @@
 #include "../../utils/common.h"
 #include "../../utils/camera/Camera.h"
 #include "../../shaders/terrain/TerrainShader.h"
+#include "../water/Water.h"
 
 extern Camera camera;
 
@@ -132,16 +133,23 @@ public:
             glEnable(GL_CLIP_DISTANCE0);
         }
         vmath::mat4 gWorld = modelMatrix;
-        vmath::mat4 gVP = perspectiveProjectionMatrix * viewMatrix;
+        vmath::mat4 gVP = perspectiveProjectionMatrix * camera.getViewMatrix();
 
         glUseProgram(shad->shaderProgramObject);
-        shad->setVec3("u_gEyeWorldPos", camera.getEye() * 5.0f);
+        if (USE_FPV_CAM)
+        {
+            shad->setVec3("u_gEyeWorldPos", camera.getEye());
+        }
+        else
+        {
+            shad->setVec3("u_gEyeWorldPos", globalBezierCamera->getEye());
+        }
         shad->setMat4("u_gWorld", gWorld);
         shad->setMat4("u_gVP", gVP);
         shad->setFloat("u_gDispFactor", dispFactor);
 
-        // float waterHeight = (waterPtr ? waterPtr->getModelMatrix()[3][1] : 100.0);
-        float waterHeight = 0.0f + scaleX;
+        float waterHeight = (waterPtr ? waterPtr->getModelMatrix()[3][1] : 100.0);
+        // float waterHeight = 0.0f + scaleX;
         vmath::vec4 clipPlane(0.0f, 1.0f * up, 0.0f, -waterHeight * up);
         shad->setVec4("u_clipPlane", clipPlane);
         shad->setVec3("u_LightColor", vec3(255.0f, 255.0f, 230.0f) / 255.0f);
@@ -149,7 +157,11 @@ public:
         // Calculating light direction
         vec3 terrainLightDirection = vmath::normalize(vec3(0.0f, 3.0f, 0.0f));
 
-        shad->setVec3("u_LightPosition", terrainLightDirection * 1e6f + camera.getEye());
+        if (USE_FPV_CAM)
+            shad->setVec3("u_LightPosition", terrainLightDirection * 1e6f + camera.getEye());
+        else
+            shad->setVec3("u_LightPosition", terrainLightDirection * 1e6f + globalBezierCamera->getEye());
+
         shad->setVec3("u_ViewPosition", camera.getEye());
         shad->setVec3("u_fogColor", vec3(0.5f, 0.6f, 0.7f));
         shad->setVec3("u_seed", vec3(1.0f, 20.0f, 10.0f));
@@ -161,7 +173,7 @@ public:
         shad->setFloat("u_tessMultiplier", tessMultiplier);
         shad->setFloat("u_fogFalloff", fogFalloff * 1.e-6);
         shad->setFloat("u_power", power);
-        shad->setFloat("u_transitionFactor", objX);
+        shad->setFloat("u_transitionFactor", textureTransitionFactor);
 
         shad->setBool("u_normals", true);
         shad->setBool("u_drawFog", drawFog);
@@ -207,11 +219,11 @@ public:
             }
             setPositionsArray(positionVec);
 
-            // if (waterPtr)
-            // {
-            //     vmath::vec2 center = getPos(gridLength / 2, gridLength / 2);
-            //     waterPtr->setPosition(center, 1.0 * gridLength, waterPtr->getHeight());
-            // }
+            if (waterPtr)
+            {
+                vmath::vec2 center = getPos(gridLength / 2, gridLength / 2);
+                waterPtr->setPosition(center, 1.0 * gridLength, waterPtr->getHeight());
+            }
         }
     }
 
@@ -258,7 +270,7 @@ public:
     }
 
     // Model * planeModel;
-    //  Water * waterPtr;
+    Water *waterPtr;
 
     void setOctaves(int oct)
     {
@@ -294,6 +306,10 @@ public:
     {
         grassCoverage = gc;
     }
+    void setTextureTransitionFactor(float ttf)
+    {
+        textureTransitionFactor = ttf;
+    }
 
     void setTessMultiplier(float tm)
     {
@@ -307,6 +323,7 @@ public:
     float getScale() const { return scaleFactor; }
     float getGrassCoverage() const { return grassCoverage; }
     float getTessMultiplier() const { return tessMultiplier; }
+    float getTextureTransitionFactor() const { return textureTransitionFactor; }
 
 private:
     void deleteBuffer()
@@ -319,7 +336,7 @@ private:
     float dispFactor, scaleFactor, frequency, grassCoverage, tessMultiplier, fogFalloff, power;
     int octaves;
     int gridLength;
-
+    float textureTransitionFactor = -0.1f;
     bool drawFog;
     GLuint *textures_green, *textures_dark, posBuffer;
 

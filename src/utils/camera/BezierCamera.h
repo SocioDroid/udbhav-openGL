@@ -171,8 +171,8 @@ public:
         position[1] = deCasteljau(time, extractColumn(bezierPoints, 1));
         position[2] = deCasteljau(time, extractColumn(bezierPoints, 2));
 
-        float distance = 2.0f * (position[1] - 0.0f);
-        position[1] -= distance;
+        // float distance = 2.0f * (position[1] - 0.0f);
+        // position[1] -= distance;
     }
 
     // Calculates viewMatrix based on the point returned by the bezier curve for current time.

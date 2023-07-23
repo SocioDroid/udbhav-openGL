@@ -83,14 +83,14 @@ float ELAPSED_TIME;
 float light_objX = 0.0f;
 float light_objY = 0.0f;
 float light_objZ = 0.0f;
-float lightObjIncrement = 0.1f;
+float lightObjIncrement = 1.0f;
 
 float objAngle = 0.0f;
 float objAngleIncrement = 1.0f;
 
 // =============================== GLOBAL CONTROLS
 int PHASE_CURRENT = PHASE_MAIN;
-BOOL USE_FPV_CAM = FALSE;
+BOOL USE_FPV_CAM = TRUE;
 BOOL playMusic = TRUE;
 BOOL enableBezierCameraControl = FALSE;
 BOOL spaceBarIsPressed = FALSE;
@@ -707,7 +707,7 @@ int initialize(void)
 	glEnable(GL_TEXTURE_2D);
 
 	/* Clear the  screen using blue color */
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
 
 	perspectiveProjectionMatrix = mat4::identity();
 

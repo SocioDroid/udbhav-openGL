@@ -33,7 +33,7 @@ public:
 
         // SCENE CONTROLS
         START_E2E_DEMO = false;
-        selected_scene = SCENE_01_EARTH_BIRTH;
+        selected_scene = SCENE_03_TERRAIN_WITH_HEAVY_RAIN;
     }
 
     BOOL initialize()

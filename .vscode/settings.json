@@ -83,7 +83,8 @@
         "__nullptr": "cpp",
         "__locale": "cpp",
         "numeric": "cpp",
-        "random": "cpp"
+        "random": "cpp",
+        "__node_handle": "cpp"
     },
     "liveServer.settings.port": 5501
 }
