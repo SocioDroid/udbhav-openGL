@@ -102,8 +102,8 @@ public:
         right = vmath::normalize(vmath::cross(front, worldUp));
         up = vmath::normalize(vmath::cross(right, front));
 
-        // float distance = 2.0f * (position[1] - 0.0f);
-        // position[1] -= distance;
+        float distance = 2.0f * (position[1] - 0.0f);
+        position[1] -= distance;
     }
 
     void updateInversCameraVectors_Mirror()

@@ -148,8 +148,8 @@ public:
         shad->setMat4("u_gVP", gVP);
         shad->setFloat("u_gDispFactor", dispFactor);
 
-        float waterHeight = (waterPtr ? waterPtr->getModelMatrix()[3][1] : 100.0);
-        // float waterHeight = 0.0f + scaleX;
+        // float waterHeight = (waterPtr ? waterPtr->getModelMatrix()[3][1] : 100.0);
+        float waterHeight = 0.0f + scaleX;
         vmath::vec4 clipPlane(0.0f, 1.0f * up, 0.0f, -waterHeight * up);
         shad->setVec4("u_clipPlane", clipPlane);
         shad->setVec3("u_LightColor", vec3(255.0f, 255.0f, 230.0f) / 255.0f);
@@ -219,11 +219,11 @@ public:
             }
             setPositionsArray(positionVec);
 
-            if (waterPtr)
-            {
-                vmath::vec2 center = getPos(gridLength / 2, gridLength / 2);
-                waterPtr->setPosition(center, 1.0 * gridLength, waterPtr->getHeight());
-            }
+            // if (waterPtr)
+            // {
+            //     vmath::vec2 center = getPos(gridLength / 2, gridLength / 2);
+            //     waterPtr->setPosition(center, 1.0 * gridLength, waterPtr->getHeight());
+            // }
         }
     }
 
