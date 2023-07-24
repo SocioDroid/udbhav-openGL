@@ -7,6 +7,7 @@
 #include "../../shaders/terrainPostProcess/TerrainPostProcess.h"
 #include "../../effects/terrain/Terrain.h"
 #include "../../effects/water_matrix/WaterMatrix.h"
+#include "../../effects/rain/Rain.h"
 
 class TerrainFirstRainScene
 {
@@ -16,6 +17,7 @@ public:
     Terrain *terrain;
     CubeMap *cubemap;
     WaterMatrix *waterMatrix;
+    Rain *rain = NULL;
 
     // member functions
     TerrainFirstRainScene()
@@ -24,6 +26,7 @@ public:
         terrain = new Terrain();
         cubemap = new CubeMap();
         waterMatrix = new WaterMatrix();
+        rain = new Rain(20000);
     }
 
     BOOL initialize()
@@ -31,12 +34,12 @@ public:
         // Cubemap
         const char *faces[] =
             {
-                "./assets/textures/starfield/cubemap/px.png",
-                "./assets/textures/starfield/cubemap/nx.png",
-                "./assets/textures/starfield/cubemap/py.png",
-                "./assets/textures/starfield/cubemap/ny.png",
-                "./assets/textures/starfield/cubemap/pz.png",
-                "./assets/textures/starfield/cubemap/nz.png"};
+                "./assets/textures/terrain/cubemap_dark/px.png",
+                "./assets/textures/terrain/cubemap_dark/nx.png",
+                "./assets/textures/terrain/cubemap_dark/py.png",
+                "./assets/textures/terrain/cubemap_dark/ny.png",
+                "./assets/textures/terrain/cubemap_dark/pz.png",
+                "./assets/textures/terrain/cubemap_dark/nz.png"};
         cubemap = new CubeMap();
         if (!cubemap->initialize(faces))
         {
@@ -44,7 +47,15 @@ public:
             return FALSE;
         }
 
+        // Water
         waterMatrix->initialize();
+
+        // Heavy Rain
+        if (!rain->initialize(2))
+        {
+            PrintLog("\nFailed to initialize rain\n");
+            return FALSE;
+        }
 
         isInitialized = true;
         return TRUE;
@@ -53,38 +64,86 @@ public:
     void display()
     {
         terrain->updateTilesPositions();
+        // Water FBO
+        {
+            // Reflection
+            waterMatrix->bindReflectionFBO(1920, 1080);
+            {
+                displayScene(1.0);
+            }
+            waterMatrix->unbindReflectionFBO();
 
-        // Reflection
-        waterMatrix->bindReflectionFBO(1920, 1080);
+            // Refraction
+            waterMatrix->bindRefractionFBO(1920, 1080);
+            {
+                displayScene(-1.0);
+            }
+            waterMatrix->unbindRefractionFBO();
+        }
+
+        // Actual Scene
+        displayScene(1.0);
+
+        // Water Bed
         pushMatrix(modelMatrix);
         {
-            terrain->up = 1.0;
+            modelMatrix = modelMatrix * translate(0.0f, -56.900028f, 0.0f);
+            waterMatrix->renderWaterQuad(terrain->getWaterHeight());
+        }
+        modelMatrix = popMatrix();
+
+        // Rain
+        pushMatrix(modelMatrix);
+        {
+            drawRain();
+        }
+        modelMatrix = popMatrix();
+    }
+
+    void displayScene(float terrainUp)
+    {
+        pushMatrix(modelMatrix);
+        {
+            modelMatrix = modelMatrix * vmath::scale(500000.0f, 500000.0f, 500000.0f);
+            cubemap->display();
+        }
+        modelMatrix = popMatrix();
+        pushMatrix(modelMatrix);
+        {
+            terrain->up = terrainUp;
             terrain->draw();
         }
         modelMatrix = popMatrix();
-        waterMatrix->unbindReflectionFBO();
+    }
 
-        // Refraction
-        waterMatrix->bindRefractionFBO(1920, 1080);
+    void drawRain()
+    {
+        // RAIN
         pushMatrix(modelMatrix);
         {
-            terrain->up = -1.0;
-            terrain->draw();
-        }
-        modelMatrix = popMatrix();
-        waterMatrix->unbindRefractionFBO();
+            rain->lightAmbient[0] = 0.0f;
+            rain->lightAmbient[1] = 0.0f;
+            rain->lightAmbient[2] = 0.0f;
+            rain->lightAmbient[3] = 1.0f;
 
-        pushMatrix(modelMatrix);
-        {
-            terrain->up = 1.0;
-            terrain->draw();
-        }
-        modelMatrix = popMatrix();
+            rain->lightDiffuse[0] = 1.0f;
+            rain->lightDiffuse[1] = 1.0f;
+            rain->lightDiffuse[2] = 1.0f;
+            rain->lightDiffuse[3] = 1.0f;
 
-        pushMatrix(modelMatrix);
-        {
-            modelMatrix = modelMatrix * translate(0.0f, -36.900028f, 0.0f);
-            waterMatrix->renderWaterQuad();
+            rain->lightPosition[0] = 0.0f;
+            rain->lightPosition[1] = 100.0f;
+            rain->lightPosition[2] = -30.0f;
+            rain->lightPosition[3] = 1.0f;
+
+            rain->lightSpecular[0] = 1.0f;
+            rain->lightSpecular[1] = 1.0f;
+            rain->lightSpecular[2] = 1.0f;
+            rain->lightSpecular[3] = 1.0f;
+            glEnable(GL_BLEND);
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            rain->display();
+            glDisable(GL_BLEND);
         }
         modelMatrix = popMatrix();
     }
@@ -99,10 +158,23 @@ public:
         // Grass Coverage
         if (terrain->getGrassCoverage() < 0.56f)
         {
-            terrain->setGrassCoverage(terrain->getGrassCoverage() + 0.0002f);
+            terrain->setGrassCoverage(terrain->getGrassCoverage() + 0.0003f);
         }
+        // Water Height
+        if (terrain->getWaterHeight() < 589.0f)
+        {
+            terrain->setWaterHeight(terrain->getWaterHeight() + 1.0f);
+        }
+        // Water Color
+        if (waterMatrix->interpolateWaterColor < 1.13f)
+        {
+            waterMatrix->interpolateWaterColor += 0.001f;
+        }
+
+        // terrain->setWaterHeight(scaleX);
         // terrain->setTextureTransitionFactor(1.0f);
     }
+
     void uninitialize()
     {
         if (terrain)

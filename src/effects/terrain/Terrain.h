@@ -37,7 +37,7 @@ public:
     vmath::vec2 position, eps;
     float up = 0.0;
     static const int tileW = 10. * 100.;
-
+    float waterHeight;
     Terrain()
     {
         int gl = 120;
@@ -47,7 +47,7 @@ public:
 
         octaves = 13;
         frequency = 0.01f;
-        grassCoverage = 0.65f;
+        grassCoverage = 0.0f;
         tessMultiplier = 1.0f;
         dispFactor = 23.5f;
 
@@ -132,38 +132,29 @@ public:
         {
             glEnable(GL_CLIP_DISTANCE0);
         }
-        vmath::mat4 gWorld = modelMatrix;;
-        vmath::mat4 gVP = perspectiveProjectionMatrix * camera.getViewMatrix();
+        vmath::mat4 gWorld = modelMatrix;
+        ;
+        vmath::mat4 gVP = perspectiveProjectionMatrix * (USE_FPV_CAM ? camera.getViewMatrix() : globalBezierCamera->getViewMatrix());
 
         glUseProgram(shad->shaderProgramObject);
-        if (USE_FPV_CAM)
-        {
-            shad->setVec3("u_gEyeWorldPos", camera.getEye());
-        }
-        else
-        {
-            shad->setVec3("u_gEyeWorldPos", globalBezierCamera->getEye());
-        }
+        shad->setVec3("u_gEyeWorldPos", (USE_FPV_CAM ? camera.getEye() : globalBezierCamera->getEye()));
         shad->setMat4("u_gWorld", gWorld);
         shad->setMat4("u_gVP", gVP);
         shad->setFloat("u_gDispFactor", dispFactor);
 
         // float waterHeight = (waterPtr ? waterPtr->getModelMatrix()[3][1] : 100.0);
-        float waterHeight = 0.0f + scaleX;
+
         vmath::vec4 clipPlane(0.0f, 1.0f * up, 0.0f, -waterHeight * up);
         shad->setVec4("u_clipPlane", clipPlane);
         shad->setVec3("u_LightColor", vec3(255.0f, 255.0f, 230.0f) / 255.0f);
 
         // Calculating light direction
-        vec3 terrainLightDirection = vmath::normalize(vec3(0.0f, 3.0f, 0.0f));
+        vec3 terrainLightDirection = vmath::normalize(vec3(-0.4f, 0.4f, 0.816f));
 
-        if (USE_FPV_CAM)
-            shad->setVec3("u_LightPosition", terrainLightDirection * 1e6f + camera.getEye());
-        else
-            shad->setVec3("u_LightPosition", terrainLightDirection * 1e6f + globalBezierCamera->getEye());
+        shad->setVec3("u_LightPosition", terrainLightDirection * 1e6f + (USE_FPV_CAM ? camera.getEye() : globalBezierCamera->getEye()));
 
-        shad->setVec3("u_ViewPosition", camera.getEye());
-        shad->setVec3("u_fogColor", vec3(0.3f, 0.3f, 0.4f));
+        shad->setVec3("u_ViewPosition", (USE_FPV_CAM ? camera.getEye() : globalBezierCamera->getEye()));
+        shad->setVec3("u_fogColor", vec3(0.1f, 0.1f, 0.2f));
         shad->setVec3("u_seed", vec3(12.0f, 20.0f, 10.0f));
 
         shad->setInt("u_octaves", octaves);
@@ -302,6 +293,10 @@ public:
         scaleFactor = scale;
     }
 
+    void setWaterHeight(float wh)
+    {
+        waterHeight = wh;
+    }
     void setGrassCoverage(float gc)
     {
         grassCoverage = gc;
@@ -317,6 +312,7 @@ public:
             tessMultiplier = tm;
     }
 
+    int getWaterHeight() const { return waterHeight; }
     int getOctaves() const { return octaves; }
     float getFreq() const { return frequency; }
     float getDispFactor() const { return dispFactor; }

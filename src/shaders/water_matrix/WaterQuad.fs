@@ -20,13 +20,13 @@ uniform sampler2D u_waterNormalMapTextureSampler;
 
 uniform float u_moveFactorOffset;
 uniform vec3 u_lightColor;
+uniform float interpolateDarkToBright = 0.0;
 
 uniform int waterColor_JisDesh = 0;
 
 float waveStrength = 0.04;
 float shininess = 10.0;
 float reflectivity = 0.001;
-
 out vec4 FragColor;
 
 float vignette_main(void) {
@@ -121,7 +121,8 @@ void main(void) {
     blue = 54.0 / 255.0;
     vec4 darkColor = vec4(red, green, blue, 0.5);
     vec4 brightBlue = vec4(0.2, 0.71, 0.85, 1.0);
-    waterColor = mix(color, brightBlue , 0.2) + vec4(specularHighlights, 1.0);
+    vec4 finalWaterColor = mix(darkColor, brightBlue, interpolateDarkToBright);
+    waterColor = mix(color, finalWaterColor, 0.2) + vec4(specularHighlights, 1.0);
 
     FragColor = mix(waterColor, waterColor, 1.0);
 }

@@ -56,6 +56,8 @@ public:
 
 	WaterQuadShader waterQuadShader;
 	// WaterBedQuadShader waterBedQuadShader;
+	float waterHeight = 0.0f;
+	float interpolateWaterColor = 0.0f;
 
 	vec3 camPosition;
 	vec3 camCenter;
@@ -301,12 +303,13 @@ public:
 		if (USE_FPV_CAM)
 		{
 			camera.invertPitch();
-			camera.position[1] -= 2 * (camera.position[1] - scaleX);
+			camera.position[1] -= 2 * (camera.position[1] - waterHeight);
 			viewMatrix = camera.getViewMatrix();
 		}
 		else
 		{
 			globalBezierCamera->invertPitch();
+			globalBezierCamera->position[1] -= 2 * (globalBezierCamera->position[1] - waterHeight);
 			viewMatrix = globalBezierCamera->getViewMatrix();
 		}
 	}
@@ -316,12 +319,14 @@ public:
 		if (USE_FPV_CAM)
 		{
 			camera.invertPitch();
-			camera.position[1] += 2 * abs(camera.position[1] - scaleX);
+			camera.position[1] += 2 * abs(camera.position[1] - waterHeight);
 			viewMatrix = camera.getViewMatrix();
 		}
 		else
 		{
 			globalBezierCamera->invertPitch();
+			globalBezierCamera->position[1] -= 2 * (globalBezierCamera->position[1] - waterHeight);
+			viewMatrix = globalBezierCamera->getViewMatrix();
 		}
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -352,8 +357,9 @@ public:
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
 
-	void renderWaterQuad()
+	void renderWaterQuad(float wh)
 	{
+		waterHeight = wh;
 		// variable declarations
 		float lightColor[] = {1.0f, 1.0f, 1.0f}; // white light
 		float lightPosition[] = {0.0f, 100.0f, 10.0f};
@@ -368,13 +374,15 @@ public:
 			glUniformMatrix4fv(waterQuadShader.viewMatrixUniform_waterQuad, 1, GL_FALSE, viewMatrix);
 			glUniformMatrix4fv(waterQuadShader.projectionMatrixUniform_waterQuad, 1, GL_FALSE, perspectiveProjectionMatrix);
 
-			glUniform3fv(waterQuadShader.cameraPositionUniform_waterQuad, 1, camera.getEye());
+			glUniform3fv(waterQuadShader.cameraPositionUniform_waterQuad, 1, (USE_FPV_CAM ? camera.getEye() : globalBezierCamera->getEye()));
 
 			glUniform3fv(waterQuadShader.lightPositionUniform_waterQuad, 1, lightPosition);
 			glUniform3fv(waterQuadShader.lightColorUniform_waterQuad, 1, lightColor);
 
 			moveFactor = moveFactor + WATER_WAVE_SPEED;
 			glUniform1f(waterQuadShader.moveFactorOffsetUniform_waterQuad, moveFactor);
+
+			glUniform1f(waterQuadShader.interpolateDarkToBright_uniform, interpolateWaterColor);
 
 			// For Vignette
 			glUniform2f(waterQuadShader.resolutionUniform, (GLfloat)1920, (GLfloat)1080);

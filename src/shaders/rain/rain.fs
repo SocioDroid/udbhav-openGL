@@ -42,8 +42,7 @@ out vec4 FragColor;
 //  * Based on Sarah Tariq'p "Rain" demo
 //  * @see http://developer.download.nvidia.com/SDK/10/direct3d/Source/rain/doc/RainSDKWhitePaper.pdf
 //  */
-vec4 rainResponse(vec3 lightVec, vec3 lightColor, float lightIntensity, bool fallOffFactor)
-{
+vec4 rainResponse(vec3 lightVec, vec3 lightColor, float lightIntensity, bool fallOffFactor) {
     float opacity = 0.0;
     float fallOff = 1.0;
 
@@ -69,8 +68,7 @@ vec4 rainResponse(vec3 lightVec, vec3 lightColor, float lightIntensity, bool fal
     phi = (phi - 10) / 20.0;                      // -0.5 to 8.5
     is_ccw = dot(dropDir, cross(eyeProj, lightProj)) > 0;
 
-    if (theta >= 88.0)
-    {
+    if(theta >= 88.0) {
         phi = 0;
         is_ccw = true;
     }
@@ -86,34 +84,25 @@ vec4 rainResponse(vec3 lightVec, vec3 lightColor, float lightIntensity, bool fal
     int horizontalId1 = int(floor(phi)); // -1 to 8
     int horizontalId2 = horizontalId1 + 1; // 0 to 9
     float p = fract(phi); // 0 to 0.999..
-    if (horizontalId1 < 0)
-    {
+    if(horizontalId1 < 0) {
         horizontalId1 = 0;
         horizontalId2 = 0;
     }
 
-    if (is_ccw)
-    {
-        if (horizontalId2 > maxHIDX)
-        {
+    if(is_ccw) {
+        if(horizontalId2 > maxHIDX) {
             horizontalId2 = maxHIDX;
             texCoordsH2 = 1.0 - texCoordsH2;
         }
-    }
-    else
-    {
+    } else {
         texCoordsH1 = 1.0 - texCoordsH1;
-        if (horizontalId2 > maxHIDX)
-        {
+        if(horizontalId2 > maxHIDX) {
             horizontalId2 = maxHIDX;
-        }
-        else
-        {
+        } else {
             texCoordsH2 = 1.0 - texCoordsH2;
         }
     }
-    if (verticalId1 >= maxVIDX)
-    {
+    if(verticalId1 >= maxVIDX) {
         texCoordsH2 = fragmentTexCoords.x;
         horizontalId1 = 0;
         horizontalId2 = 0;
@@ -125,12 +114,10 @@ vec4 rainResponse(vec3 lightVec, vec3 lightColor, float lightIntensity, bool fal
     verticalId1 = 0;
     // Generate final texture coordinates for each sample
     int type = int(texArrayID); // 0 to 7
-    ivec2 texIdV1 = ivec2((verticalId1 * 90 + horizontalId1 * 10 + type),
-        (verticalId1 * 90 + horizontalId2 * 10 + type));
+    ivec2 texIdV1 = ivec2((verticalId1 * 90 + horizontalId1 * 10 + type), (verticalId1 * 90 + horizontalId2 * 10 + type));
     vec3 tex1 = vec3(texCoordsH1, fragmentTexCoords.y, texIdV1.x);
     vec3 tex2 = vec3(texCoordsH2, fragmentTexCoords.y, texIdV1.y);
-    if ((verticalId1 < maxVIDX) && (verticalId2 >= maxVIDX))
-    {
+    if((verticalId1 < maxVIDX) && (verticalId2 >= maxVIDX)) {
         p = 0;
         horizontalId1 = 0;
         horizontalId2 = 0;
@@ -138,21 +125,14 @@ vec4 rainResponse(vec3 lightVec, vec3 lightColor, float lightIntensity, bool fal
         texCoordsH2 = fragmentTexCoords.x;
     }
 
-
-    ivec2 texIdV2 = ivec2((verticalId2 * 90 + horizontalId1 * 10 + type),
-        (verticalId2 * 90 + horizontalId2 * 10 + type));
+    ivec2 texIdV2 = ivec2((verticalId2 * 90 + horizontalId1 * 10 + type), (verticalId2 * 90 + horizontalId2 * 10 + type));
     vec3 tex3 = vec3(texCoordsH1, fragmentTexCoords.y, texIdV2.x);
     vec3 tex4 = vec3(texCoordsH2, fragmentTexCoords.y, texIdV2.y);
 
-    // Sample opacity from textures
-    // float col1 = texture2DArray(rainTex, tex1).r * texelFetch(rainfactors, texIdV1.x, 0).r;
-    // float col2 = texture2DArray(rainTex, tex2).r * texelFetch(rainfactors, texIdV1.y, 0).r;
-    // float col3 = texture2DArray(rainTex, tex3).r * texelFetch(rainfactors, texIdV2.x, 0).r;
-    // float col4 = texture2DArray(rainTex, tex4).r * texelFetch(rainfactors, texIdV2.y, 0).b;
-    float col1 = texture(rainTex, vec2(tex1)).r ;//* texelFetch(rainfactors, texIdV1.x, 0).r;
-    float col2 = texture(rainTex, vec2(tex2)).r ;//* texelFetch(rainfactors, texIdV1.y, 0).r;
-    float col3 = texture(rainTex, vec2(tex3)).r ;//* texelFetch(rainfactors, texIdV2.x, 0).r;
-    float col4 = texture(rainTex, vec2(tex4)).r ;//* texelFetch(rainfactors, texIdV2.y, 0).b;
+    float col1 = texture(rainTex, vec2(tex1)).r;//* texelFetch(rainfactors, texIdV1.x, 0).r;
+    float col2 = texture(rainTex, vec2(tex2)).r;//* texelFetch(rainfactors, texIdV1.y, 0).r;
+    float col3 = texture(rainTex, vec2(tex3)).r;//* texelFetch(rainfactors, texIdV2.x, 0).r;
+    float col4 = texture(rainTex, vec2(tex4)).r;//* texelFetch(rainfactors, texIdV2.y, 0).b;
 
     // Compute interpolated opacity
     float hOpacity1 = mix(col1, col2, p);
@@ -161,59 +141,43 @@ vec4 rainResponse(vec3 lightVec, vec3 lightColor, float lightIntensity, bool fal
     // gamma correction
     opacity = pow(opacity, 0.7);
     opacity *= 0.7 * lightIntensity * fallOff;
-
-    //DEBUG:
-    // return vec4((verticalId1+8.0), 0,0, 1);
-    // return vec4(opacity, 0,0, 1);
-
     return vec4(lightColor, opacity);
 }
 
-vec3 lightFunc(void)
-{
+vec3 lightFunc(void) {
     vec3 phong_ads_light;
     vec3 ambient = u_la * u_ka;
-	vec3 normalized_transformed_normals = normalize(transformedNormals);
-	vec3 normalized_light_direction = normalize(lightDirection);
-	vec3 diffuse = u_ld * u_kd * max(dot(normalized_light_direction, normalized_transformed_normals), 0.0);
-	vec3 reflectionVector = reflect(-normalized_light_direction, normalized_transformed_normals);
-	vec3 normalized_viewervector = normalize(viewerVector);
-	vec3 specular = u_ls * u_ks * pow(max(dot(reflectionVector, normalized_viewervector), 0.0), u_materialShiness);
-	
+    vec3 normalized_transformed_normals = normalize(transformedNormals);
+    vec3 normalized_light_direction = normalize(lightDirection);
+    vec3 diffuse = u_ld * u_kd * max(dot(normalized_light_direction, normalized_transformed_normals), 0.0);
+    vec3 reflectionVector = reflect(-normalized_light_direction, normalized_transformed_normals);
+    vec3 normalized_viewervector = normalize(viewerVector);
+    vec3 specular = u_ls * u_ks * pow(max(dot(reflectionVector, normalized_viewervector), 0.0), u_materialShiness);
+
     return phong_ads_light = ambient + diffuse + specular;
 }
 
-void main(void)
-{
+void main(void) {
 
     //sun (directional) lighting
     vec4 sunLight = rainResponse(sunDir, sunColor, 1.0 + fract(randEnlight), false);
 
     //TODO: point lighting
     vec4 pointLight = vec4(1.0, 1.0, 1.0, 0.5);
-    vec4 pointLightColor = vec4(1.0,1.0,1.0,1.0);
+    vec4 pointLightColor = vec4(1.0, 1.0, 1.0, 1.0);
     float pointLightIntensity = 2.0;
-    vec3 pointLightDir = vec3(0,-1,0);
+    vec3 pointLightDir = vec3(0, -1, 0);
+
+    vec3 lightDir = normalize(pointLightDir);
+    float angleToSpotLight = dot(-lightDir, vec3(0.0, -1.0, 0.0));
+    float cosSpotlightAngle = 0.8;
+
+    if(angleToSpotLight > cosSpotlightAngle)
+        pointLight = rainResponse(pointLightDir, vec3(pointLightColor), 2 * pointLightIntensity * randEnlight, true);
+
+
+    pointLight = rainResponse(pointLightDir, vec3(pointLightColor), 2 * pointLightIntensity * randEnlight, true);
     
-        vec3 lightDir = normalize(pointLightDir);
-        float angleToSpotLight = dot(-lightDir, vec3(0.0, -1.0, 0.0));
-        float cosSpotlightAngle = 0.8;
-
-        if(angleToSpotLight > cosSpotlightAngle)
-            pointLight = rainResponse(pointLightDir, vec3(pointLightColor), 2*pointLightIntensity*randEnlight, true);
-          
-    float totalOpacity = pointLight.a + sunLight.a;
-
-    pointLight = rainResponse(pointLightDir, vec3(pointLightColor), 2*pointLightIntensity*randEnlight, true);
-    // FragColor = vec4(vec3(pointLight.rgb*pointLight.a/totalOpacity + sunLight.rgb*sunLight.a/totalOpacity), totalOpacity);
-    // FragColor = sunLight;
-    // FragColor = pointLight;
-    // FragColor = texture(rainTex, fragmentTexCoords.xy) * sunLight  * vec4(lightFunc(), 1.0) * 0.7;// + pointLight;
     FragColor = (texture(rainTex, fragmentTexCoords.xy)) * vec4(lightFunc(), 1.0);
-
-    //DEBUG ONLY
-    // FragColor = vec4(fragmentTexCoords.z/10.0, fragmentTexCoords.z/10.0, fragmentTexCoords.z/10.0, 1);
-    // FragColor = vec4(texture2DArray(rainTex, fragmentTexCoords.xyz).r, texture2DArray(rainTex, fragmentTexCoords.xyz).r, texture2DArray(rainTex, fragmentTexCoords.xyz).r, 0.0 );
-//    FragColor = vec4(texture(rainTex, fragmentTexCoords.xy).r, texture(rainTex, fragmentTexCoords.xy).r, texture(rainTex, fragmentTexCoords.xy).r, 0.0 );
-//    FragColor = pointLight;
+    FragColor.a *= 0.5;
 }

@@ -737,6 +737,9 @@ int initialize(void)
 			case SCENE_02_EARTH_COOLDOWN:
 				myMusic.playFromSeconds(START_TIME_SCENE_02_01_EARTH_COOLDOWN);
 				break;
+			case SCENE_03_TERRAIN_WITH_HEAVY_RAIN:
+				myMusic.playFromSeconds(START_TIME_SCENE_03_01_TERRAIN_FIRST_RAIN);
+				break;
 
 			default:
 				myMusic.playFromSeconds(0.0f);

@@ -33,6 +33,7 @@ public:
     GLuint vignetteInnerRadiusUniform;
 
     GLuint waterColor_JisDesh_Uniform;
+    GLuint interpolateDarkToBright_uniform;
 
     BOOL initialize(void)
     {
@@ -79,6 +80,7 @@ public:
         vignetteInnerRadiusUniform = glGetUniformLocation(shaderProgramObject_waterQuad, "u_vignetteInnerRadius");
 
         waterColor_JisDesh_Uniform = glGetUniformLocation(shaderProgramObject_waterQuad, "waterColor_JisDesh");
+        interpolateDarkToBright_uniform = glGetUniformLocation(shaderProgramObject_waterQuad, "interpolateDarkToBright");
 
         return TRUE;
     }
