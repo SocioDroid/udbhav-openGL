@@ -116,10 +116,12 @@ void main(void) {
     float blue = 1.0;
     vec4 waterColor;
 
-    red = 45.0 / 255.0;
-    green = 69.0 / 255.0;
-    blue = 35.0 / 255.0;
-    waterColor = mix(color, vec4(red, green, blue, 0.5), 0.2) + vec4(specularHighlights, 0.0);
+    red = 48.0 / 255.0;
+    green = 52.0 / 255.0;
+    blue = 54.0 / 255.0;
+    vec4 darkColor = vec4(red, green, blue, 0.5);
+    vec4 brightBlue = vec4(0.2, 0.71, 0.85, 1.0);
+    waterColor = mix(color, brightBlue , 0.2) + vec4(specularHighlights, 1.0);
 
     FragColor = mix(waterColor, waterColor, 1.0);
 }

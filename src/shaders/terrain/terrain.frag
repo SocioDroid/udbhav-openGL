@@ -130,7 +130,8 @@ vec4 getTexture(inout vec3 normal, const mat3 TBN) {
 	float trans = 20.;
 
 	vec4 sand_t = texture(sand_green, texCoord * 10.0);
-	sand_t.rg *= 1.3;
+	sand_t.rg *= 1.1;
+	sand_t.g *= 1.1;
 	vec4 rock_t = texture(rock_green, texCoord * vec2(1.0, 1.256).yx);
 	rock_t.rgb *= vec3(2.5, 2.0, 2.0);
 	vec4 grass_t = texture(grass_green, texCoord * 12.0);

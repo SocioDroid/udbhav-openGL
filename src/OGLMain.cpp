@@ -83,7 +83,7 @@ float ELAPSED_TIME;
 float light_objX = 0.0f;
 float light_objY = 0.0f;
 float light_objZ = 0.0f;
-float lightObjIncrement = 1.0f;
+float lightObjIncrement = 0.01f;
 
 float objAngle = 0.0f;
 float objAngleIncrement = 1.0f;

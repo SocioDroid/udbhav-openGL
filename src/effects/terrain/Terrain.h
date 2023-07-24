@@ -49,7 +49,7 @@ public:
         frequency = 0.01f;
         grassCoverage = 0.65f;
         tessMultiplier = 1.0f;
-        dispFactor = 20.0f;
+        dispFactor = 23.5f;
 
         fogFalloff = 0.5f;
 
@@ -126,13 +126,13 @@ public:
 
     void draw()
     {
-        drawFog = false;
+        drawFog = true;
 
         if (up != 0.0f)
         {
             glEnable(GL_CLIP_DISTANCE0);
         }
-        vmath::mat4 gWorld = modelMatrix;
+        vmath::mat4 gWorld = modelMatrix;;
         vmath::mat4 gVP = perspectiveProjectionMatrix * camera.getViewMatrix();
 
         glUseProgram(shad->shaderProgramObject);
@@ -163,8 +163,8 @@ public:
             shad->setVec3("u_LightPosition", terrainLightDirection * 1e6f + globalBezierCamera->getEye());
 
         shad->setVec3("u_ViewPosition", camera.getEye());
-        shad->setVec3("u_fogColor", vec3(0.5f, 0.6f, 0.7f));
-        shad->setVec3("u_seed", vec3(1.0f, 20.0f, 10.0f));
+        shad->setVec3("u_fogColor", vec3(0.3f, 0.3f, 0.4f));
+        shad->setVec3("u_seed", vec3(12.0f, 20.0f, 10.0f));
 
         shad->setInt("u_octaves", octaves);
         shad->setFloat("u_freq", frequency);
@@ -219,11 +219,11 @@ public:
             }
             setPositionsArray(positionVec);
 
-            // if (waterPtr)
-            // {
-            //     vmath::vec2 center = getPos(gridLength / 2, gridLength / 2);
-            //     waterPtr->setPosition(center, 1.0 * gridLength, waterPtr->getHeight());
-            // }
+            if (waterPtr)
+            {
+                vmath::vec2 center = getPos(gridLength / 2, gridLength / 2);
+                waterPtr->setPosition(center, 1.0 * gridLength, waterPtr->getHeight());
+            }
         }
     }
 
@@ -336,7 +336,7 @@ private:
     float dispFactor, scaleFactor, frequency, grassCoverage, tessMultiplier, fogFalloff, power;
     int octaves;
     int gridLength;
-    float textureTransitionFactor = -0.1f;
+    float textureTransitionFactor = -0.3f;
     bool drawFog;
     GLuint *textures_green, *textures_dark, posBuffer;
 

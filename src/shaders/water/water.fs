@@ -165,7 +165,11 @@ void main() {
 
     vec4 fogColor = vec4(0.4, 0.6, 0.75, 1.0);
 	//refr_reflCol *= fogColor;
-    FragColor = mix(mix(refr_reflCol, color * 0.8, 0.1) * 0.8 + vec4(diffuse + specular, 1.0), fogColor, (1 - fogFactor));
+    FragColor = mix(
+        mix( refr_reflCol, color * 0.8, 0.1) * 0.8 + vec4(diffuse + specular, 1.0), 
+        fogColor, 
+        (1 - fogFactor)
+        );
 	//float worley_ = worley( vec3(position.xz, moveFactor*10.0))*0.5 + worley( vec3(position.xz*2.0, moveFactor*5.0))*0.25;
     float foam = perlin(position.x * 4.0, position.z * 4.0, moveFactor * 10.0) * 0.25;
     foam = mix(foam * pow((1.0 - waterDepth), 8.0), foam * 0.01, 0.0);

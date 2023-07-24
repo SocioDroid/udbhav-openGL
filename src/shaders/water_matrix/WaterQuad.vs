@@ -19,21 +19,13 @@ uniform int waterColor_JisDesh = 0;
 
 float tiling = 0.05;
 
-void main(void)
-{
-	if(waterColor_JisDesh == 0)
-    {
-		tiling = 0.005;
-    }
-    else
-    {
-        tiling = 0.05;
-    }
+void main(void) {
+	tiling = 0.001;
 
-	vec4 worldPosition = u_modelMatrix * vec4(a_position.x, 0.0f, a_position.y, 1.0);
+	vec4 worldPosition = u_modelMatrix * vec4(a_position.x, 0.0, a_position.y, 1.0);
 	clipSpaceCoords = u_projectionMatrix * u_viewMatrix * worldPosition;
 
-	a_texcoords_out = vec2(a_position.x/2.0 + 0.5, a_position.y/2.0 + 0.5) * tiling;
+	a_texcoords_out = vec2(a_position.x / 2.0 + 0.5, a_position.y / 2.0 + 0.5) * tiling;
 
 	//Calculate camera vector
 	toCameraVector = u_cameraPosition - worldPosition.xyz;

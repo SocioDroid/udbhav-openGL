@@ -92,7 +92,6 @@
     <ClInclude Include="src\utils\OpenGL\GLShaders.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\effects\Water\JishDeshMaiGanga.cpp" />
     <ClCompile Include="src\OGLMain.cpp" />
     <ClCompile Include="src\utils\common.cpp" />
     <ClCompile Include="src\utils\OpenGL\GLLog.cpp" />

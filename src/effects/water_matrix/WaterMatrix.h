@@ -12,12 +12,12 @@ using namespace vmath;
 #define REFRACTION_FBO_WIDTH 1920
 #define REFRACTION_FBO_HEIGHT 1080
 
-#define WATER_WAVE_SPEED 0.003f
+#define WATER_WAVE_SPEED 0.002f
 
 #define VIGNETTE_OUTER_RADIUS 1.0f
 #define VIGNETTE_INNER_RADIUS 0.8f
 
-#define WATER_QUAD_SIZE 1000. * 100.
+#define WATER_QUAD_SIZE 1000. * 90.
 
 // ==================== Extern Variables
 
@@ -301,6 +301,7 @@ public:
 		if (USE_FPV_CAM)
 		{
 			camera.invertPitch();
+			camera.position[1] -= 2 * (camera.position[1] - scaleX);
 			viewMatrix = camera.getViewMatrix();
 		}
 		else
@@ -315,6 +316,7 @@ public:
 		if (USE_FPV_CAM)
 		{
 			camera.invertPitch();
+			camera.position[1] += 2 * abs(camera.position[1] - scaleX);
 			viewMatrix = camera.getViewMatrix();
 		}
 		else
@@ -354,8 +356,8 @@ public:
 	{
 		// variable declarations
 		float lightColor[] = {1.0f, 1.0f, 1.0f}; // white light
-		// float lightPosition[] = {0.0f, 100.0f, 10.0f};
-		float lightPosition[] = {0.0f, 50.0f, 0.0f};
+		float lightPosition[] = {0.0f, 100.0f, 10.0f};
+		// float lightPosition[] = {0.0f, 100.0f, 0.0f};
 
 		// code
 		pushMatrix(modelMatrix);
@@ -366,9 +368,9 @@ public:
 			glUniformMatrix4fv(waterQuadShader.viewMatrixUniform_waterQuad, 1, GL_FALSE, viewMatrix);
 			glUniformMatrix4fv(waterQuadShader.projectionMatrixUniform_waterQuad, 1, GL_FALSE, perspectiveProjectionMatrix);
 
-			glUniform3fv(waterQuadShader.cameraPositionUniform_waterQuad, 1, camPosition);
+			glUniform3fv(waterQuadShader.cameraPositionUniform_waterQuad, 1, camera.getEye());
 
-			glUniform3fv(waterQuadShader.lightPositionUniform_waterQuad, 1, camPosition);
+			glUniform3fv(waterQuadShader.lightPositionUniform_waterQuad, 1, lightPosition);
 			glUniform3fv(waterQuadShader.lightColorUniform_waterQuad, 1, lightColor);
 
 			moveFactor = moveFactor + WATER_WAVE_SPEED;

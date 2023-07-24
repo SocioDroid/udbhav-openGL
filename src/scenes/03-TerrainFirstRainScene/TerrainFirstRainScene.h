@@ -53,12 +53,7 @@ public:
     void display()
     {
         terrain->updateTilesPositions();
-        pushMatrix(modelMatrix);
-        {
-            terrain->up = 1.0;
-            terrain->draw();
-        }
-        modelMatrix = popMatrix();
+
         // Reflection
         waterMatrix->bindReflectionFBO(1920, 1080);
         pushMatrix(modelMatrix);
@@ -81,7 +76,14 @@ public:
 
         pushMatrix(modelMatrix);
         {
-            modelMatrix = modelMatrix * translate(0.0f, -16.900028f, 0.0f);
+            terrain->up = 1.0;
+            terrain->draw();
+        }
+        modelMatrix = popMatrix();
+
+        pushMatrix(modelMatrix);
+        {
+            modelMatrix = modelMatrix * translate(0.0f, -36.900028f, 0.0f);
             waterMatrix->renderWaterQuad();
         }
         modelMatrix = popMatrix();
@@ -99,7 +101,7 @@ public:
         {
             terrain->setGrassCoverage(terrain->getGrassCoverage() + 0.0002f);
         }
-        terrain->setTextureTransitionFactor(1.0f);
+        // terrain->setTextureTransitionFactor(1.0f);
     }
     void uninitialize()
     {

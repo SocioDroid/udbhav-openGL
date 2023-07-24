@@ -226,9 +226,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\effects\Water\JishDeshMaiGanga.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\utils\OpenGL\GLLog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
