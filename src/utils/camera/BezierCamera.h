@@ -171,7 +171,7 @@ public:
         position[1] = deCasteljau(time, extractColumn(bezierPoints, 1));
         position[2] = deCasteljau(time, extractColumn(bezierPoints, 2));
 
-        // float distance = 2.0f * (position[1] - 0.0f);
+        // float distance = 2.0f * (position[1] - 0.0f );
         // position[1] -= distance;
     }
 

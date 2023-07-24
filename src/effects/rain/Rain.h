@@ -216,7 +216,8 @@ public:
         dataBuffer[sizeof(posBuffer) * 3];
 
         int numLodLv1 = 8;
-        eyePos = (USE_FPV_CAM ? camera.getEye() : globalBezierCamera->getEye());
+        // eyePos = (USE_FPV_CAM ? camera.getEye() : globalBezierCamera->getEye());
+        eyePos = camera.getEye();
         // eyePos = vec3(1.0f, 1.0f, 1.0f);
 
         for (int lodLv1 = 0; lodLv1 < numLodLv1; lodLv1++)
@@ -304,7 +305,8 @@ public:
         glUniformMatrix4fv(rainShader->viewMatrixUniform, 1, GL_FALSE, mat4::identity());
         glUniformMatrix4fv(rainShader->projectionMatrixUniform, 1, GL_FALSE, perspectiveProjectionMatrix);
 
-        glUniform3fv(rainShader->eyePosUniform, 1, (USE_FPV_CAM ? camera.getEye() : globalBezierCamera->getEye()));
+        // glUniform3fv(rainShader->eyePosUniform, 1, (USE_FPV_CAM ? camera.getEye() : globalBezierCamera->getEye()));
+        glUniform3fv(rainShader->eyePosUniform, 1, camera.getEye());
         glUniform3fv(rainShader->windDirUniform, 1, winDir[windPtr]);
         glUniform1f(rainShader->dtUniform, dt);
 

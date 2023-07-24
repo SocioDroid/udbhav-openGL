@@ -298,7 +298,7 @@ public:
 		glBindFramebuffer(GL_FRAMEBUFFER, fbo_reflection);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glViewport(0, 0, textureWidth, textureHeight);
-		perspectiveProjectionMatrix = vmath::perspective(45.0f, (GLfloat)textureWidth / (GLfloat)textureHeight, 0.1f, 1000000.0f);
+		perspectiveProjectionMatrix = vmath::perspective(45.0f, (GLfloat)textureWidth / (GLfloat)textureHeight, 0.1f, 10000000.0f);
 
 		if (USE_FPV_CAM)
 		{
@@ -325,8 +325,8 @@ public:
 		else
 		{
 			globalBezierCamera->invertPitch();
-			globalBezierCamera->position[1] -= 2 * (globalBezierCamera->position[1] - waterHeight);
-			viewMatrix = globalBezierCamera->getViewMatrix();
+			globalBezierCamera->position[1] += 2 * abs(globalBezierCamera->position[1] - waterHeight);
+			viewMatrix = globalBezierCamera->getViewMatrix(); 
 		}
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);

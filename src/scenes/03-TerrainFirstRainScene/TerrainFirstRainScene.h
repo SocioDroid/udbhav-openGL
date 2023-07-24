@@ -8,6 +8,7 @@
 #include "../../effects/terrain/Terrain.h"
 #include "../../effects/water_matrix/WaterMatrix.h"
 #include "../../effects/rain/Rain.h"
+#include "../../utils/camera/BezierCamera.h"
 
 class TerrainFirstRainScene
 {
@@ -18,7 +19,9 @@ public:
     CubeMap *cubemap;
     WaterMatrix *waterMatrix;
     Rain *rain = NULL;
-
+    BezierCamera sceneCamera;
+    // Fadin Fadeout
+    float fadeAlpha = 1.0f;
     // member functions
     TerrainFirstRainScene()
     {
@@ -57,13 +60,25 @@ public:
             return FALSE;
         }
 
+        // Camera
+        // Camera
+        sceneCamera.initialize();
+
         isInitialized = true;
         return TRUE;
     }
 
     void display()
     {
-        terrain->updateTilesPositions();
+        // Camera
+        modelMatrix = mat4::identity();
+        viewMatrix = mat4::identity();
+
+        setGlobalBezierCamera(&sceneCamera);
+        sceneCamera.setBezierPoints(bezierPoints, yawGlobal, pitchGlobal);
+        sceneCamera.update();
+        updateGlobalViewMatrix();
+
         // Water FBO
         {
             // Reflection
@@ -80,7 +95,6 @@ public:
             }
             waterMatrix->unbindRefractionFBO();
         }
-
         // Actual Scene
         displayScene(1.0);
 
@@ -92,12 +106,16 @@ public:
         }
         modelMatrix = popMatrix();
 
-        // Rain
+        drawRain();
+
+        // FADE IN
         pushMatrix(modelMatrix);
         {
-            drawRain();
+            modelMatrix = vmath::scale(1.0f, 1.0f, 1.0f);
+            commonShaders->overlayColorShader->draw(modelMatrix, 0.0f, 0.0f, 0.0f, fadeAlpha);
         }
         modelMatrix = popMatrix();
+        // sceneCamera.displayBezierCurve();
     }
 
     void displayScene(float terrainUp)
@@ -108,6 +126,7 @@ public:
             cubemap->display();
         }
         modelMatrix = popMatrix();
+
         pushMatrix(modelMatrix);
         {
             terrain->up = terrainUp;
@@ -115,7 +134,6 @@ public:
         }
         modelMatrix = popMatrix();
     }
-
     void drawRain()
     {
         // RAIN
@@ -147,28 +165,51 @@ public:
         }
         modelMatrix = popMatrix();
     }
+    bool isFadeout = false;
 
     void update()
     {
+        ////////////////////////////////// FADING
+        // Fade In
+        if (!isFadeout)
+        {
+            if (fadeAlpha > 0.0f)
+                fadeAlpha -= 0.01f;
+        }
+        else
+        {
+            // ////// FADEOUT SPEED
+            if (fadeAlpha <= 1.0f)
+                fadeAlpha += 0.008f;
+        }
+
+        // Camera
+        if (sceneCamera.time < 1.0f)
+            sceneCamera.time += (0.000015f + 0.00037f);
+
+        terrain->updateTilesPositions();
         // Transition to green texture
         if (terrain->getTextureTransitionFactor() < 1.0f)
         {
-            terrain->setTextureTransitionFactor(terrain->getTextureTransitionFactor() + 0.001f);
+            terrain->setTextureTransitionFactor(terrain->getTextureTransitionFactor() + 0.0004f);
         }
         // Grass Coverage
         if (terrain->getGrassCoverage() < 0.56f)
         {
             terrain->setGrassCoverage(terrain->getGrassCoverage() + 0.0003f);
         }
-        // Water Height
-        if (terrain->getWaterHeight() < 589.0f)
+        // // Water Height
+        if (sceneCamera.time > 0.6f)
         {
-            terrain->setWaterHeight(terrain->getWaterHeight() + 1.0f);
-        }
-        // Water Color
-        if (waterMatrix->interpolateWaterColor < 1.13f)
-        {
-            waterMatrix->interpolateWaterColor += 0.001f;
+            if (terrain->getWaterHeight() < 589.0f)
+            {
+                terrain->setWaterHeight(terrain->getWaterHeight() + 1.0f);
+            }
+            // Water Color
+            if (waterMatrix->interpolateWaterColor < 1.13f)
+            {
+                waterMatrix->interpolateWaterColor += 0.001f;
+            }
         }
 
         // terrain->setWaterHeight(scaleX);

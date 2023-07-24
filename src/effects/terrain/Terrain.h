@@ -133,7 +133,7 @@ public:
             glEnable(GL_CLIP_DISTANCE0);
         }
         vmath::mat4 gWorld = modelMatrix;
-        ;
+        
         vmath::mat4 gVP = perspectiveProjectionMatrix * (USE_FPV_CAM ? camera.getViewMatrix() : globalBezierCamera->getViewMatrix());
 
         glUseProgram(shad->shaderProgramObject);
