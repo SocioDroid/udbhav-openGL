@@ -224,6 +224,9 @@
     <ClInclude Include="src\shaders\CommonModels.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\utils\noise\Noise.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\utils\OpenGL\GLLog.cpp">
@@ -236,6 +239,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\OGLMain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\noise\Noise.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

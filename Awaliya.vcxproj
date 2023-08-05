@@ -85,6 +85,7 @@
     <ClInclude Include="src\utils\model\mesh.h" />
     <ClInclude Include="src\utils\model_using_assim\mesh.h" />
     <ClInclude Include="src\utils\model_using_assim\model.h" />
+    <ClInclude Include="src\utils\noise\Noise.h" />
     <ClInclude Include="src\utils\opencv.hpp" />
     <ClInclude Include="src\utils\OpenGL\DDSLoader.h" />
     <ClInclude Include="src\utils\OpenGL\GLHeadersAndMacros.h" />
@@ -94,6 +95,7 @@
   <ItemGroup>
     <ClCompile Include="src\OGLMain.cpp" />
     <ClCompile Include="src\utils\common.cpp" />
+    <ClCompile Include="src\utils\noise\Noise.cpp" />
     <ClCompile Include="src\utils\OpenGL\GLLog.cpp" />
     <ClCompile Include="src\utils\OpenGL\GLShaders.cpp" />
   </ItemGroup>

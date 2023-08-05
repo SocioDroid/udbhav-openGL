@@ -3,12 +3,14 @@
 #include "../../effects/cubemapMerge/CubemapMerge.h"
 #include "../../utils/camera/BezierCamera.h"
 #include "../../shaders/smokeEarth/SmokeEarthShader.h"
-#include "../../shaders/textureLight/TextureLightShader.h"
+#include "../../includes/SphereAish.h"
 #include "../../shaders/terrainPostProcess/TerrainPostProcess.h"
+#include "../../shaders/noiseCloud/NoiseCloud.h"
 #include "../../effects/terrain/Terrain.h"
 #include "../../effects/water_matrix/WaterMatrix.h"
 #include "../../effects/rain/Rain.h"
 #include "../../utils/camera/BezierCamera.h"
+#include "../../utils/noise/Noise.h"
 
 class TerrainFirstRainScene
 {
@@ -20,6 +22,10 @@ public:
     WaterMatrix *waterMatrix;
     Rain *rain = NULL;
     BezierCamera sceneCamera;
+    SphereAish *sphereCloud;
+    NoiseCloudShader noiseCloudShader;
+    GLuint texture_noise;
+
     // Fadin Fadeout
     float fadeAlpha = 1.0f;
     float cubemapFactor = 0.0f;
@@ -72,6 +78,15 @@ public:
             PrintLog("\nFailed to initialize rain\n");
             return FALSE;
         }
+
+        // // Cloud
+        // sphereCloud = new SphereAish(1.0f, 100, 100);
+        // if (!noiseCloudShader.initialize())
+        // {
+        //     PrintLog("\nFailed to initialize NoisCloud Shader\n");
+        //     return FALSE;
+        // }
+        // CreateNoise3D(&texture_noise);
 
         // Camera
         sceneCamera.initialize();
@@ -128,7 +143,7 @@ public:
             commonShaders->overlayColorShader->draw(modelMatrix, 0.0f, 0.0f, 0.0f, fadeAlpha);
         }
         modelMatrix = popMatrix();
-        // sceneCamera.displayBezierCurve();
+        sceneCamera.displayBezierCurve();
     }
 
     void displayScene(float terrainUp)
@@ -139,6 +154,13 @@ public:
             cubemap->display(cubemapFactor);
         }
         modelMatrix = popMatrix();
+
+        // pushMatrix(modelMatrix);
+        // {
+        //     // modelMatrix = modelMatrix * vmath::scale(500000.0f, 500000.0f, 500000.0f);
+        //     drawCloudNoise();
+        // }
+        // modelMatrix = popMatrix();
 
         pushMatrix(modelMatrix);
         {
@@ -177,6 +199,36 @@ public:
             glDisable(GL_BLEND);
         }
         modelMatrix = popMatrix();
+    }
+    BOOL isScaled = FALSE;
+    float scaleFactor = 2.0f;
+    void drawCloudNoise()
+    {
+        glUseProgram(noiseCloudShader.shaderProgramObject);
+        pushMatrix(modelMatrix);
+        {
+            modelMatrix = modelMatrix * scale(1000000.0f, 1000000.0f, 100000.0f) * vmath::rotate(-90.0f, 1.0f, 0.0f, 0.0f);
+            /* Initialize uniforms constant throughout rendering loop. */
+            glUniformMatrix4fv(noiseCloudShader.modelMatrixUniform, 1, GL_FALSE, modelMatrix);
+            glUniformMatrix4fv(noiseCloudShader.viewMatrixUniform, 1, GL_FALSE, viewMatrix);
+            glUniformMatrix4fv(noiseCloudShader.projectionMatrixUniform, 1, GL_FALSE, perspectiveProjectionMatrix);
+            glUniform3fv(noiseCloudShader.lightPosUniform, 1, vec3(0.0f, 5.0f, 1.0f));
+            glUniform3fv(noiseCloudShader.Color1Uniform, 1, vec3(0.3, 0.3, 0.3));
+            glUniform3fv(noiseCloudShader.Color2Uniform, 1, vec3(0.0, 0.0, 0.0));
+            glUniform1f(noiseCloudShader.scaleUniform, scaleFactor);
+
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_3D, texture_noise);
+            glUniform1i(noiseCloudShader.textureSamplerUniform, 0);
+
+            glBindVertexArray(sphereCloud->vao_sphere);
+            glDrawArrays(GL_TRIANGLE_STRIP, 0, sphereCloud->getNumberOfSphereVertices());
+            glBindVertexArray(0);
+        }
+        modelMatrix = popMatrix();
+        glUseProgram(0);
+
+        scaleFactor = scaleFactor + 0.001f;
     }
     bool isFadeout = false;
 

@@ -8,7 +8,6 @@
 #include "../../shaders/noiseSun/NoiseSunShader.h"
 #include "../../shaders/smokeEarth/SmokeEarthShader.h"
 #include "../../effects/bloom/Bloom_Shaders.h"
-#include "../../shaders/textureLight/TextureLightShader.h"
 
 void setGlobalBezierCamera(BezierCamera *bezierCamera);
 
@@ -38,7 +37,6 @@ public:
     // shaders
     NoiseSunShader noiseSunShader;
     SmokeEarthShader smokeEarthShader;
-    TextureLightShader textureLightShader;
 
     // Fadin Fadeout
     float fadeAlpha = 1.0f;
@@ -152,7 +150,7 @@ public:
         // Spheres
         noiseSunShader.initialize();
         smokeEarthShader.initialize();
-        textureLightShader.initialize();
+
         sunSphere = new SphereAish(5.0f, 100, 100);
         earthSphere = new SphereAish(1.0f, 100, 100);
         if (LoadPNGImage(&texture_stoneEarth, "./assets/textures/earth/cooledEarth3.png") == FALSE)
@@ -290,31 +288,31 @@ public:
         switch (EARTH_TYPE)
         {
         case EARTH_STONE:
-            glUseProgram(textureLightShader.shaderProgramObject);
+            glUseProgram(commonShaders->textureLightShader->shaderProgramObject);
             pushMatrix(modelMatrix);
             {
                 modelMatrix = modelMatrix * vmath::rotate(-90.0f, 1.0f, 0.0f, 0.0f);
                 modelMatrix = modelMatrix * vmath::rotate(-90.0f - (ELAPSED_TIME * 0.2f), 0.0f, 0.0f, 1.0f);
                 /* Initialize uniforms constant throughout rendering loop. */
-                glUniformMatrix4fv(textureLightShader.modelMatrixUniform, 1, GL_FALSE, modelMatrix);
-                glUniformMatrix4fv(textureLightShader.viewMatrixUniform, 1, GL_FALSE, viewMatrix);
-                glUniformMatrix4fv(textureLightShader.projectionMatrixUniform, 1, GL_FALSE, perspectiveProjectionMatrix);
+                glUniformMatrix4fv(commonShaders->textureLightShader->modelMatrixUniform, 1, GL_FALSE, modelMatrix);
+                glUniformMatrix4fv(commonShaders->textureLightShader->viewMatrixUniform, 1, GL_FALSE, viewMatrix);
+                glUniformMatrix4fv(commonShaders->textureLightShader->projectionMatrixUniform, 1, GL_FALSE, perspectiveProjectionMatrix);
 
                 glEnable(GL_TEXTURE_2D);
 
                 glActiveTexture(GL_TEXTURE0);
                 glBindTexture(GL_TEXTURE_2D, texture_stoneEarth);
-                glUniform1i(textureLightShader.textureSamplerUniform, 0);
+                glUniform1i(commonShaders->textureLightShader->textureSamplerUniform, 0);
 
                 // Second texture
-                glUniform1i(glGetUniformLocation(textureLightShader.shaderProgramObject, "isMultiTexture"), 1);
-                glUniform1f(glGetUniformLocation(textureLightShader.shaderProgramObject, "u_time"), ELAPSED_TIME);
-                glUniform1f(glGetUniformLocation(textureLightShader.shaderProgramObject, "multiTextureInterpolation"), earthTextureInterpolate);
+                glUniform1i(glGetUniformLocation(commonShaders->textureLightShader->shaderProgramObject, "isMultiTexture"), 1);
+                glUniform1f(glGetUniformLocation(commonShaders->textureLightShader->shaderProgramObject, "u_time"), ELAPSED_TIME);
+                glUniform1f(glGetUniformLocation(commonShaders->textureLightShader->shaderProgramObject, "multiTextureInterpolation"), earthTextureInterpolate);
 
                 // Controlling Light position
-                glUniform1f(glGetUniformLocation(textureLightShader.shaderProgramObject, "lightX"), -2.0f + 2.300000f);
-                glUniform1f(glGetUniformLocation(textureLightShader.shaderProgramObject, "lightY"), -1.0f + 0.300000f);
-                glUniform1f(glGetUniformLocation(textureLightShader.shaderProgramObject, "lightZ"), 1.0f + -0.100000f);
+                glUniform1f(glGetUniformLocation(commonShaders->textureLightShader->shaderProgramObject, "lightX"), -2.0f + 2.300000f);
+                glUniform1f(glGetUniformLocation(commonShaders->textureLightShader->shaderProgramObject, "lightY"), -1.0f + 0.300000f);
+                glUniform1f(glGetUniformLocation(commonShaders->textureLightShader->shaderProgramObject, "lightZ"), 1.0f + -0.100000f);
 
                 glBindVertexArray(earthSphere->vao_sphere);
                 glDrawArrays(GL_TRIANGLE_STRIP, 0, earthSphere->getNumberOfSphereVertices());
@@ -326,16 +324,16 @@ public:
             break;
         case EARTH_CLOUD:
 
-            glUseProgram(textureLightShader.shaderProgramObject);
+            glUseProgram(commonShaders->textureLightShader->shaderProgramObject);
             pushMatrix(modelMatrix);
             {
                 modelMatrix = modelMatrix * vmath::rotate(-90.0f, 1.0f, 0.0f, 0.0f);
                 modelMatrix = modelMatrix * vmath::rotate(-190.0f + ELAPSED_TIME, 0.0f, 0.0f, 1.0f);
                 modelMatrix = modelMatrix * vmath::scale(1.02f, 1.02f, 1.02f);
                 /* Initialize uniforms constant throughout rendering loop. */
-                glUniformMatrix4fv(textureLightShader.modelMatrixUniform, 1, GL_FALSE, modelMatrix);
-                glUniformMatrix4fv(textureLightShader.viewMatrixUniform, 1, GL_FALSE, viewMatrix);
-                glUniformMatrix4fv(textureLightShader.projectionMatrixUniform, 1, GL_FALSE, perspectiveProjectionMatrix);
+                glUniformMatrix4fv(commonShaders->textureLightShader->modelMatrixUniform, 1, GL_FALSE, modelMatrix);
+                glUniformMatrix4fv(commonShaders->textureLightShader->viewMatrixUniform, 1, GL_FALSE, viewMatrix);
+                glUniformMatrix4fv(commonShaders->textureLightShader->projectionMatrixUniform, 1, GL_FALSE, perspectiveProjectionMatrix);
 
                 glEnable(GL_BLEND);
                 glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -343,13 +341,13 @@ public:
 
                 glActiveTexture(GL_TEXTURE0);
                 glBindTexture(GL_TEXTURE_2D, texture_cloudEarth);
-                glUniform1i(textureLightShader.textureSamplerUniform, 0);
-                glUniform1f(textureLightShader.alphaValueUniform, 0.5f);
+                glUniform1i(commonShaders->textureLightShader->textureSamplerUniform, 0);
+                glUniform1f(commonShaders->textureLightShader->alphaValueUniform, 0.5f);
 
                 // Controlling Light position
-                glUniform1f(glGetUniformLocation(textureLightShader.shaderProgramObject, "lightX"), -2.0f + 2.300000f);
-                glUniform1f(glGetUniformLocation(textureLightShader.shaderProgramObject, "lightY"), -1.0f + 0.300000f);
-                glUniform1f(glGetUniformLocation(textureLightShader.shaderProgramObject, "lightZ"), 1.0f + -0.100000f);
+                glUniform1f(glGetUniformLocation(commonShaders->textureLightShader->shaderProgramObject, "lightX"), -2.0f + 2.300000f);
+                glUniform1f(glGetUniformLocation(commonShaders->textureLightShader->shaderProgramObject, "lightY"), -1.0f + 0.300000f);
+                glUniform1f(glGetUniformLocation(commonShaders->textureLightShader->shaderProgramObject, "lightZ"), 1.0f + -0.100000f);
 
                 glBindVertexArray(earthSphere->vao_sphere);
                 glDrawArrays(GL_TRIANGLE_STRIP, 0, earthSphere->getNumberOfSphereVertices());

@@ -5,6 +5,7 @@
 #include "model/Model_ShaderParticleCommon.h"
 #include "overlayTexture/OverlayTextureShader.h"
 #include "overlayColor/OverlayColorShader.h"
+#include "textureLight/TextureLightShader.h"
 
 class CommonShaders
 {
@@ -16,6 +17,7 @@ public:
     OverlayTextureShader *overlayTextureShader;
     OverlayColorShader *overlayColorShader;
     Model_ShaderParticleCommon *particleShader;
+    TextureLightShader *textureLightShader;
 
     // Member Functions
     BOOL initialize()
@@ -26,7 +28,7 @@ public:
         overlayTextureShader = new OverlayTextureShader();
         overlayColorShader = new OverlayColorShader();
         particleShader = new Model_ShaderParticleCommon();
-
+        textureLightShader = new TextureLightShader;
         if (!colorShader->initialize())
         {
             PrintLog("Error in initializing colorShader");
@@ -55,6 +57,10 @@ public:
         if (!particleShader->initialize())
         {
             PrintLog("Error in initializing particleShader");
+        }
+        if (!textureLightShader->initialize())
+        {
+            PrintLog("Error in initializing textureLightShader");
         }
 
         return TRUE;
@@ -93,6 +99,11 @@ public:
         {
             particleShader->uninitialize();
             free(particleShader);
+        }
+        if (textureLightShader)
+        {
+            textureLightShader->uninitialize();
+            free(textureLightShader);
         }
     }
 };

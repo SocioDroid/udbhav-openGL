@@ -91,10 +91,10 @@ float objAngleIncrement = 1.0f;
 // =============================== GLOBAL CONTROLS
 int PHASE_CURRENT = PHASE_MAIN;
 BOOL USE_FPV_CAM = FALSE;
-BOOL playMusic = TRUE;
-BOOL enableBezierCameraControl = TRUE;
+BOOL playMusic = FALSE;
+BOOL enableBezierCameraControl = FALSE;
 BOOL spaceBarIsPressed = FALSE;
-float VOLUME_LEVEL = 0.1f;
+float VOLUME_LEVEL = 1.0f;
 // ==============================================//
 
 BOOL start_fade_out_opening = FALSE;

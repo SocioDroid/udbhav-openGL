@@ -278,7 +278,7 @@ public:
         // use sine to create impression of wind gust
         for (int i = 0; i < (512); i++)
         {
-            winDir[i][0] = (float)(sin((float)i / (float)sizeof(winDir)) * windRand);
+            winDir[i][0] = (float)(sin((float)i / (float)sizeof(winDir)) * windRand) + 0.5f;
 
             winDir[i][1] = 0.0f;
 
@@ -302,7 +302,8 @@ public:
 
             // glUniform3fv(rainShader->eyePosUniform, 1, (USE_FPV_CAM ? camera.getEye() : globalBezierCamera->getEye()));
             glUniform3fv(rainShader->eyePosUniform, 1, camera.getEye());
-            glUniform3fv(rainShader->windDirUniform, 1, winDir[windPtr]);
+            // glUniform3fv(rainShader->windDirUniform, 1, winDir[windPtr]);
+            glUniform3fv(rainShader->windDirUniform, 1, vec3(5.0f, 0.0f, 0.0f));
             glUniform1f(rainShader->dtUniform, dt);
 
             // FOR LIGHT
@@ -366,7 +367,7 @@ public:
 
             glUseProgram(0);
 
-            dt = 1e-3f * ELAPSED_TIME;
+            dt = 1e-3f * (ELAPSED_TIME * 0.05f);
         }
         modelMatrix = popMatrix();
     }
