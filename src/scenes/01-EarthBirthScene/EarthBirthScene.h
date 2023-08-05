@@ -314,7 +314,7 @@ public:
         // Starfield
         pushMatrix(modelMatrix);
         {
-            modelMatrix = modelMatrix * vmath::translate(-5.999997f, -39.099976f, 200.102524f);
+            modelMatrix = modelMatrix * vmath::translate(-5.999997f, -39.099976f, 200.102524f) * vmath::rotate(180.0f, 1.0f, 0.0f, 0.0f);
             starfield->display();
         }
         modelMatrix = popMatrix();

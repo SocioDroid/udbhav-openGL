@@ -30,6 +30,7 @@ public:
     GLuint kdUniform;
     GLuint ksUniform;
     GLuint materialShinessUniform;
+    GLuint alphaUniform;
 
     // Member Functions
     BOOL initializeRainShader()
@@ -76,7 +77,7 @@ public:
         sunColorUniform = glGetUniformLocation(shaderProgramObject, "sunColor");
         sunIntensityUniform = glGetUniformLocation(shaderProgramObject, "sunIntensity");
 
-        // for light 
+        // for light
         laUniform = glGetUniformLocation(shaderProgramObject, "u_la");
         ldUniform = glGetUniformLocation(shaderProgramObject, "u_ld");
         lsUniform = glGetUniformLocation(shaderProgramObject, "u_ls");
@@ -86,8 +87,8 @@ public:
         kdUniform = glGetUniformLocation(shaderProgramObject, "u_kd");
         ksUniform = glGetUniformLocation(shaderProgramObject, "u_ks");
         materialShinessUniform = glGetUniformLocation(shaderProgramObject, "u_materialShiness");
-
-
+        alphaUniform = glGetUniformLocation(shaderProgramObject, "u_alpha");
+        
         return TRUE;
     }
 

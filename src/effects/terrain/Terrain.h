@@ -45,7 +45,7 @@ public:
         vmath::mat4 positionMatrix = vmath::translate(0.0f, 0.0f, 0.0f);
         modelMatrix = positionMatrix;
 
-        octaves = 13;
+        octaves = 10;
         frequency = 0.01f;
         grassCoverage = 0.0f;
         tessMultiplier = 1.0f;
@@ -133,7 +133,7 @@ public:
             glEnable(GL_CLIP_DISTANCE0);
         }
         vmath::mat4 gWorld = modelMatrix;
-        
+
         vmath::mat4 gVP = perspectiveProjectionMatrix * (USE_FPV_CAM ? camera.getViewMatrix() : globalBezierCamera->getViewMatrix());
 
         glUseProgram(shad->shaderProgramObject);
@@ -242,6 +242,28 @@ public:
     {
         float camX = cam.getEye()[0];
         float camY = cam.getEye()[2];
+
+        float x = pos[0];
+        float y = pos[1];
+
+        bool inX = false;
+        if ((camX <= x + 1.0f * tileW / 2.0f) && (camX >= x - 1.0f * tileW / 2.0f))
+        {
+            inX = true;
+        }
+        bool inY = false;
+        if ((camY <= y + 1.0f * tileW / 2.0f) && (camY >= y - 1.0f * tileW / 2.0f))
+        {
+            inY = true;
+        }
+
+        return inX && inY;
+    }
+
+    bool inTile(BezierCamera *cam, vmath::vec2 pos)
+    {
+        float camX = cam->getEye()[0];
+        float camY = cam->getEye()[2];
 
         float x = pos[0];
         float y = pos[1];
@@ -380,7 +402,7 @@ private:
     {
         for (vmath::vec2 p : positionVec)
         {
-            if (inTile(camera, p))
+            if ((USE_FPV_CAM ? inTile(camera, p) : inTile(globalBezierCamera, p)))
             {
                 result = p;
                 return true;

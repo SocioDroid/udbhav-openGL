@@ -34,7 +34,7 @@ uniform vec3 u_ka;
 uniform vec3 u_kd;
 uniform vec3 u_ks;
 uniform float u_materialShiness;
-
+uniform float u_alpha = 1.0;
 out vec4 FragColor;
 
 // /**
@@ -159,9 +159,6 @@ vec3 lightFunc(void) {
 
 void main(void) {
 
-    //sun (directional) lighting
-    vec4 sunLight = rainResponse(sunDir, sunColor, 1.0 + fract(randEnlight), false);
-
     //TODO: point lighting
     vec4 pointLight = vec4(1.0, 1.0, 1.0, 0.5);
     vec4 pointLightColor = vec4(1.0, 1.0, 1.0, 1.0);
@@ -175,9 +172,8 @@ void main(void) {
     if(angleToSpotLight > cosSpotlightAngle)
         pointLight = rainResponse(pointLightDir, vec3(pointLightColor), 2 * pointLightIntensity * randEnlight, true);
 
-
     pointLight = rainResponse(pointLightDir, vec3(pointLightColor), 2 * pointLightIntensity * randEnlight, true);
-    
+
     FragColor = (texture(rainTex, fragmentTexCoords.xy)) * vec4(lightFunc(), 1.0);
-    FragColor.a *= 0.5;
+    FragColor.a *= 0.7 * u_alpha;
 }

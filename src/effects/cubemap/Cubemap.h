@@ -98,15 +98,6 @@ public:
 
         glBindVertexArray(0); // unbind vao
 
-        // char* faces[] =
-        // {
-        //         "./assets/textures/hall/right.jpg",
-        //         "./assets/textures/hall/left.jpg",
-        //         "./assets/textures/hall/top.jpg",
-        //         "./assets/textures/hall/bottom.jpg",
-        //         "./assets/textures/hall/front.jpg",
-        //         "./assets/textures/hall/back.jpg"
-        // };
         cubemapTexture = loadCubemap(faces_path);
 
         return TRUE;

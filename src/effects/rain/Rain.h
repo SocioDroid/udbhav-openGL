@@ -57,6 +57,7 @@ public:
     GLfloat materialShininess = 50.0f;
 
     GLfloat renderRain = true;
+    GLfloat alpha = 1.0f;
 
     float rainfactors[370] =
         {
@@ -287,85 +288,87 @@ public:
 
     void display(void)
     {
+
         pushMatrix(modelMatrix);
         {
-            display_rain();
+            // Variable Declarations
+            createRainData();
+
+            glUseProgram(rainShader->shaderProgramObject);
+
+            glUniformMatrix4fv(rainShader->modelMatrixUniform, 1, GL_FALSE, vmath::translate(0.0f, -1.0f, 0.0f));
+            glUniformMatrix4fv(rainShader->viewMatrixUniform, 1, GL_FALSE, mat4::identity());
+            glUniformMatrix4fv(rainShader->projectionMatrixUniform, 1, GL_FALSE, perspectiveProjectionMatrix);
+
+            // glUniform3fv(rainShader->eyePosUniform, 1, (USE_FPV_CAM ? camera.getEye() : globalBezierCamera->getEye()));
+            glUniform3fv(rainShader->eyePosUniform, 1, camera.getEye());
+            glUniform3fv(rainShader->windDirUniform, 1, winDir[windPtr]);
+            glUniform1f(rainShader->dtUniform, dt);
+
+            // FOR LIGHT
+            glUniform3fv(rainShader->laUniform, 1, lightAmbient);
+            glUniform3fv(rainShader->ldUniform, 1, lightDiffuse);
+            glUniform3fv(rainShader->lsUniform, 1, lightSpecular);
+            glUniform4fv(rainShader->lightPositionUniform, 1, lightPosition);
+
+            glUniform3fv(rainShader->kaUniform, 1, materialAmbient);
+            glUniform3fv(rainShader->kdUniform, 1, materialDiffuse);
+            glUniform3fv(rainShader->ksUniform, 1, materialSpecular);
+            glUniform1f(rainShader->materialShinessUniform, materialShininess);
+            glUniform1f(rainShader->alphaUniform, alpha);
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D, texture_rain);
+            glUniform1i(rainShader->rainTextureSamplerUniform, 0);
+
+            glEnable(GL_TEXTURE_1D);
+            glActiveTexture(GL_TEXTURE1);
+            glBindTexture(GL_TEXTURE_1D, texture_rain_factor);
+            glUniform1i(rainShader->rainfactorsSamplerUniform, 1);
+
+            glUniform3fv(rainShader->sunDirUniform, 1, vec3(0.0f, -1.0f, 0.0f));
+            glUniform3fv(rainShader->sunColorUniform, 1, vec3(252.0f / 255.0f, 229.0f / 255.0f, 112.0f / 255.0f));
+            glUniform1f(rainShader->sunIntensityUniform, 5.0f);
+
+            glBindVertexArray(vao);
+
+            glBindBuffer(GL_ARRAY_BUFFER, vbo_position);
+            glBufferData(GL_ARRAY_BUFFER, 4 * maxParticles * sizeof(float), posBuffer, GL_DYNAMIC_DRAW);
+            glVertexAttribPointer(MATRIX_ATTRIBUTE_POSITION, 4, GL_FLOAT, GL_FALSE, 0, NULL);
+            glEnableVertexAttribArray(MATRIX_ATTRIBUTE_POSITION);
+
+            glBindBuffer(GL_ARRAY_BUFFER, vbo_seed);
+            glBufferData(GL_ARRAY_BUFFER, 4 * maxParticles * sizeof(float), seedBuffer, GL_DYNAMIC_DRAW);
+            glVertexAttribPointer(MATRIX_ATTRIBUTE_SEED, 4, GL_FLOAT, GL_FALSE, 0, NULL);
+            glEnableVertexAttribArray(MATRIX_ATTRIBUTE_SEED);
+
+            glBindBuffer(GL_ARRAY_BUFFER, vbo_velocity);
+            glBufferData(GL_ARRAY_BUFFER, 4 * maxParticles * sizeof(float), veloBuffer, GL_DYNAMIC_DRAW);
+            glVertexAttribPointer(MATRIX_ATTRIBUTE_VELOCITY, 4, GL_FLOAT, GL_FALSE, 0, NULL);
+            glEnableVertexAttribArray(MATRIX_ATTRIBUTE_VELOCITY);
+
+            // Blend
+            glEnable(GL_BLEND);
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+            glDrawArrays(GL_POINTS, 0, maxParticles);
+            glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+            glDisable(GL_BLEND);
+
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D, 0);
+
+            glActiveTexture(GL_TEXTURE1);
+            glBindTexture(GL_TEXTURE_1D, 0);
+            glDisable(GL_TEXTURE_1D);
+
+            glBindVertexArray(0);
+
+            glUseProgram(0);
+
+            dt = 1e-3f * ELAPSED_TIME;
         }
         modelMatrix = popMatrix();
-    }
-
-    void display_rain(void)
-    {
-        // Variable Declarations
-        createRainData();
-
-        glUseProgram(rainShader->shaderProgramObject);
-
-        glUniformMatrix4fv(rainShader->modelMatrixUniform, 1, GL_FALSE, vmath::translate(0.0f, -1.0f, 0.0f));
-        glUniformMatrix4fv(rainShader->viewMatrixUniform, 1, GL_FALSE, mat4::identity());
-        glUniformMatrix4fv(rainShader->projectionMatrixUniform, 1, GL_FALSE, perspectiveProjectionMatrix);
-
-        // glUniform3fv(rainShader->eyePosUniform, 1, (USE_FPV_CAM ? camera.getEye() : globalBezierCamera->getEye()));
-        glUniform3fv(rainShader->eyePosUniform, 1, camera.getEye());
-        glUniform3fv(rainShader->windDirUniform, 1, winDir[windPtr]);
-        glUniform1f(rainShader->dtUniform, dt);
-
-        // FOR LIGHT
-        glUniform3fv(rainShader->laUniform, 1, lightAmbient);
-        glUniform3fv(rainShader->ldUniform, 1, lightDiffuse);
-        glUniform3fv(rainShader->lsUniform, 1, lightSpecular);
-        glUniform4fv(rainShader->lightPositionUniform, 1, lightPosition);
-
-        glUniform3fv(rainShader->kaUniform, 1, materialAmbient);
-        glUniform3fv(rainShader->kdUniform, 1, materialDiffuse);
-        glUniform3fv(rainShader->ksUniform, 1, materialSpecular);
-        glUniform1f(rainShader->materialShinessUniform, materialShininess);
-
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, texture_rain);
-        glUniform1i(rainShader->rainTextureSamplerUniform, 0);
-
-        glEnable(GL_TEXTURE_1D);
-        glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_1D, texture_rain_factor);
-        glUniform1i(rainShader->rainfactorsSamplerUniform, 1);
-
-        glUniform3fv(rainShader->sunDirUniform, 1, vec3(0.0f, -1.0f, 0.0f));
-        glUniform3fv(rainShader->sunColorUniform, 1, vec3(252.0f / 255.0f, 229.0f / 255.0f, 112.0f / 255.0f));
-        glUniform1f(rainShader->sunIntensityUniform, 5.0f);
-
-        glBindVertexArray(vao);
-
-        glBindBuffer(GL_ARRAY_BUFFER, vbo_position);
-        glBufferData(GL_ARRAY_BUFFER, 4 * maxParticles * sizeof(float), posBuffer, GL_DYNAMIC_DRAW);
-        glVertexAttribPointer(MATRIX_ATTRIBUTE_POSITION, 4, GL_FLOAT, GL_FALSE, 0, NULL);
-        glEnableVertexAttribArray(MATRIX_ATTRIBUTE_POSITION);
-
-        glBindBuffer(GL_ARRAY_BUFFER, vbo_seed);
-        glBufferData(GL_ARRAY_BUFFER, 4 * maxParticles * sizeof(float), seedBuffer, GL_DYNAMIC_DRAW);
-        glVertexAttribPointer(MATRIX_ATTRIBUTE_SEED, 4, GL_FLOAT, GL_FALSE, 0, NULL);
-        glEnableVertexAttribArray(MATRIX_ATTRIBUTE_SEED);
-
-        glBindBuffer(GL_ARRAY_BUFFER, vbo_velocity);
-        glBufferData(GL_ARRAY_BUFFER, 4 * maxParticles * sizeof(float), veloBuffer, GL_DYNAMIC_DRAW);
-        glVertexAttribPointer(MATRIX_ATTRIBUTE_VELOCITY, 4, GL_FLOAT, GL_FALSE, 0, NULL);
-        glEnableVertexAttribArray(MATRIX_ATTRIBUTE_VELOCITY);
-
-        glDrawArrays(GL_POINTS, 0, maxParticles);
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, 0);
-
-        glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_1D, 0);
-        glDisable(GL_TEXTURE_1D);
-
-        glBindVertexArray(0);
-
-        glUseProgram(0);
-
-        dt = 1e-3f * ELAPSED_TIME;
     }
 
     void display1(void)

@@ -17,7 +17,7 @@ using namespace vmath;
 #define VIGNETTE_OUTER_RADIUS 1.0f
 #define VIGNETTE_INNER_RADIUS 0.8f
 
-#define WATER_QUAD_SIZE 1000. * 90.
+#define WATER_QUAD_SIZE 1000. * 80.
 
 // ==================== Extern Variables
 

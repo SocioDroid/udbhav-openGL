@@ -40,7 +40,7 @@ public:
     GLuint vbo_line_Position;
     bool handlePerspective = false;
     float fov;
-
+    bool isWater = false;
     const float verticesPoints[30] = {
         0.0f, 0.0f, 50.0f,
         -12.0f, 0.0f, 20.0f,
@@ -147,8 +147,8 @@ public:
     void updateInversCameraVectors()
     {
         // Calculating yaw and pitch
-        yaw = deCasteljau(time, yawPoints);
-        pitch = deCasteljau(time, pitchPoints);
+        // yaw = deCasteljau(time, yawPoints);
+        // pitch = deCasteljau(time, pitchPoints);
         pitch = -pitch;
 
         // updating center [ YAW & PITCH ]
@@ -167,9 +167,9 @@ public:
 
         // Updating Position
         // position = calculateBezierCurve(this.bezierPoints, this.time, null, 0);
-        position[0] = deCasteljau(time, extractColumn(bezierPoints, 0));
-        position[1] = deCasteljau(time, extractColumn(bezierPoints, 1));
-        position[2] = deCasteljau(time, extractColumn(bezierPoints, 2));
+        // position[0] = deCasteljau(time, extractColumn(bezierPoints, 0));
+        // position[1] = deCasteljau(time, extractColumn(bezierPoints, 1));
+        // position[2] = deCasteljau(time, extractColumn(bezierPoints, 2));
 
         // float distance = 2.0f * (position[1] - 0.0f );
         // position[1] -= distance;
@@ -284,7 +284,16 @@ public:
     void update()
     {
         // Updating all the camera vectors
-        updateCameraVectors();
+        if (!isWater)
+            updateCameraVectors();
+        else
+        {
+            yaw = deCasteljau(time, yawPoints);
+            pitch = deCasteljau(time, pitchPoints);
+            position[0] = deCasteljau(time, extractColumn(bezierPoints, 0));
+            position[1] = deCasteljau(time, extractColumn(bezierPoints, 1));
+            position[2] = deCasteljau(time, extractColumn(bezierPoints, 2));
+        }
     }
 
     void uninitialize()

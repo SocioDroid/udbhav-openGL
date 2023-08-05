@@ -1,6 +1,6 @@
 #pragma once
 #include "../../utils/common.h"
-#include "../../effects/cubemap/Cubemap.h"
+#include "../../effects/cubemapMerge/CubemapMerge.h"
 #include "../../utils/camera/BezierCamera.h"
 #include "../../shaders/smokeEarth/SmokeEarthShader.h"
 #include "../../shaders/textureLight/TextureLightShader.h"
@@ -16,18 +16,19 @@ class TerrainFirstRainScene
 public:
     bool isInitialized = false;
     Terrain *terrain;
-    CubeMap *cubemap;
+    CubeMapMerge *cubemap;
     WaterMatrix *waterMatrix;
     Rain *rain = NULL;
     BezierCamera sceneCamera;
     // Fadin Fadeout
     float fadeAlpha = 1.0f;
+    float cubemapFactor = 0.0f;
     // member functions
     TerrainFirstRainScene()
     {
         // Terrain
         terrain = new Terrain();
-        cubemap = new CubeMap();
+        cubemap = new CubeMapMerge();
         waterMatrix = new WaterMatrix();
         rain = new Rain(20000);
     }
@@ -35,7 +36,7 @@ public:
     BOOL initialize()
     {
         // Cubemap
-        const char *faces[] =
+        const char *facesDark[] =
             {
                 "./assets/textures/terrain/cubemap_dark/px.png",
                 "./assets/textures/terrain/cubemap_dark/nx.png",
@@ -43,8 +44,20 @@ public:
                 "./assets/textures/terrain/cubemap_dark/ny.png",
                 "./assets/textures/terrain/cubemap_dark/pz.png",
                 "./assets/textures/terrain/cubemap_dark/nz.png"};
-        cubemap = new CubeMap();
-        if (!cubemap->initialize(faces))
+
+        // Cubemap
+        const char *facesLight[] =
+            {
+                "./assets/textures/terrain/cubemap_light/px.png",
+                "./assets/textures/terrain/cubemap_light/nx.png",
+                "./assets/textures/terrain/cubemap_light/py.png",
+                "./assets/textures/terrain/cubemap_light/ny.png",
+                "./assets/textures/terrain/cubemap_light/pz.png",
+                "./assets/textures/terrain/cubemap_light/nz.png"};
+
+        cubemap = new CubeMapMerge();
+
+        if (!cubemap->initialize(facesDark, facesLight))
         {
             PrintLog("Failed to initialize starfield CubeMap");
             return FALSE;
@@ -61,9 +74,8 @@ public:
         }
 
         // Camera
-        // Camera
         sceneCamera.initialize();
-
+        sceneCamera.isWater = true;
         isInitialized = true;
         return TRUE;
     }
@@ -106,7 +118,8 @@ public:
         }
         modelMatrix = popMatrix();
 
-        drawRain();
+        if (rain->alpha > 0.0f)
+            drawRain();
 
         // FADE IN
         pushMatrix(modelMatrix);
@@ -123,7 +136,7 @@ public:
         pushMatrix(modelMatrix);
         {
             modelMatrix = modelMatrix * vmath::scale(500000.0f, 500000.0f, 500000.0f);
-            cubemap->display();
+            cubemap->display(cubemapFactor);
         }
         modelMatrix = popMatrix();
 
@@ -187,6 +200,8 @@ public:
         if (sceneCamera.time < 1.0f)
             sceneCamera.time += (0.000015f + 0.00037f);
 
+        // sceneCamera.time = globalTime;
+
         terrain->updateTilesPositions();
         // Transition to green texture
         if (terrain->getTextureTransitionFactor() < 1.0f)
@@ -211,7 +226,21 @@ public:
                 waterMatrix->interpolateWaterColor += 0.001f;
             }
         }
-
+        // Cubemap Transition
+        if (sceneCamera.time > 0.5f && cubemapFactor < 1.0f)
+        {
+            cubemapFactor += 0.001f;
+        }
+        // Rain alpha
+        if (sceneCamera.time > 0.5f && rain->alpha > 0.0f)
+        {
+            rain->alpha -= 0.002f;
+        }
+        // Trigger fadeout
+        if (ELAPSED_TIME > (START_TIME_SCENE_04_TERRAIN_SHADOW - 3))
+        {
+            isFadeout = true;
+        }
         // terrain->setWaterHeight(scaleX);
         // terrain->setTextureTransitionFactor(1.0f);
     }
