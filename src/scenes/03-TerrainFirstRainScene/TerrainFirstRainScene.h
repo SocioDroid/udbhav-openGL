@@ -26,9 +26,14 @@ public:
     NoiseCloudShader noiseCloudShader;
     GLuint texture_noise;
 
-    // Fadin Fadeout
+    // Fadein Fadeout
     float fadeAlpha = 1.0f;
     float cubemapFactor = 0.0f;
+    float scaleFactor = 2.0f;
+
+    // Cloud
+    float cloudAlpha = 0.0f;
+
     // member functions
     TerrainFirstRainScene()
     {
@@ -36,7 +41,7 @@ public:
         terrain = new Terrain();
         cubemap = new CubeMapMerge();
         waterMatrix = new WaterMatrix();
-        rain = new Rain(20000);
+        rain = new Rain(30000);
     }
 
     BOOL initialize()
@@ -80,13 +85,13 @@ public:
         }
 
         // // Cloud
-        // sphereCloud = new SphereAish(1.0f, 100, 100);
-        // if (!noiseCloudShader.initialize())
-        // {
-        //     PrintLog("\nFailed to initialize NoisCloud Shader\n");
-        //     return FALSE;
-        // }
-        // CreateNoise3D(&texture_noise);
+        sphereCloud = new SphereAish(1.0f, 100, 100);
+        if (!noiseCloudShader.initialize())
+        {
+            PrintLog("\nFailed to initialize NoisCloud Shader\n");
+            return FALSE;
+        }
+        CreateNoise3D(&texture_noise);
 
         // Camera
         sceneCamera.initialize();
@@ -143,11 +148,12 @@ public:
             commonShaders->overlayColorShader->draw(modelMatrix, 0.0f, 0.0f, 0.0f, fadeAlpha);
         }
         modelMatrix = popMatrix();
-        sceneCamera.displayBezierCurve();
+        // sceneCamera.displayBezierCurve();
     }
 
     void displayScene(float terrainUp)
     {
+        // cubemap
         pushMatrix(modelMatrix);
         {
             modelMatrix = modelMatrix * vmath::scale(500000.0f, 500000.0f, 500000.0f);
@@ -155,13 +161,18 @@ public:
         }
         modelMatrix = popMatrix();
 
-        // pushMatrix(modelMatrix);
-        // {
-        //     // modelMatrix = modelMatrix * vmath::scale(500000.0f, 500000.0f, 500000.0f);
-        //     drawCloudNoise();
-        // }
-        // modelMatrix = popMatrix();
+        // Cloud
+        if (cloudAlpha < 1.0f)
+        {
+            pushMatrix(modelMatrix);
+            {
+                modelMatrix = modelMatrix * scale(100000.0f, 100000.0f, 100000.0f) * vmath::rotate(-90.0f, 1.0f, 0.0f, 0.0f);
+                drawCloudNoise();
+            }
+            modelMatrix = popMatrix();
+        }
 
+        // Terrain
         pushMatrix(modelMatrix);
         {
             terrain->up = terrainUp;
@@ -200,23 +211,39 @@ public:
         }
         modelMatrix = popMatrix();
     }
-    BOOL isScaled = FALSE;
-    float scaleFactor = 2.0f;
+    /// Helper functions
+    float randFloat(float min, float max)
+    {
+        return min + (rand() / (RAND_MAX / (max - min)));
+    }
     void drawCloudNoise()
     {
         glUseProgram(noiseCloudShader.shaderProgramObject);
         pushMatrix(modelMatrix);
         {
-            modelMatrix = modelMatrix * scale(1000000.0f, 1000000.0f, 100000.0f) * vmath::rotate(-90.0f, 1.0f, 0.0f, 0.0f);
             /* Initialize uniforms constant throughout rendering loop. */
             glUniformMatrix4fv(noiseCloudShader.modelMatrixUniform, 1, GL_FALSE, modelMatrix);
             glUniformMatrix4fv(noiseCloudShader.viewMatrixUniform, 1, GL_FALSE, viewMatrix);
             glUniformMatrix4fv(noiseCloudShader.projectionMatrixUniform, 1, GL_FALSE, perspectiveProjectionMatrix);
             glUniform3fv(noiseCloudShader.lightPosUniform, 1, vec3(0.0f, 5.0f, 1.0f));
-            glUniform3fv(noiseCloudShader.Color1Uniform, 1, vec3(0.3, 0.3, 0.3));
-            glUniform3fv(noiseCloudShader.Color2Uniform, 1, vec3(0.0, 0.0, 0.0));
-            glUniform1f(noiseCloudShader.scaleUniform, scaleFactor);
 
+            // Lightning
+            if (fmod(ELAPSED_TIME, 15) >= 0 && fmod(ELAPSED_TIME, 15) <= randFloat(0.0f, 0.3f) && sceneCamera.time < 0.6)
+                glUniform3fv(noiseCloudShader.Color1Uniform, 1, vec3(1.0f, 1.0f, 1.0f));
+            else
+            {
+                if (fmod(ELAPSED_TIME, 3) >= 0 && fmod(ELAPSED_TIME, 3) <= randFloat(0.0f, 0.1f) && sceneCamera.time < 0.6)
+                    glUniform3fv(noiseCloudShader.Color1Uniform, 1, vec3(1.0f, 1.0f, 1.0f));
+                else
+                    glUniform3fv(noiseCloudShader.Color1Uniform, 1, vec3(0.2, 0.2, 0.2));
+            }
+
+            glUniform3fv(noiseCloudShader.Color2Uniform, 1, vec3(0.0, 0.0, 0.0));
+            glUniform1f(noiseCloudShader.scaleUniform, scaleFactor * 0.1f);
+            glUniform1f(noiseCloudShader.alpha, cloudAlpha);
+
+            glEnable(GL_BLEND);
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_3D, texture_noise);
             glUniform1i(noiseCloudShader.textureSamplerUniform, 0);
@@ -224,6 +251,7 @@ public:
             glBindVertexArray(sphereCloud->vao_sphere);
             glDrawArrays(GL_TRIANGLE_STRIP, 0, sphereCloud->getNumberOfSphereVertices());
             glBindVertexArray(0);
+            glDisable(GL_BLEND);
         }
         modelMatrix = popMatrix();
         glUseProgram(0);
@@ -292,6 +320,14 @@ public:
         if (ELAPSED_TIME > (START_TIME_SCENE_04_TERRAIN_SHADOW - 3))
         {
             isFadeout = true;
+        }
+        // Cloud Alpha
+        if (sceneCamera.time > 0.6)
+        {
+            if (cloudAlpha < 1.0f)
+            {
+                cloudAlpha += 0.001f;
+            }
         }
         // terrain->setWaterHeight(scaleX);
         // terrain->setTextureTransitionFactor(1.0f);

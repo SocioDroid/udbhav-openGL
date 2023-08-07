@@ -7,6 +7,7 @@
 #include "../01-EarthBirthScene/EarthBirthScene.h"
 #include "../02-EarthCooldownScene/EarthCooldownScene.h"
 #include "../03-TerrainFirstRainScene/TerrainFirstRainScene.h"
+#include "../04-TerrainShadowScene/TerrainShadowScene.h"
 
 BOOL bDoneAllInitialization = FALSE;
 extern Camera camera;
@@ -23,6 +24,7 @@ public:
     EarthBirthScene *earthBirthScene01;
     EarthCooldownScene *earthCooldownScene02;
     TerrainFirstRainScene *terrainFirstRainScene03;
+    TerrainShadowScene *terrainShadowScene04;
     // member functions
     MainScene()
     {
@@ -30,10 +32,11 @@ public:
         earthBirthScene01 = new EarthBirthScene();
         earthCooldownScene02 = new EarthCooldownScene();
         terrainFirstRainScene03 = new TerrainFirstRainScene();
+        terrainShadowScene04 = new TerrainShadowScene();
 
         // SCENE CONTROLS
         START_E2E_DEMO = FALSE;
-        selected_scene = SCENE_03_TERRAIN_WITH_HEAVY_RAIN;
+        selected_scene = SCENE_04_TERRAIN_SHADOW;
     }
 
     BOOL initialize()
@@ -42,6 +45,7 @@ public:
 
         if (START_E2E_DEMO)
         {
+            terrainShadowScene04->initialize();
             terrainFirstRainScene03->initialize();
             earthCooldownScene02->initialize();
             // Need to initialize at the end
@@ -59,6 +63,9 @@ public:
                 break;
             case SCENE_03_TERRAIN_WITH_HEAVY_RAIN:
                 terrainFirstRainScene03->initialize();
+                break;
+            case SCENE_04_TERRAIN_SHADOW:
+                terrainShadowScene04->initialize();
                 break;
             }
         }
@@ -78,6 +85,9 @@ public:
             break;
         case SCENE_03_TERRAIN_WITH_HEAVY_RAIN:
             terrainFirstRainScene03->display();
+            break;
+        case SCENE_04_TERRAIN_SHADOW:
+            terrainShadowScene04->display();
             break;
         default:
             break;
@@ -109,6 +119,9 @@ public:
             break;
         case SCENE_03_TERRAIN_WITH_HEAVY_RAIN:
             terrainFirstRainScene03->update();
+            break;
+        case SCENE_04_TERRAIN_SHADOW:
+            terrainShadowScene04->update();
             break;
         default:
             break;

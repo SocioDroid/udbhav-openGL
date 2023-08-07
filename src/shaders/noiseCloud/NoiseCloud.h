@@ -28,6 +28,7 @@ public:
 
     GLfloat scaleFactor = 2.0f;
     BOOL isScaled = FALSE;
+    float alpha = 0.0f;
 
     BOOL initialize(void)
     {
@@ -64,31 +65,8 @@ public:
 
         Color1Uniform = glGetUniformLocation(shaderProgramObject, "Color1"); // Sky related uniform
         Color2Uniform = glGetUniformLocation(shaderProgramObject, "Color2"); // Sky related uniform
+        alpha = glGetUniformLocation(shaderProgramObject, "u_alpha"); // Sky related uniform
         return TRUE;
-    }
-
-    void update(void)
-    {
-        glUniform3fv(lightPosUniform, 1, lightPos);
-        glUniform1f(scaleUniform, scaleFactor);
-
-        glUniform3fv(Color1Uniform, 1, Color1);
-        glUniform3fv(Color2Uniform, 1, Color2);
-
-        if (isScaled == TRUE)
-        {
-            scaleFactor = scaleFactor - 0.005f;
-
-            if (scaleFactor < 1.0f)
-                isScaled = FALSE;
-        }
-        else
-        {
-            // scaleFactor = scaleFactor + 0.1f;
-            scaleFactor = scaleFactor + 0.005f;
-            if (scaleFactor > 2.0f)
-                isScaled = TRUE;
-        }
     }
 
     void uninitialize(void)
