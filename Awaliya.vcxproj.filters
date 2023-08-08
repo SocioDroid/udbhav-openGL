@@ -18,6 +18,12 @@
     <None Include="build.bat">
       <Filter>Source Files</Filter>
     </None>
+    <None Include="src\shaders\shadow\shadow_mapping_depth.vs" />
+    <None Include="src\shaders\shadow\debug_quad.fs" />
+    <None Include="src\shaders\shadow\debug_quad.vs" />
+    <None Include="src\shaders\shadow\shadow_mapping.fs" />
+    <None Include="src\shaders\shadow\shadow_mapping.vs" />
+    <None Include="src\shaders\shadow\shadow_mapping_depth.fs" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\effects\cloth\Cloth.h">
@@ -225,6 +231,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\utils\noise\Noise.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shaders\shadow\ShadowShader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

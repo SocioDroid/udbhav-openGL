@@ -5,7 +5,7 @@
 
 extern Camera camera;
 
-class ShadowAwara
+class ShadowShader
 {
 public:
     // Variables
@@ -326,7 +326,6 @@ public:
         mat4 lightProjectionMatrix = mat4::identity();
         mat4 lightViewMatrix = mat4::identity();
         mat4 lightSpaceMatrix = mat4::identity();
-        mat4 translateMatrix = mat4::identity();
         float near_plane = 1.0f, far_plane = 7.5f;
 
         lightPos[0] = 1.600000f;
@@ -348,100 +347,135 @@ public:
         // Use Depth Shader
         glUseProgram(shaderProgramObject_depth);
         {
+
+            glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
+
+            glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
             {
-                glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
+                glUniformMatrix4fv(projectionMatrixUniform_depth, 1, GL_FALSE, lightSpaceMatrix);
+                // glUniformMatrix4fv(viewMatrixUniform_depth, 1, GL_FALSE, lightViewMatrix);
+                mat4 translateMatrix = mat4::identity();
+                mat4 rotateMatrix = mat4::identity();
 
-                glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
-                {
-                    glUniformMatrix4fv(projectionMatrixUniform_depth, 1, GL_FALSE, lightSpaceMatrix);
-                    // glUniformMatrix4fv(viewMatrixUniform_depth, 1, GL_FALSE, lightViewMatrix);
-                    mat4 translateMatrix = mat4::identity();
-                    mat4 rotateMatrix = mat4::identity();
+                translateMatrix = vmath::translate(2.0f + -2.0f, -0.5f + -0.439998f, 34.50f - 30.500000f + -1.0f);
+                rotateMatrix = vmath ::rotate(65.50f, 0.0f, 1.0f, 0.0f);
 
-                    translateMatrix = vmath::translate(2.0f + -2.0f, -0.5f + -0.439998f, 34.50f - 30.500000f + -1.0f);
-                    rotateMatrix = vmath ::rotate(65.50f, 0.0f, 1.0f, 0.0f);
+                modelMatrix = translateMatrix * rotateMatrix;
 
-                    modelMatrix = translateMatrix * rotateMatrix;
+                glUniformMatrix4fv(modelMatrixUniform_depth, 1, GL_FALSE, modelMatrix);
 
-                    glUniformMatrix4fv(modelMatrixUniform_depth, 1, GL_FALSE, modelMatrix);
+                glClear(GL_DEPTH_BUFFER_BIT);
 
-                    glClear(GL_DEPTH_BUFFER_BIT);
-
-                    awara->displayForShadow(modelMatrixUniform_depth, shaderProgramObject_depth, TRUE, lightSpaceMatrix, vec3(lightPos[0], lightPos[1], lightPos[2]));
-                }
-                glBindFramebuffer(GL_FRAMEBUFFER, 0);
+                // awara->displayForShadow(modelMatrixUniform_depth, shaderProgramObject_depth, TRUE, lightSpaceMatrix, vec3(lightPos[0], lightPos[1], lightPos[2]));
             }
+            glBindFramebuffer(GL_FRAMEBUFFER, 0);
         }
         glUseProgram(0);
 
+        // {
+        //     modelMatrix = mat4::identity();
+
+        //     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        //     glViewport(0, 0, giWindowWidth, giWindowHeight);
+
+        //     perspectiveProjectionMatrix = vmath::perspective(
+        //         45.0f,
+        //         (GLfloat)giWindowWidth / (GLfloat)giWindowHeight,
+        //         0.1f,
+        //         1000.0f);
+
+        //     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        //     if (USE_FPV_CAM)
+        //     {
+        //         viewMatrix = camera.getViewMatrix();
+        //     }
+        //     else
+        //     {
+        //         viewMatrix = globalBezierCamera->getViewMatrix();
+        //     }
+
+        //     // Use default shader + shadow Shader
+        //     glUseProgram(shaderProgramObject_shadow);
+        //     {
+        //         // vec3 viewPos = vec3(0.0f + objX, 0.0f + objY, 10.0f + objZ);
+        //         // vec3 viewPos = vec3(0.0f, 3.0f, 10.0f);
+        //         vec3 viewPos;
+        //         if (USE_FPV_CAM)
+        //         {
+        //             viewPos = camera.getEye();
+        //         }
+        //         else
+        //         {
+        //             viewPos = globalBezierCamera->getEye();
+        //         }
+
+        //         glUniformMatrix4fv(projectionMatrixUniform_shadow, 1, GL_FALSE, perspectiveProjectionMatrix);
+        //         glUniformMatrix4fv(viewMatrixUniform_shadow, 1, GL_FALSE, viewMatrix);
+        //         glUniformMatrix4fv(lightSpaceMatrixUniform_shadow, 1, GL_FALSE, lightSpaceMatrix);
+        //         glUniform3fv(viewPosUniform_shadow, 1, viewPos);
+        //         glUniform3fv(lightPosUniform_shadow, 1, lightPos);
+
+        //         // pushMatrix(modelMatrix);
+        //         {
+        //             awara->display(FALSE, depthMapTexture, lightSpaceMatrix, vec3(lightPos[0], lightPos[1], lightPos[2]));
+        //         }
+
+        //         // Unbind Texture
+        //         glActiveTexture(GL_TEXTURE1);
+        //         glBindTexture(GL_TEXTURE_2D, 0);
+        //         glActiveTexture(GL_TEXTURE0);
+        //         glBindTexture(GL_TEXTURE_2D, 0);
+        //     }
+        //     glUseProgram(0);
+        // }
+    }
+    void renderQuad()
+    {
+        if (quadVAO == 0)
         {
-            modelMatrix = mat4::identity();
-
-            glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-            glViewport(0, 0, giWindowWidth, giWindowHeight);
-
-            perspectiveProjectionMatrix = vmath::perspective(
-                45.0f,
-                (GLfloat)giWindowWidth / (GLfloat)giWindowHeight,
-                0.1f,
-                1000.0f);
-
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-            if (USE_FPV_CAM)
-            {
-                viewMatrix = camera.getViewMatrix();
-            }
-            else
-            {
-                viewMatrix = globalBezierCamera->getViewMatrix();
-            }
-
-            // Use default shader + shadow Shader
-            glUseProgram(shaderProgramObject_shadow);
-            {
-                // vec3 viewPos = vec3(0.0f + objX, 0.0f + objY, 10.0f + objZ);
-                // vec3 viewPos = vec3(0.0f, 3.0f, 10.0f);
-                vec3 viewPos;
-                if (USE_FPV_CAM)
-                {
-                    viewPos = camera.getEye();
-                }
-                else
-                {
-                    viewPos = globalBezierCamera->getEye();
-                }
-
-                glUniformMatrix4fv(projectionMatrixUniform_shadow, 1, GL_FALSE, perspectiveProjectionMatrix);
-                glUniformMatrix4fv(viewMatrixUniform_shadow, 1, GL_FALSE, viewMatrix);
-                glUniformMatrix4fv(lightSpaceMatrixUniform_shadow, 1, GL_FALSE, lightSpaceMatrix);
-                glUniform3fv(viewPosUniform_shadow, 1, viewPos);
-                glUniform3fv(lightPosUniform_shadow, 1, lightPos);
-
-                // pushMatrix(modelMatrix);
-                {
-                    awara->display(FALSE, depthMapTexture, lightSpaceMatrix, vec3(lightPos[0], lightPos[1], lightPos[2]));
-                }
-
-                // Unbind Texture
-                glActiveTexture(GL_TEXTURE1);
-                glBindTexture(GL_TEXTURE_2D, 0);
-                glActiveTexture(GL_TEXTURE0);
-                glBindTexture(GL_TEXTURE_2D, 0);
-            }
-            glUseProgram(0);
+            float quadVertices[] = {
+                // positions        // texture Coords
+                -1.0f,
+                1.0f,
+                0.0f,
+                0.0f,
+                1.0f,
+                -1.0f,
+                -1.0f,
+                0.0f,
+                0.0f,
+                0.0f,
+                1.0f,
+                1.0f,
+                0.0f,
+                1.0f,
+                1.0f,
+                1.0f,
+                -1.0f,
+                0.0f,
+                1.0f,
+                0.0f,
+            };
+            // setup plane VAO
+            glGenVertexArrays(1, &quadVAO);
+            glGenBuffers(1, &quadVBO);
+            glBindVertexArray(quadVAO);
+            glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
+            glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
+            glEnableVertexAttribArray(0);
+            glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *)0);
+            glEnableVertexAttribArray(1);
+            glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *)(3 * sizeof(float)));
         }
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        glBindVertexArray(quadVAO);
+        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+        glBindVertexArray(0);
     }
 
     void display(void)
     {
         renderMainScene();
-    }
-
-    void update(void)
-    {
-        awara->update();
     }
 
     void uninitialize(void)

@@ -17,8 +17,6 @@ using namespace vmath;
 #define VIGNETTE_OUTER_RADIUS 1.0f
 #define VIGNETTE_INNER_RADIUS 0.8f
 
-#define WATER_QUAD_SIZE 1000. * 80.
-
 // ==================== Extern Variables
 
 extern Camera camera;
@@ -27,6 +25,7 @@ extern BezierCamera *globalBezierCamera;
 class WaterMatrix
 {
 public:
+	float WATER_QUAD_SIZE = 1000. * 80.;
 	// FBO-related variables
 	GLuint fbo_reflection;
 	GLuint rbo_reflection;
@@ -64,8 +63,9 @@ public:
 	vec3 camUp;
 
 	bool isInitialized = false;
-	WaterMatrix()
+	WaterMatrix(float waterQuadSize)
 	{
+		WATER_QUAD_SIZE = waterQuadSize;
 	}
 
 	int initializeWaterQuad(void)
@@ -326,7 +326,7 @@ public:
 		{
 			globalBezierCamera->invertPitch();
 			globalBezierCamera->position[1] += 2 * abs(globalBezierCamera->position[1] - waterHeight);
-			viewMatrix = globalBezierCamera->getViewMatrix(); 
+			viewMatrix = globalBezierCamera->getViewMatrix();
 		}
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);

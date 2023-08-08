@@ -400,14 +400,14 @@ private:
 
     bool getWhichTileCameraIs(vmath::vec2 &result)
     {
-        for (vmath::vec2 p : positionVec)
-        {
-            if ((USE_FPV_CAM ? inTile(camera, p) : inTile(globalBezierCamera, p)))
-            {
-                result = p;
-                return true;
-            }
-        }
+        // for (vmath::vec2 p : positionVec)
+        // {
+        //     if ((USE_FPV_CAM ? inTile(camera, p) : inTile(globalBezierCamera, p)))
+        //     {
+        //         result = p;
+        //         return true;
+        //     }
+        // }
         return false;
     }
 

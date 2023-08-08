@@ -4,11 +4,10 @@
 #include "../../utils/camera/BezierCamera.h"
 #include "../../includes/SphereAish.h"
 #include "../../shaders/terrainPostProcess/TerrainPostProcess.h"
-#include "../../shaders/noiseCloud/NoiseCloud.h"
+#include "../../shaders/shadow/ShadowShader.h"
 #include "../../effects/terrain/Terrain.h"
 #include "../../effects/water_matrix/WaterMatrix.h"
 #include "../../utils/camera/BezierCamera.h"
-#include "../../utils/noise/Noise.h"
 
 class TerrainShadowScene
 {
@@ -19,7 +18,8 @@ public:
     CubeMap *cubemap;
     WaterMatrix *waterMatrix;
     BezierCamera sceneCamera;
-    SphereAish *sphereCloud;
+    SphereAish *shadowSphere;
+    ShadowShader shadowShader;
 
     // Fadein Fadeout
     float fadeAlpha = 1.0f;
@@ -31,7 +31,7 @@ public:
         // Terrain
         terrain = new Terrain();
         cubemap = new CubeMap();
-        waterMatrix = new WaterMatrix();
+        waterMatrix = new WaterMatrix(1000. * 10.);
     }
 
     BOOL initialize()
@@ -56,6 +56,10 @@ public:
         // Water
         waterMatrix->initialize();
 
+        // Shadow Initialization
+        shadowShader.initialize();
+        shadowSphere = new SphereAish(1000.0f, 50, 50);
+
         // Camera
         sceneCamera.initialize();
         sceneCamera.isWater = true;
@@ -65,50 +69,115 @@ public:
 
     void display()
     {
-        // Camera
-        modelMatrix = mat4::identity();
-        viewMatrix = mat4::identity();
+        // // Camera
+        // modelMatrix = mat4::identity();
+        // viewMatrix = mat4::identity();
 
-        setGlobalBezierCamera(&sceneCamera);
-        sceneCamera.setBezierPoints(bezierPoints, yawGlobal, pitchGlobal);
-        sceneCamera.update();
-        updateGlobalViewMatrix();
+        // setGlobalBezierCamera(&sceneCamera);
+        // sceneCamera.setBezierPoints(bezierPoints, yawGlobal, pitchGlobal);
+        // sceneCamera.update();
+        // updateGlobalViewMatrix();
 
-        // Water FBO
-        {
-            // Reflection
-            waterMatrix->bindReflectionFBO(1920, 1080);
-            {
-                displayScene(1.0);
-            }
-            waterMatrix->unbindReflectionFBO();
+        // // Water FBO
+        // {
+        //     // Reflection
+        //     waterMatrix->bindReflectionFBO(1920, 1080);
+        //     {
+        //         displayScene(1.0);
+        //     }
+        //     waterMatrix->unbindReflectionFBO();
 
-            // Refraction
-            waterMatrix->bindRefractionFBO(1920, 1080);
-            {
-                displayScene(-1.0);
-            }
-            waterMatrix->unbindRefractionFBO();
-        }
-        // Actual Scene
-        displayScene(1.0);
+        //     // Refraction
+        //     waterMatrix->bindRefractionFBO(1920, 1080);
+        //     {
+        //         displayScene(-1.0);
+        //     }
+        //     waterMatrix->unbindRefractionFBO();
+        // }
 
-        // Water Bed
-        pushMatrix(modelMatrix);
-        {
-            modelMatrix = modelMatrix * translate(0.0f, -56.900028f, 0.0f);
-            waterMatrix->renderWaterQuad(terrain->getWaterHeight());
-        }
-        modelMatrix = popMatrix();
+        // // Water Bed
+        // pushMatrix(modelMatrix);
+        // {
+        //     modelMatrix = modelMatrix * translate(0.0f, -56.900028f, 0.0f);
+        //     waterMatrix->renderWaterQuad(terrain->getWaterHeight());
+        // }
+        // modelMatrix = popMatrix();
 
-        // FADE IN
-        pushMatrix(modelMatrix);
-        {
-            modelMatrix = vmath::scale(1.0f, 1.0f, 1.0f);
-            commonShaders->overlayColorShader->draw(modelMatrix, 0.0f, 0.0f, 0.0f, fadeAlpha);
-        }
-        modelMatrix = popMatrix();
+        // // Actual Scene
+        // displayScene(1.0);
+
+        // displayShadowObject(false);
+
+        // // FADE IN
+        // pushMatrix(modelMatrix);
+        // {
+        //     modelMatrix = vmath::scale(1.0f, 1.0f, 1.0f);
+        //     commonShaders->overlayColorShader->draw(modelMatrix, 0.0f, 0.0f, 0.0f, fadeAlpha);
+        // }
+        // modelMatrix = popMatrix();
+
+        displayShadow();
         // sceneCamera.displayBezierCurve();
+    }
+
+    void displayShadow()
+    {
+        mat4 lightProjectionMatrix = mat4::identity();
+        mat4 lightViewMatrix = mat4::identity();
+        mat4 lightSpaceMatrix = mat4::identity();
+        float near_plane = 1.0f, far_plane = 7.5f;
+
+        shadowShader.lightPos[0] = 1.600000f;
+        shadowShader.lightPos[1] = 5.599997f;
+        shadowShader.lightPos[2] = 4.599998f;
+
+        shadowShader.lightDirection[0] = 0.0f;
+        shadowShader.lightDirection[1] = 0.0f;
+        shadowShader.lightDirection[2] = 0.0f;
+
+        // PrintLog("%f, %f, %f\n%f, %f, %f\n\n", lightPos[0], lightPos[1], lightPos[2], lightDirection[0], lightDirection[1], lightDirection[2]);
+        lightProjectionMatrix = vmath::ortho(-1000.0f, 1000.0f, -1000.0f, 1000.0f, -1000.0f, 1000.0f);
+        // lightViewMatrix = vmath::lookat(vec3(shadowShader.lightPos[0], shadowShader.lightPos[1], shadowShader.lightPos[2]), vec3(shadowShader.lightDirection[0], shadowShader.lightDirection[1], shadowShader.lightDirection[2]), vec3(0.0, 1.0, 0.0));
+        lightViewMatrix = vmath::lookat(camera.getEye(), camera.getCenter(), vec3(0.0, 1.0, 0.0));
+        lightSpaceMatrix = lightProjectionMatrix * lightViewMatrix;
+
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        // Use Depth Shader
+        glUseProgram(shadowShader.shaderProgramObject_depth);
+        {
+            glViewport(0, 0, shadowShader.SHADOW_WIDTH, shadowShader.SHADOW_HEIGHT);
+
+            glBindFramebuffer(GL_FRAMEBUFFER, shadowShader.depthMapFBO);
+            {
+                glUniformMatrix4fv(shadowShader.projectionMatrixUniform_depth, 1, GL_FALSE, lightSpaceMatrix);
+                // glUniformMatrix4fv(viewMatrixUniform_depth, 1, GL_FALSE, lightViewMatrix);
+                mat4 translateMatrix = mat4::identity();
+                mat4 rotateMatrix = mat4::identity();
+
+                glUniformMatrix4fv(shadowShader.modelMatrixUniform_depth, 1, GL_FALSE, modelMatrix);
+
+                glClear(GL_DEPTH_BUFFER_BIT);
+
+                displayShadowObject(true);
+                // awara->displayForShadow(modelMatrixUniform_depth, shaderProgramObject_depth, TRUE, lightSpaceMatrix, vec3(lightPos[0], lightPos[1], lightPos[2]));
+            }
+            glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        }
+        glUseProgram(0);
+
+        // USE DEBUG QUAD
+        // glUseProgram(shadowShader.shaderProgramObject_debugQuad);
+        // {
+        //     glViewport(0, 0, giWindowWidth, giWindowHeight);
+        //     glUniform1f(shadowShader.nearPlaneUniform_debudQuad, 1.0f);
+        //     glUniform1f(shadowShader.farPlaneUniform_debudQuad, 4870.0f);
+        //     glActiveTexture(GL_TEXTURE0);
+        //     glBindTexture(GL_TEXTURE_2D, shadowShader.depthMapTexture);
+        //     shadowShader.renderQuad();
+        // }
+        // glUseProgram(0);
     }
 
     void displayScene(float terrainUp)
@@ -130,6 +199,34 @@ public:
         modelMatrix = popMatrix();
     }
 
+    void displayShadowObject(bool isDepthBuffer)
+    {
+        if (isDepthBuffer)
+        {
+            glBindVertexArray(shadowSphere->vao_sphere);
+            glDrawArrays(GL_TRIANGLE_STRIP, 0, shadowSphere->getNumberOfSphereVertices());
+            glBindVertexArray(0);
+        }
+        else
+        {
+            glUseProgram(commonShaders->colorShader->shaderProgramObject);
+            pushMatrix(modelMatrix);
+            {
+                glVertexAttrib4f(MATRIX_ATTRIBUTE_COLOR, 1.0, 1.0, 1.0, 1.0);
+                //  translate(-5880.000000f, 7560.000000f, 4970.000000f) *
+                modelMatrix = modelMatrix * vmath::rotate(-90.0f, 1.0f, 0.0f, 0.0f);
+                /* Initialize uniforms constant throughout rendering loop. */
+                glUniformMatrix4fv(commonShaders->colorShader->modelMatrixUniform, 1, GL_FALSE, modelMatrix);
+                glUniformMatrix4fv(commonShaders->colorShader->viewMatrixUniform, 1, GL_FALSE, viewMatrix);
+                glUniformMatrix4fv(commonShaders->colorShader->projectionMatrixUniform, 1, GL_FALSE, perspectiveProjectionMatrix);
+                glBindVertexArray(shadowSphere->vao_sphere);
+                glDrawArrays(GL_TRIANGLE_STRIP, 0, shadowSphere->getNumberOfSphereVertices());
+                glBindVertexArray(0);
+            }
+            modelMatrix = popMatrix();
+            glUseProgram(0);
+        }
+    }
     bool isFadeout = false;
 
     void update()

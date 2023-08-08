@@ -20,6 +20,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="build.bat" />
+    <None Include="src\shaders\shadow\debug_quad.fs" />
+    <None Include="src\shaders\shadow\debug_quad.vs" />
+    <None Include="src\shaders\shadow\shadow_mapping.fs" />
+    <None Include="src\shaders\shadow\shadow_mapping.vs" />
+    <None Include="src\shaders\shadow\shadow_mapping_depth.fs" />
+    <None Include="src\shaders\shadow\shadow_mapping_depth.vs" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\effects\cloth\Cloth.h" />
@@ -75,6 +81,7 @@
     <ClInclude Include="src\shaders\model\Model_ShaderOld.h" />
     <ClInclude Include="src\shaders\model\Model_ShaderShadow.h" />
     <ClInclude Include="src\shaders\Road\RoadShader.h" />
+    <ClInclude Include="src\shaders\shadow\ShadowShader.h" />
     <ClInclude Include="src\shaders\SpotLight\SpotlightShader.h" />
     <ClInclude Include="src\shaders\texture\TextureShader.h" />
     <ClInclude Include="src\shaders\videoRendering\videoRendering.h" />
