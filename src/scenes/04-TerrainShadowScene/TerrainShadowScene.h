@@ -25,11 +25,18 @@ public:
     float fadeAlpha = 1.0f;
     float scaleFactor = 2.0f;
 
+    // shadow
+    float maxShadowTranslate = 158.0f;
+    float shadowTranslate = 0.0f;
+
     // member functions
     TerrainShadowScene()
     {
         // Terrain
-        terrain = new Terrain();
+        terrain = new Terrain(20. * 100.);
+        terrain->shadowLightX = -9.199999f;
+        terrain->shadowLightY = 0.699999f;
+        terrain->shadowLightZ = -4.999997f;
         cubemap = new CubeMap();
         waterMatrix = new WaterMatrix(1000. * 70.);
     }
@@ -98,10 +105,10 @@ public:
         // Actual Scene
         displayScene(1.0, true);
 
-        // Water Bed
+        // // Water Bed
         pushMatrix(modelMatrix);
         {
-            modelMatrix = modelMatrix * translate(0.0f, -56.900028f, 0.0f);
+            modelMatrix = modelMatrix * translate(0.0f + 800.000000f, -56.900028f, 0.0f + 63300.000000f);
             waterMatrix->renderWaterQuad(terrain->getWaterHeight());
         }
         modelMatrix = popMatrix();
@@ -133,10 +140,10 @@ public:
         mat4 lightProjectionMatrix = mat4::identity();
         mat4 lightViewMatrix = mat4::identity();
         mat4 lightSpaceMatrix = mat4::identity();
-        float near_plane = 1.0f, far_plane = light_objX;
+        float near_plane = 1.0f, far_plane = 0.0f;
 
         shadowShader.lightPos[0] = 1.600000f + 2.000000f;
-        shadowShader.lightPos[1] = 5.599997f + scaleY;
+        shadowShader.lightPos[1] = 5.599997f + shadowTranslate;
         shadowShader.lightPos[2] = 4.599998f;
 
         shadowShader.lightDirection[0] = 0.0f;
@@ -188,15 +195,6 @@ public:
                 10000000.0f);
 
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-            // if (USE_FPV_CAM)
-            // {
-            //     viewMatrix = camera.getViewMatrix();
-            // }
-            // else
-            // {
-            //     viewMatrix = globalBezierCamera->getViewMatrix();
-            // }
 
             // terrain->shadowLightPosition = camera.getEye();
             terrain->shadowLightPosition = vec3(shadowShader.lightPos[0], shadowShader.lightPos[1], shadowShader.lightPos[2]);
@@ -295,18 +293,26 @@ public:
 
         // Camera
         if (sceneCamera.time < 1.0f)
-            sceneCamera.time += (0.000015f + 0.00037f);
+            sceneCamera.time += (0.000015f + 0.0003f);
+        // sceneCamera.time = globalTime;
 
         // sceneCamera.time = globalTime;
         terrain->updateTilesPositions();
 
         // // Trigger fadeout
-        // if (ELAPSED_TIME > (START_TIME_SCENE_04_TERRAIN_SHADOW - 3))
-        // {
-        //     isFadeout = true;
-        // }
-        terrain->setGrassCoverage(0.66f);
-        terrain->setTextureTransitionFactor(1.0f);
+        if (ELAPSED_TIME > (START_TIME_SCENE_04_TERRAIN_SHADOW_END - 2))
+        {
+            isFadeout = true;
+        }
+
+        // Shadow Translate
+        if (ELAPSED_TIME > (START_TIME_SCENE_04_TERRAIN_SHADOW_START - 3) && shadowTranslate < maxShadowTranslate)
+        {
+            shadowTranslate += 0.07f;
+        }
+
+        terrain->setGrassCoverage(0.36f);
+        terrain->setTextureTransitionFactor(0.8f);
         terrain->setWaterHeight(589.0f);
         waterMatrix->interpolateWaterColor = 1.13f;
         // terrain->setTextureTransitionFactor(1.0f);

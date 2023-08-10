@@ -36,11 +36,12 @@ class Terrain
 public:
     vmath::vec2 position, eps;
     float up = 0.0;
-    static const int tileW = 10. * 100.;
+    int tileW = 10. * 100.;
     float waterHeight;
     vec3 terrainLightDirection;
-    Terrain()
+    Terrain(int tileW_)
     {
+        tileW = tileW_;
         int gl = 120;
         vmath::mat4 scaleMatrix = vmath::scale(1.0f, 0.0f, 1.0f);
         vmath::mat4 positionMatrix = vmath::translate(0.0f, 0.0f, 0.0f);
@@ -55,10 +56,10 @@ public:
         fogFalloff = 0.5f;
 
         posBuffer = 0;
-        
+
         // Calculating light direction
         terrainLightDirection = vmath::normalize(vec3(-0.4f, 0.4f, 0.816f));
-        
+
         shad = new TerrainShader();
         if (!shad->initialize())
         {
@@ -128,10 +129,14 @@ public:
         power = 3.0f;
     }
 
+    // Shadow
     GLuint shadowMap;
     bool isShadow = false;
     vmath::vec3 shadowLightPosition;
     vmath::mat4 shadowLightSpaceMatrix;
+
+    // Change light when shadow
+    float shadowLightX, shadowLightY, shadowLightZ = 0.0f;
 
     void draw(float isShadow)
     {
@@ -157,7 +162,8 @@ public:
         shad->setVec4("u_clipPlane", clipPlane);
         shad->setVec3("u_LightColor", vec3(255.0f, 255.0f, 230.0f) / 255.0f);
 
-              shad->setVec3("u_LightPosition", terrainLightDirection * 1e6f + (USE_FPV_CAM ? camera.getEye() : globalBezierCamera->getEye()));
+        terrainLightDirection = vmath::normalize(vec3(-0.4f + shadowLightX, 0.4f + shadowLightY, 0.816f + shadowLightZ));
+        shad->setVec3("u_LightPosition", terrainLightDirection * 1e6f + (USE_FPV_CAM ? camera.getEye() : globalBezierCamera->getEye()));
 
         shad->setVec3("u_ViewPosition", (USE_FPV_CAM ? camera.getEye() : globalBezierCamera->getEye()));
         shad->setVec3("u_fogColor", vec3(0.1f, 0.1f, 0.2f));

@@ -35,8 +35,8 @@ public:
         terrainShadowScene04 = new TerrainShadowScene();
 
         // SCENE CONTROLS
-        START_E2E_DEMO = FALSE;
-        selected_scene = SCENE_04_TERRAIN_SHADOW;
+        START_E2E_DEMO = TRUE;
+        selected_scene = SCENE_01_EARTH_BIRTH;
     }
 
     BOOL initialize()
@@ -63,7 +63,7 @@ public:
                 break;
             case SCENE_03_TERRAIN_WITH_HEAVY_RAIN:
                 terrainFirstRainScene03->initialize();
-                break;
+                // break;
             case SCENE_04_TERRAIN_SHADOW:
                 terrainShadowScene04->initialize();
                 break;
@@ -103,9 +103,13 @@ public:
             {
                 setSelectedScene(SCENE_02_EARTH_COOLDOWN);
             }
-            else if (ELAPSED_TIME > START_TIME_SCENE_03_01_TERRAIN_FIRST_RAIN)
+            else if (ELAPSED_TIME > START_TIME_SCENE_03_01_TERRAIN_FIRST_RAIN && ELAPSED_TIME < START_TIME_SCENE_04_TERRAIN_SHADOW)
             {
                 setSelectedScene(SCENE_03_TERRAIN_WITH_HEAVY_RAIN);
+            }
+            else if (ELAPSED_TIME > START_TIME_SCENE_04_TERRAIN_SHADOW)
+            {
+                setSelectedScene(SCENE_04_TERRAIN_SHADOW);
             }
         }
 

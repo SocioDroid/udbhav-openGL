@@ -116,9 +116,9 @@ void main(void) {
     float blue = 1.0;
     vec4 waterColor;
 
-    red = 48.0 / 255.0;
-    green = 52.0 / 255.0;
-    blue = 54.0 / 255.0;
+    red = 10.0 / 255.0;
+    green = 10.0 / 255.0;
+    blue = 10.0 / 255.0;
     vec4 darkColor = vec4(red, green, blue, 0.5);
     vec4 brightBlue = vec4(0.2, 0.71, 0.85, 1.0);
     vec4 finalWaterColor = mix(darkColor, brightBlue, interpolateDarkToBright);

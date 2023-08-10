@@ -34,6 +34,11 @@ public:
     // Cloud
     float cloudAlpha = 0.0f;
 
+    // Lightning
+    GLuint texture_lightning1;
+    GLuint texture_lightning2;
+    float cloudNoiseAlpha = 0.0f;
+
     // Camera
 
     std::vector<std::vector<float>> bezierPointsScene = {
@@ -174,10 +179,10 @@ public:
     TerrainFirstRainScene()
     {
         // Terrain
-        terrain = new Terrain();
+        terrain = new Terrain(10. * 100.);
         cubemap = new CubeMapMerge();
         waterMatrix = new WaterMatrix(1000. * 80.);
-        rain = new Rain(30000);
+        rain = new Rain(40000);
     }
 
     BOOL initialize()
@@ -227,6 +232,19 @@ public:
             PrintLog("\nFailed to initialize NoisCloud Shader\n");
             return FALSE;
         }
+
+        // Lightning
+        if (LoadPNGImage(&texture_lightning1, "./assets/textures/lightning/lightning1.png") == FALSE)
+        {
+            PrintLog("Failed to load Lightning 1 texture\n");
+            return FALSE;
+        }
+        if (LoadPNGImage(&texture_lightning2, "./assets/textures/lightning/lightning2.png") == FALSE)
+        {
+            PrintLog("Failed to load Lightning 2 texture\n");
+            return FALSE;
+        }
+
         CreateNoise3D(&texture_noise);
 
         // Camera
@@ -316,6 +334,56 @@ public:
             terrain->draw(false);
         }
         modelMatrix = popMatrix();
+
+        // Lightning
+        pushMatrix(modelMatrix);
+        {
+            modelMatrix = modelMatrix * vmath::translate(44100.000000f, 18300.000000f, -53400.000000f) * vmath::scale(1.0f + 9050.0f, 1.0f + 14450.0f, 1.0f);
+            commonShaders->textureShader->drawQuadWithTexture(texture_lightning1, modelMatrix, viewMatrix, perspectiveProjectionMatrix, cloudNoiseAlpha);
+        }
+        modelMatrix = popMatrix();
+        pushMatrix(modelMatrix);
+        {
+            modelMatrix = modelMatrix * vmath::translate(6000.000000f, 13800.000000f, -70500.000000f) * vmath::scale(1.0f + 3400.000000f, 1.0f + 7700.000000f, 1.0f);
+            commonShaders->textureShader->drawQuadWithTexture(texture_lightning2, modelMatrix, viewMatrix, perspectiveProjectionMatrix, cloudNoiseAlpha);
+        }
+        modelMatrix = popMatrix();
+        pushMatrix(modelMatrix);
+        {
+            modelMatrix = modelMatrix * vmath::translate(-1800.000000f, 9150.000000f, -34050.000000f) * vmath::scale(1.0f + 6550.000000f, 1.0f + 9450.000000f, 1.0f);
+            commonShaders->textureShader->drawQuadWithTexture(texture_lightning1, modelMatrix, viewMatrix, perspectiveProjectionMatrix, cloudNoiseAlpha);
+        }
+        modelMatrix = popMatrix();
+        pushMatrix(modelMatrix);
+        {
+            modelMatrix = modelMatrix * vmath::translate(26100.000000f, 13050.000000f, 7950.000000f) * vmath::scale(7750.000000f, 10400.000000f, 1.0f) * rotate(light_objX, 0.0f, 1.0f, 0.0f);
+            commonShaders->textureShader->drawQuadWithTexture(texture_lightning1, modelMatrix, viewMatrix, perspectiveProjectionMatrix, cloudNoiseAlpha);
+        }
+        modelMatrix = popMatrix();
+        pushMatrix(modelMatrix);
+        {
+            modelMatrix = modelMatrix * vmath::translate(59850.000000f, 15900.000000f, -7650.000000f) * vmath::scale(21550.000000f, 16150.000000f, 1.0f) * rotate(-4710.000000f, 0.0f, 1.0f, 0.0f);
+            commonShaders->textureShader->drawQuadWithTexture(texture_lightning1, modelMatrix, viewMatrix, perspectiveProjectionMatrix, cloudNoiseAlpha);
+        }
+        modelMatrix = popMatrix();
+        pushMatrix(modelMatrix);
+        {
+            modelMatrix = modelMatrix * vmath::translate(-13200.000000f, 8100.000000f, 36150.000000f) * rotate(-200.000000f, 0.0f, 1.0f, 0.0f) * vmath::scale(6700.000000f, 12400.000000f, 1.0f);
+            commonShaders->textureShader->drawQuadWithTexture(texture_lightning1, modelMatrix, viewMatrix, perspectiveProjectionMatrix, cloudNoiseAlpha);
+        }
+        modelMatrix = popMatrix();
+        pushMatrix(modelMatrix);
+        {
+            modelMatrix = modelMatrix * vmath::translate(-12900.000000f, 4950.000000f, 4800.000000f) * rotate(-250.000000f, 0.0f, 1.0f, 0.0f) * vmath::scale(8650.000000f, 17200.000000f, 1.0f);
+            commonShaders->textureShader->drawQuadWithTexture(texture_lightning1, modelMatrix, viewMatrix, perspectiveProjectionMatrix, cloudNoiseAlpha);
+        }
+        modelMatrix = popMatrix();
+        // pushMatrix(modelMatrix);
+        // {
+        //     modelMatrix = modelMatrix * vmath::translate(objX, objY, objZ) * rotate(light_objX, 0.0f, 1.0f, 0.0f) * vmath::scale(scaleX, scaleY, 1.0f);
+        //     commonShaders->textureShader->drawQuadWithTexture(texture_lightning1, modelMatrix, viewMatrix, perspectiveProjectionMatrix, 1.0f);
+        // }
+        // modelMatrix = popMatrix();
     }
     void drawRain()
     {
@@ -353,6 +421,7 @@ public:
     {
         return min + (rand() / (RAND_MAX / (max - min)));
     }
+
     void drawCloudNoise()
     {
         glUseProgram(noiseCloudShader.shaderProgramObject);
@@ -370,9 +439,15 @@ public:
             else
             {
                 if (fmod(ELAPSED_TIME, 3) >= 0 && fmod(ELAPSED_TIME, 3) <= randFloat(0.0f, 0.1f) && sceneCamera.time < 0.6)
+                {
+                    cloudNoiseAlpha = 1.0f;
                     glUniform3fv(noiseCloudShader.Color1Uniform, 1, vec3(1.0f, 1.0f, 1.0f));
+                }
                 else
+                {
+                    cloudNoiseAlpha = 0.0f;
                     glUniform3fv(noiseCloudShader.Color1Uniform, 1, vec3(0.2, 0.2, 0.2));
+                }
             }
 
             glUniform3fv(noiseCloudShader.Color2Uniform, 1, vec3(0.0, 0.0, 0.0));
@@ -395,6 +470,7 @@ public:
 
         scaleFactor = scaleFactor + 0.001f;
     }
+
     bool isFadeout = false;
 
     void update()
@@ -415,15 +491,16 @@ public:
 
         // Camera
         if (sceneCamera.time < 1.0f)
-            sceneCamera.time += (0.000015f + 0.00037f);
-
+            sceneCamera.time += (0.000015f + 0.00039f);
+        // else
+        //     setSelectedScene(SCENE_04_TERRAIN_SHADOW);
         // sceneCamera.time = globalTime;
 
         terrain->updateTilesPositions();
         // Transition to green texture
         if (terrain->getTextureTransitionFactor() < 1.0f)
         {
-            terrain->setTextureTransitionFactor(terrain->getTextureTransitionFactor() + 0.0004f);
+            terrain->setTextureTransitionFactor(terrain->getTextureTransitionFactor() + 0.0006f);
         }
         // Grass Coverage
         if (terrain->getGrassCoverage() < 0.56f)
@@ -444,7 +521,7 @@ public:
             }
         }
         // Cubemap Transition
-        if (sceneCamera.time > 0.5f && cubemapFactor < 1.0f)
+        if (sceneCamera.time > 0.45f && cubemapFactor < 1.0f)
         {
             cubemapFactor += 0.001f;
         }
@@ -459,14 +536,14 @@ public:
             isFadeout = true;
         }
         // Cloud Alpha
-        if (sceneCamera.time > 0.6)
+        if (sceneCamera.time > 0.56)
         {
             if (cloudAlpha < 1.0f)
             {
                 cloudAlpha += 0.001f;
             }
         }
-        // terrain->setWaterHeight(scaleX);
+        // terrain->setWaterHeight(589.0f);
         // terrain->setTextureTransitionFactor(1.0f);
     }
 
