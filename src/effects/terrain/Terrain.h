@@ -38,6 +38,7 @@ public:
     float up = 0.0;
     static const int tileW = 10. * 100.;
     float waterHeight;
+    vec3 terrainLightDirection;
     Terrain()
     {
         int gl = 120;
@@ -54,7 +55,10 @@ public:
         fogFalloff = 0.5f;
 
         posBuffer = 0;
-
+        
+        // Calculating light direction
+        terrainLightDirection = vmath::normalize(vec3(-0.4f, 0.4f, 0.816f));
+        
         shad = new TerrainShader();
         if (!shad->initialize())
         {
@@ -124,7 +128,12 @@ public:
         power = 3.0f;
     }
 
-    void draw()
+    GLuint shadowMap;
+    bool isShadow = false;
+    vmath::vec3 shadowLightPosition;
+    vmath::mat4 shadowLightSpaceMatrix;
+
+    void draw(float isShadow)
     {
         drawFog = true;
 
@@ -148,10 +157,7 @@ public:
         shad->setVec4("u_clipPlane", clipPlane);
         shad->setVec3("u_LightColor", vec3(255.0f, 255.0f, 230.0f) / 255.0f);
 
-        // Calculating light direction
-        vec3 terrainLightDirection = vmath::normalize(vec3(-0.4f, 0.4f, 0.816f));
-
-        shad->setVec3("u_LightPosition", terrainLightDirection * 1e6f + (USE_FPV_CAM ? camera.getEye() : globalBezierCamera->getEye()));
+              shad->setVec3("u_LightPosition", terrainLightDirection * 1e6f + (USE_FPV_CAM ? camera.getEye() : globalBezierCamera->getEye()));
 
         shad->setVec3("u_ViewPosition", (USE_FPV_CAM ? camera.getEye() : globalBezierCamera->getEye()));
         shad->setVec3("u_fogColor", vec3(0.1f, 0.1f, 0.2f));
@@ -186,6 +192,15 @@ public:
         shad->setSampler2D("rock_dark", textures_dark[2], 9);
         shad->setSampler2D("snow_dark", textures_dark[3], 10);
         shad->setSampler2D("grass1_dark", textures_dark[4], 11);
+
+        // Set shadow variables
+        if (isShadow)
+        {
+            shad->setBool("isShadow", isShadow);
+            shad->setSampler2D("shadowMap", shadowMap, 12);
+            shad->setVec3("shadowLightPosition", shadowLightPosition);
+            shad->setMat4("u_lightSpaceMatrix", shadowLightSpaceMatrix);
+        }
 
         int nIstances = positionVec.size();
 

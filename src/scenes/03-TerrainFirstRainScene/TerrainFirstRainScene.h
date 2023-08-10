@@ -313,7 +313,7 @@ public:
         pushMatrix(modelMatrix);
         {
             terrain->up = terrainUp;
-            terrain->draw();
+            terrain->draw(false);
         }
         modelMatrix = popMatrix();
     }

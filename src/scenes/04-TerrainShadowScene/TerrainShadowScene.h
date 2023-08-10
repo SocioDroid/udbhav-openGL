@@ -31,7 +31,7 @@ public:
         // Terrain
         terrain = new Terrain();
         cubemap = new CubeMap();
-        waterMatrix = new WaterMatrix(1000. * 10.);
+        waterMatrix = new WaterMatrix(1000. * 70.);
     }
 
     BOOL initialize()
@@ -70,53 +70,61 @@ public:
     void display()
     {
         // // Camera
-        // modelMatrix = mat4::identity();
-        // viewMatrix = mat4::identity();
+        modelMatrix = mat4::identity();
+        viewMatrix = mat4::identity();
 
-        // setGlobalBezierCamera(&sceneCamera);
-        // sceneCamera.setBezierPoints(bezierPoints, yawGlobal, pitchGlobal);
-        // sceneCamera.update();
-        // updateGlobalViewMatrix();
+        setGlobalBezierCamera(&sceneCamera);
+        sceneCamera.setBezierPoints(bezierPoints, yawGlobal, pitchGlobal);
+        sceneCamera.update();
+        updateGlobalViewMatrix();
 
-        // // Water FBO
-        // {
-        //     // Reflection
-        //     waterMatrix->bindReflectionFBO(1920, 1080);
-        //     {
-        //         displayScene(1.0);
-        //     }
-        //     waterMatrix->unbindReflectionFBO();
+        // Water FBO
+        {
+            // Reflection
+            waterMatrix->bindReflectionFBO(1920, 1080);
+            {
+                displayScene(1.0, false);
+            }
+            waterMatrix->unbindReflectionFBO();
 
-        //     // Refraction
-        //     waterMatrix->bindRefractionFBO(1920, 1080);
-        //     {
-        //         displayScene(-1.0);
-        //     }
-        //     waterMatrix->unbindRefractionFBO();
-        // }
+            // Refraction
+            waterMatrix->bindRefractionFBO(1920, 1080);
+            {
+                displayScene(-1.0, false);
+            }
+            waterMatrix->unbindRefractionFBO();
+        }
 
-        // // Water Bed
-        // pushMatrix(modelMatrix);
-        // {
-        //     modelMatrix = modelMatrix * translate(0.0f, -56.900028f, 0.0f);
-        //     waterMatrix->renderWaterQuad(terrain->getWaterHeight());
-        // }
-        // modelMatrix = popMatrix();
+        // Actual Scene
+        displayScene(1.0, true);
 
-        // // Actual Scene
-        // displayScene(1.0);
+        // Water Bed
+        pushMatrix(modelMatrix);
+        {
+            modelMatrix = modelMatrix * translate(0.0f, -56.900028f, 0.0f);
+            waterMatrix->renderWaterQuad(terrain->getWaterHeight());
+        }
+        modelMatrix = popMatrix();
+
+        // cubemap
+        pushMatrix(modelMatrix);
+        {
+            modelMatrix = modelMatrix * vmath::scale(500000.0f, 500000.0f, 500000.0f);
+            cubemap->display();
+        }
+        modelMatrix = popMatrix();
 
         // displayShadowObject(false);
 
-        // // FADE IN
-        // pushMatrix(modelMatrix);
-        // {
-        //     modelMatrix = vmath::scale(1.0f, 1.0f, 1.0f);
-        //     commonShaders->overlayColorShader->draw(modelMatrix, 0.0f, 0.0f, 0.0f, fadeAlpha);
-        // }
-        // modelMatrix = popMatrix();
+        // FADE IN
+        pushMatrix(modelMatrix);
+        {
+            modelMatrix = vmath::scale(1.0f, 1.0f, 1.0f);
+            commonShaders->overlayColorShader->draw(modelMatrix, 0.0f, 0.0f, 0.0f, fadeAlpha);
+        }
+        modelMatrix = popMatrix();
 
-        displayShadow();
+        // displayShadow();
         // sceneCamera.displayBezierCurve();
     }
 
@@ -125,10 +133,10 @@ public:
         mat4 lightProjectionMatrix = mat4::identity();
         mat4 lightViewMatrix = mat4::identity();
         mat4 lightSpaceMatrix = mat4::identity();
-        float near_plane = 1.0f, far_plane = 7.5f;
+        float near_plane = 1.0f, far_plane = light_objX;
 
-        shadowShader.lightPos[0] = 1.600000f;
-        shadowShader.lightPos[1] = 5.599997f;
+        shadowShader.lightPos[0] = 1.600000f + 2.000000f;
+        shadowShader.lightPos[1] = 5.599997f + scaleY;
         shadowShader.lightPos[2] = 4.599998f;
 
         shadowShader.lightDirection[0] = 0.0f;
@@ -136,9 +144,9 @@ public:
         shadowShader.lightDirection[2] = 0.0f;
 
         // PrintLog("%f, %f, %f\n%f, %f, %f\n\n", lightPos[0], lightPos[1], lightPos[2], lightDirection[0], lightDirection[1], lightDirection[2]);
-        lightProjectionMatrix = vmath::ortho(-1000.0f, 1000.0f, -1000.0f, 1000.0f, -1000.0f, 1000.0f);
-        // lightViewMatrix = vmath::lookat(vec3(shadowShader.lightPos[0], shadowShader.lightPos[1], shadowShader.lightPos[2]), vec3(shadowShader.lightDirection[0], shadowShader.lightDirection[1], shadowShader.lightDirection[2]), vec3(0.0, 1.0, 0.0));
-        lightViewMatrix = vmath::lookat(camera.getEye(), camera.getCenter(), vec3(0.0, 1.0, 0.0));
+        lightProjectionMatrix = vmath::ortho(-1000000.0f, 1000000.0f, -1000000.0f, 1000000.0f, 1.0f, far_plane + 10000.0f);
+        lightViewMatrix = vmath::lookat(vec3(shadowShader.lightPos[0], shadowShader.lightPos[1], shadowShader.lightPos[2]), vec3(shadowShader.lightDirection[0], shadowShader.lightDirection[1], shadowShader.lightDirection[2]), vec3(0.0, 1.0, 0.0));
+        // lightViewMatrix = vmath::lookat(camera.getEye(), camera.getCenter(), vec3(0.0, 1.0, 0.0));
         lightSpaceMatrix = lightProjectionMatrix * lightViewMatrix;
 
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -155,24 +163,61 @@ public:
                 // glUniformMatrix4fv(viewMatrixUniform_depth, 1, GL_FALSE, lightViewMatrix);
                 mat4 translateMatrix = mat4::identity();
                 mat4 rotateMatrix = mat4::identity();
-
+                modelMatrix = translate(1890.000000f, 5950.000000f, 8190.000000f) * scale(165.000000f, 1.0f, 165.000000f);
                 glUniformMatrix4fv(shadowShader.modelMatrixUniform_depth, 1, GL_FALSE, modelMatrix);
 
                 glClear(GL_DEPTH_BUFFER_BIT);
 
                 displayShadowObject(true);
-                // awara->displayForShadow(modelMatrixUniform_depth, shaderProgramObject_depth, TRUE, lightSpaceMatrix, vec3(lightPos[0], lightPos[1], lightPos[2]));
             }
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
         }
         glUseProgram(0);
 
-        // USE DEBUG QUAD
+        // Render the scene using the generated depth/shadow map
+        {
+            modelMatrix = mat4::identity();
+
+            glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+            glViewport(0, 0, giWindowWidth, giWindowHeight);
+
+            perspectiveProjectionMatrix = vmath::perspective(
+                45.0f,
+                (GLfloat)giWindowWidth / (GLfloat)giWindowHeight,
+                0.1f,
+                10000000.0f);
+
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+            // if (USE_FPV_CAM)
+            // {
+            //     viewMatrix = camera.getViewMatrix();
+            // }
+            // else
+            // {
+            //     viewMatrix = globalBezierCamera->getViewMatrix();
+            // }
+
+            // terrain->shadowLightPosition = camera.getEye();
+            terrain->shadowLightPosition = vec3(shadowShader.lightPos[0], shadowShader.lightPos[1], shadowShader.lightPos[2]);
+            terrain->shadowLightSpaceMatrix = lightSpaceMatrix;
+            terrain->shadowMap = shadowShader.depthMapTexture;
+            terrain->draw(true);
+        }
+
+        // pushMatrix(modelMatrix);
+        // {
+        //     modelMatrix = translate(objX, objY, objZ) * scale(light_objY, 0.1f, light_objY);
+        //     displayShadowObject(false);
+        // }
+        // modelMatrix = popMatrix();
+
+        // // USE DEBUG QUAD
         // glUseProgram(shadowShader.shaderProgramObject_debugQuad);
         // {
         //     glViewport(0, 0, giWindowWidth, giWindowHeight);
         //     glUniform1f(shadowShader.nearPlaneUniform_debudQuad, 1.0f);
-        //     glUniform1f(shadowShader.farPlaneUniform_debudQuad, 4870.0f);
+        //     glUniform1f(shadowShader.farPlaneUniform_debudQuad, far_plane + 10000.0f);
         //     glActiveTexture(GL_TEXTURE0);
         //     glBindTexture(GL_TEXTURE_2D, shadowShader.depthMapTexture);
         //     shadowShader.renderQuad();
@@ -180,7 +225,7 @@ public:
         // glUseProgram(0);
     }
 
-    void displayScene(float terrainUp)
+    void displayScene(float terrainUp, bool isShadow)
     {
         // cubemap
         pushMatrix(modelMatrix);
@@ -194,7 +239,10 @@ public:
         pushMatrix(modelMatrix);
         {
             terrain->up = terrainUp;
-            terrain->draw();
+            if (isShadow)
+                displayShadow();
+            else
+                terrain->draw(true);
         }
         modelMatrix = popMatrix();
     }

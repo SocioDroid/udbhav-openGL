@@ -12,9 +12,11 @@ out vec2 TexCoord_CS_in;
 out vec3 Normal_CS_in;
 
 void main() {
+
     WorldPos_CS_in = (u_gWorld * vec4(Position_VS_in, 1.0)).xyz;
     WorldPos_CS_in.xz += a_Position;
     Normal_CS_in = Normal_VS_in;
     TexCoord_CS_in = TexCoord_VS_in;
+
 
 }

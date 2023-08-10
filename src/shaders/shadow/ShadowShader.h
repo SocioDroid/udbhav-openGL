@@ -51,8 +51,8 @@ public:
 
     Cube *cube = nullptr;
 
-    GLuint SHADOW_WIDTH = 1024;
-    GLuint SHADOW_HEIGHT = 1024;
+    GLuint SHADOW_WIDTH = 10000;
+    GLuint SHADOW_HEIGHT = 10000;
 
     BOOL initialize()
     {

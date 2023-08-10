@@ -26,6 +26,46 @@ uniform float u_transitionFactor;
 
 out vec4 FragColor;
 
+// Shadow
+uniform sampler2D shadowMap;
+uniform vec3 shadowLightPosition;
+uniform bool isShadow;
+in vec3 FragPos;
+in vec4 FragPosLightSpace;
+
+float ShadowCalculation(vec4 fragPosLightSpace, vec3 Normal) {
+    // perform perspective divide
+	vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
+    // transform to [0,1] range
+	projCoords = projCoords * 0.5 + 0.5;
+    // get closest depth value from light's perspective (using [0,1] range fragPosLight as coords)
+	float closestDepth = texture(shadowMap, projCoords.xy).r; 
+    // get depth of current fragment from light's perspective
+	float currentDepth = projCoords.z;
+    // calculate bias (based on depth map resolution and slope)
+	vec3 normal = normalize(Normal);
+	vec3 lightDir = normalize(shadowLightPosition - FragPos);
+	float bias = max(0.05 * (1.0 - dot(normal, lightDir)), 0.005);
+    // check whether current frag pos is in shadow
+    // float shadow = currentDepth - bias > closestDepth  ? 1.0 : 0.0;
+    // PCF
+	float shadow = 0.0;
+	vec2 texelSize = 1.0 / textureSize(shadowMap, 0);
+	for(int x = -1; x <= 1; ++x) {
+		for(int y = -1; y <= 1; ++y) {
+			float pcfDepth = texture(shadowMap, projCoords.xy + vec2(x, y) * texelSize).r;
+			shadow += currentDepth - bias > pcfDepth ? 1.0 : 0.0;
+		}
+	}
+	shadow /= 9.0;
+
+    // keep the shadow at 0.0 when outside the far_plane region of the light's frustum.
+	if(projCoords.z > 1.0)
+		shadow = 0.0;
+
+	return shadow;
+}
+
 float Random2D(in vec2 st) {
 	return fract(sin(dot(st.xy, vec2(12.9898, 78.233) + u_seed.xy)) * 43758.5453123);
 }
@@ -242,10 +282,18 @@ void main() {
 
 	vec3 ambient = ambient();
 	vec3 diffuse = diffuse(n);
-	vec3 specular = specular(n);
+	// vec3 specular = specular(n);
+
+	// Shadow
+	float shadow;
+	if(isShadow) {
+
+		shadow = ShadowCalculation(FragPosLightSpace, n);
+		ambient = ambient + (1 - shadow);
+	}
 
 	// putting all together
-	vec4 color = heightColor * vec4((ambient + specular * 0 + diffuse) * vec3(1.0), 1.0);
+	vec4 color = heightColor * vec4((ambient + diffuse) * vec3(1.0), 1.0);
 	if(u_drawFog) {
 		FragColor = mix(color, vec4(mix(u_fogColor * 1.1, u_fogColor * 0.85, clamp(WorldPos.y / (1500. * 16.) * u_gDispFactor, 0.0, 1.0)), 1.0), fogFactor);
 		FragColor.a = WorldPos.y / u_waterHeight;
