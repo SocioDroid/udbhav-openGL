@@ -146,8 +146,8 @@ void main() {
     vec3 spectrum[4];
     spectrum[0] = vec3(1.00, 1.00, 0.00);
     spectrum[1] = vec3(0.50, 0.00, 0.00);
-    spectrum[2] = vec3(1.00, 0.40, 0.20);
-    spectrum[3] = vec3(1.00, 0.40, 0.00);
+    spectrum[2] = vec3(1.00, 0.20, 0.00);
+    spectrum[3] = vec3(1.00, 0.30, 0.00);
 
     uv -= 0.5;
     uv -= 10. / iResolution.xy;

@@ -180,7 +180,7 @@ void main(void) {
     vec4 FragColorLight = vec4(ambient_lighting + diffuse_reflection + specular_reflection, 1.0);
 
     vec4 texColor = texture(u_textureSampler, a_texcoords_out);
-    if(isMultiTexture==true) {
+    if(isMultiTexture == true) {
         vec2 iResolution = vec2(1920., 1080.);
         vec2 uv = a_texcoords_out;
 
@@ -189,8 +189,8 @@ void main(void) {
         vec3 spectrum[4];
         spectrum[0] = vec3(1.00, 1.00, 0.00);
         spectrum[1] = vec3(0.50, 0.00, 0.00);
-        spectrum[2] = vec3(1.00, 0.40, 0.20);
-        spectrum[3] = vec3(1.00, 0.40, 0.00);
+        spectrum[2] = vec3(1.00, 0.20, 0.00);
+        spectrum[3] = vec3(1.00, 0.30, 0.00);
 
         uv -= 0.5;
         uv -= 10. / iResolution.xy;
@@ -206,10 +206,10 @@ void main(void) {
         vec3 p2 = vec3(p.xy * 0.08, p.z * 0.2);
 
         float black = pattern(p2, black_q, black_r);
-        black = smoothstep(1.0,0.4,length(black_q*black));
+        black = smoothstep(1.0, 0.4, length(black_q * black));
 
         float brigth = pattern(p2 * 2., brigth_q, brigth_r);
-        brigth = smoothstep(0.0,1.8,brigth*length(brigth_q));
+        brigth = smoothstep(0.0, 1.8, brigth * length(brigth_q));
 
         p += min(length(brigth_q), length(black_q)) * 5.;
 

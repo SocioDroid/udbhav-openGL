@@ -35,8 +35,8 @@ public:
         terrainShadowScene04 = new TerrainShadowScene();
 
         // SCENE CONTROLS
-        START_E2E_DEMO = TRUE;
-        selected_scene = SCENE_01_EARTH_BIRTH;
+        START_E2E_DEMO = FALSE;
+        selected_scene = SCENE_03_TERRAIN_WITH_HEAVY_RAIN;
     }
 
     BOOL initialize()
@@ -66,6 +66,8 @@ public:
                 // break;
             case SCENE_04_TERRAIN_SHADOW:
                 terrainShadowScene04->initialize();
+                break;
+            default:
                 break;
             }
         }
@@ -99,7 +101,12 @@ public:
         // SCENE SWITCHER
         if (START_E2E_DEMO) // Switch scenes only if end to end demo is played
         {
-            if (ELAPSED_TIME > START_TIME_SCENE_02_01_EARTH_COOLDOWN && ELAPSED_TIME < START_TIME_SCENE_03_01_TERRAIN_FIRST_RAIN)
+            if (ELAPSED_TIME >= START_TIME_SCENE_00_BLANK && selected_scene == SCENE_00_BLANK)
+            {
+                setSelectedScene(SCENE_01_EARTH_BIRTH);
+                sdkResetTimer(&timer);
+            }
+            else if (ELAPSED_TIME > START_TIME_SCENE_02_01_EARTH_COOLDOWN && ELAPSED_TIME < START_TIME_SCENE_03_01_TERRAIN_FIRST_RAIN)
             {
                 setSelectedScene(SCENE_02_EARTH_COOLDOWN);
             }

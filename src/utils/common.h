@@ -4,9 +4,11 @@
 #include "./OpenGL/GLLog.h"
 
 #include "../includes/vmath.h"
+#include "../includes/helper_timer.h"
 
 enum SCENE
 {
+    SCENE_00_BLANK,
     SCENE_01_EARTH_BIRTH,
     SCENE_02_EARTH_COOLDOWN,
     SCENE_03_TERRAIN_WITH_HEAVY_RAIN,
@@ -15,6 +17,7 @@ enum SCENE
 
 // SCENE START TIMINGS
 
+#define START_TIME_SCENE_00_BLANK 3.0f
 #define START_TIME_SCENE_01_01_INTRO 0.0f
 #define START_TIME_SCENE_01_02_EARTH_BIRTH 20.0f
 #define START_TIME_SCENE_01_03_EARTH_BIRTH_BLANK 53.0f
@@ -88,6 +91,9 @@ extern float light_objX;
 extern float light_objY;
 extern float light_objZ;
 
+// Timer
+extern StopWatchInterface *timer;
+
 #define FBO_WIDTH_LIGHT 2048
 #define FBO_HEIGHT_LIGHT 2048
 
@@ -110,3 +116,4 @@ extern BOOL start_fade_out_opening;
 
 void initializePlaneVAO(const int res, const int width, GLuint *planeVAO, GLuint *planeVBO, GLuint *planeEBO);
 vmath::vec3 genRandomVec3();
+void resetElapsedTime();

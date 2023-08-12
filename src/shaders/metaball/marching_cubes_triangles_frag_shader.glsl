@@ -188,8 +188,8 @@ void main() {
     vec3 spectrum[4];
     spectrum[0] = vec3(1.00, 1.00, 0.00);
     spectrum[1] = vec3(0.50, 0.00, 0.00);
-    spectrum[2] = vec3(1.00, 0.40, 0.20);
-    spectrum[3] = vec3(1.00, 0.40, 0.00);
+    spectrum[2] = vec3(1.00, 0.30, 0.20);
+    spectrum[3] = vec3(1.00, 0.10, 0.00);
 
     uv -= 0.5;
     uv -= 10. / iResolution.xy;
@@ -208,7 +208,7 @@ void main() {
     black = smoothstep(1.0, 0.4, length(black_q * black));
 
     float brigth = pattern(p2 * 2., brigth_q, brigth_r);
-    brigth = smoothstep(0.0,1.8,brigth*length(brigth_q));
+    brigth = smoothstep(0.0, 1.8, brigth * length(brigth_q));
 
     p += min(length(brigth_q), length(black_q)) * 5.;
 
@@ -224,33 +224,33 @@ void main() {
 
     // LIGHT
     /* Distance to light source. */
-    const float light_distance = 5.0;
+    // const float light_distance = 5.0;
 
-    vec3 light_location = vec3(0.0, 0.0, -1.0 + lightZ);
+    // vec3 light_location = vec3(0.0, 0.0, -1.0 + lightZ);
 
-    /* Scene ambient color. */
-    const vec3 ambient_color = vec3(0.1, 0.1, 0.1);
-    const float attenuation = 1.0;
-    const float shiness = 1.0;
+    // /* Scene ambient color. */
+    // const vec3 ambient_color = vec3(0.1, 0.1, 0.1);
+    // const float attenuation = 1.0;
+    // const float shiness = 1.0;
 
-    /* Normalize directions. */
-    vec3 normal_direction = normalize(phong_vertex_normal_vector);
-    vec3 view_direction = normalize(vec3(vec4(0.0, 0.0, -5.0, 0.0) - phong_vertex_position));
-    vec3 light_direction = normalize(light_location);
+    // /* Normalize directions. */
+    // vec3 normal_direction = normalize(phong_vertex_normal_vector);
+    // vec3 view_direction = normalize(vec3(vec4(0.0, 0.0, -5.0, 0.0) - phong_vertex_position));
+    // vec3 light_direction = normalize(light_location);
 
-    /** Calculate ambient lighting component of directional light. */
-    // vec3 ambient_lighting = ambient_color * phong_vertex_color;
+    // /** Calculate ambient lighting component of directional light. */
+    // // vec3 ambient_lighting = ambient_color * phong_vertex_color;
 
-    /** Calculate diffuse reflection lighting component of directional light. */
-    // vec3 diffuse_reflection = attenuation * phong_vertex_color * max(0.0, dot(normal_direction, light_direction));
+    // /** Calculate diffuse reflection lighting component of directional light. */
+    // // vec3 diffuse_reflection = attenuation * phong_vertex_color * max(0.0, dot(normal_direction, light_direction));
 
-    /** Calculate specular reflection lighting component of directional light. */
-    vec3 specular_reflection = vec3(0.0, 0.0, 0.0);
+    // /** Calculate specular reflection lighting component of directional light. */
+    // vec3 specular_reflection = vec3(0.0, 0.0, 0.0);
 
-    if(dot(normal_direction, light_direction) >= 0.0) {
-        /* Light source on the right side. */
-        specular_reflection = attenuation * phong_vertex_color * pow(max(0.0, dot(reflect(-light_direction, normal_direction), view_direction)), shiness);
-    }
+    // if(dot(normal_direction, light_direction) >= 0.0) {
+    //     /* Light source on the right side. */
+    //     specular_reflection = attenuation * phong_vertex_color * pow(max(0.0, dot(reflect(-light_direction, normal_direction), view_direction)), shiness);
+    // }
 
     /** Calculate fragment lighting as sum of previous three component. */
     // vec4 FragColorLight = vec4(ambient_lighting + diffuse_reflection + specular_reflection, 1.0);

@@ -22,6 +22,7 @@ public:
     WaterMatrix *waterMatrix;
     Rain *rain = NULL;
     BezierCamera sceneCamera;
+    SphereAish *sphereCloudNoise;
     SphereAish *sphereCloud;
     NoiseCloudShader noiseCloudShader;
     GLuint texture_noise;
@@ -33,6 +34,7 @@ public:
 
     // Cloud
     float cloudAlpha = 0.0f;
+    GLuint texture_cloudEarth;
 
     // Lightning
     GLuint texture_lightning1;
@@ -226,10 +228,16 @@ public:
         }
 
         // // Cloud
-        sphereCloud = new SphereAish(1.0f, 100, 100);
+        sphereCloudNoise = new SphereAish(1.0f, 100, 100);
+        sphereCloud = new SphereAish(1.1f, 100, 100);
         if (!noiseCloudShader.initialize())
         {
             PrintLog("\nFailed to initialize NoisCloud Shader\n");
+            return FALSE;
+        }
+        if (LoadPNGImage(&texture_cloudEarth, "./assets/textures/earth/clouds2.png") == FALSE)
+        {
+            PrintLog("Failed to load clouds texture\n");
             return FALSE;
         }
 
@@ -315,6 +323,13 @@ public:
             cubemap->display(cubemapFactor);
         }
         modelMatrix = popMatrix();
+
+        // pushMatrix(modelMatrix);
+        // {
+        //     modelMatrix = modelMatrix * scale(100000.0f, 100000.0f, 100000.0f) * vmath::rotate(-90.0f, 1.0f, 0.0f, 0.0f);
+        //     drawEarthCloud();
+        // }
+        // modelMatrix = popMatrix();
 
         // Cloud
         if (cloudAlpha < 1.0f)
@@ -416,6 +431,44 @@ public:
         }
         modelMatrix = popMatrix();
     }
+
+    void drawEarthCloud()
+    {
+        glUseProgram(commonShaders->textureLightShader->shaderProgramObject);
+        pushMatrix(modelMatrix);
+        {
+            modelMatrix = modelMatrix * vmath::rotate(-90.0f, 1.0f, 0.0f, 0.0f);
+            modelMatrix = modelMatrix * vmath::rotate(-190.0f + ELAPSED_TIME, 0.0f, 0.0f, 1.0f);
+            modelMatrix = modelMatrix * vmath::scale(1.02f, 1.02f, 1.02f);
+            /* Initialize uniforms constant throughout rendering loop. */
+            glUniformMatrix4fv(commonShaders->textureLightShader->modelMatrixUniform, 1, GL_FALSE, modelMatrix);
+            glUniformMatrix4fv(commonShaders->textureLightShader->viewMatrixUniform, 1, GL_FALSE, viewMatrix);
+            glUniformMatrix4fv(commonShaders->textureLightShader->projectionMatrixUniform, 1, GL_FALSE, perspectiveProjectionMatrix);
+
+            glEnable(GL_BLEND);
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            glEnable(GL_TEXTURE_2D);
+
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D, texture_cloudEarth);
+            glUniform1i(commonShaders->textureLightShader->textureSamplerUniform, 0);
+            glUniform1f(commonShaders->textureLightShader->alphaValueUniform, 0.5f);
+
+            // Controlling Light position
+            glUniform1f(glGetUniformLocation(commonShaders->textureLightShader->shaderProgramObject, "lightX"), -2.0f + 2.300000f);
+            glUniform1f(glGetUniformLocation(commonShaders->textureLightShader->shaderProgramObject, "lightY"), -1.0f + 0.300000f);
+            glUniform1f(glGetUniformLocation(commonShaders->textureLightShader->shaderProgramObject, "lightZ"), 1.0f + -0.100000f);
+
+            glBindVertexArray(sphereCloud->vao_sphere);
+            glDrawArrays(GL_TRIANGLE_STRIP, 0, sphereCloud->getNumberOfSphereVertices());
+            glBindVertexArray(0);
+            glBindTexture(GL_TEXTURE_2D, 0);
+
+            glDisable(GL_BLEND);
+        }
+        modelMatrix = popMatrix();
+    }
+
     /// Helper functions
     float randFloat(float min, float max)
     {
@@ -460,8 +513,8 @@ public:
             glBindTexture(GL_TEXTURE_3D, texture_noise);
             glUniform1i(noiseCloudShader.textureSamplerUniform, 0);
 
-            glBindVertexArray(sphereCloud->vao_sphere);
-            glDrawArrays(GL_TRIANGLE_STRIP, 0, sphereCloud->getNumberOfSphereVertices());
+            glBindVertexArray(sphereCloudNoise->vao_sphere);
+            glDrawArrays(GL_TRIANGLE_STRIP, 0, sphereCloudNoise->getNumberOfSphereVertices());
             glBindVertexArray(0);
             glDisable(GL_BLEND);
         }

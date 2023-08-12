@@ -748,7 +748,7 @@ int initialize(void)
 	glEnable(GL_TEXTURE_2D);
 
 	/* Clear the  screen using blue color */
-	glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
 	perspectiveProjectionMatrix = mat4::identity();
 
@@ -927,4 +927,7 @@ void updateGlobalViewMatrix()
 		if (globalBezierCamera)
 			viewMatrix = globalBezierCamera->getViewMatrix();
 	}
+}
+void resetElapsedTime()
+{
 }
