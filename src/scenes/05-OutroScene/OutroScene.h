@@ -160,7 +160,7 @@ public:
             PrintLog("Failed to load clouds texture\n");
             return FALSE;
         }
-        if (LoadPNGImage(&texture_outro, "./assets/textures/outro/outro.png") == FALSE)
+        if (LoadPNGImage(&texture_outro, "./assets/textures/outro/outro4k.png") == FALSE)
         {
             PrintLog("Failed to load clouds texture\n");
             return FALSE;
