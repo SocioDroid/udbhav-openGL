@@ -6,6 +6,9 @@ in vec3 phong_vertex_normal_vector;
 in vec3 phong_vertex_color;
 
 uniform sampler2D u_textureSampler;
+uniform sampler2D u_textureNormalSampler;
+uniform bool isNormalMap = false;
+
 uniform float u_alphaVal = 1.0;
 uniform float lightX;
 uniform float lightY;
@@ -153,12 +156,21 @@ void main(void) {
     vec3 light_location = vec3(lightX, lightY, -1.0 + lightZ);
 
     /* Scene ambient color. */
-    const vec3 ambient_color = vec3(0.1, 0.1, 0.1);
+    vec3 ambient_color = vec3(0.1, 0.1, 0.1);
+    ;
     const float attenuation = 1.0;
     const float shiness = 1.0;
 
     /* Normalize directions. */
-    vec3 normal_direction = normalize(phong_vertex_normal_vector);
+    vec3 normal_direction;
+
+    if(multiTextureInterpolation >= 1.0) {
+        vec3 normal = texture(u_textureNormalSampler, a_texcoords_out).rgb;
+        normal_direction = normalize(normal * 2.0 + 1.0);
+        ambient_color = vec3(1.0, 1.0, 1.0);
+    } else
+        normal_direction = normalize(phong_vertex_normal_vector);
+
     vec3 view_direction = normalize(vec3(vec4(0.0, 0.0, -5.0, 0.0) - phong_vertex_position));
     vec3 light_direction = normalize(light_location);
 

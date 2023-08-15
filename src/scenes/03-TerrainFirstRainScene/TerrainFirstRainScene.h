@@ -371,7 +371,7 @@ public:
         modelMatrix = popMatrix();
         pushMatrix(modelMatrix);
         {
-            modelMatrix = modelMatrix * vmath::translate(26100.000000f, 13050.000000f, 7950.000000f) * vmath::scale(7750.000000f, 10400.000000f, 1.0f) * rotate(light_objX, 0.0f, 1.0f, 0.0f);
+            modelMatrix = modelMatrix * vmath::translate(26100.000000f, 13050.000000f, 7950.000000f) * vmath::scale(7750.000000f, 10400.000000f, 1.0f) * rotate(0.0f, 0.0f, 1.0f, 0.0f);
             commonShaders->textureShader->drawQuadWithTexture(texture_lightning1, modelMatrix, viewMatrix, perspectiveProjectionMatrix, cloudNoiseAlpha);
         }
         modelMatrix = popMatrix();
@@ -393,12 +393,7 @@ public:
             commonShaders->textureShader->drawQuadWithTexture(texture_lightning1, modelMatrix, viewMatrix, perspectiveProjectionMatrix, cloudNoiseAlpha);
         }
         modelMatrix = popMatrix();
-        // pushMatrix(modelMatrix);
-        // {
-        //     modelMatrix = modelMatrix * vmath::translate(objX, objY, objZ) * rotate(light_objX, 0.0f, 1.0f, 0.0f) * vmath::scale(scaleX, scaleY, 1.0f);
-        //     commonShaders->textureShader->drawQuadWithTexture(texture_lightning1, modelMatrix, viewMatrix, perspectiveProjectionMatrix, 1.0f);
-        // }
-        // modelMatrix = popMatrix();
+       
     }
     void drawRain()
     {

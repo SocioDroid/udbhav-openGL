@@ -632,6 +632,8 @@ public:
             // ////// FADEOUT SPEED
             if (fadeAlpha <= 1.0f)
                 fadeAlpha += 0.008f;
+            else // Switch scene to OUTRO
+                setSelectedScene(SCENE_05_OUTRO);
         }
 
         // Camera
@@ -644,12 +646,13 @@ public:
 
         // // Trigger fadeout
         if (ELAPSED_TIME > (START_TIME_SCENE_04_TERRAIN_SHADOW_END - 2))
+        // if (ELAPSED_TIME > 15.0f)
         {
             isFadeout = true;
         }
 
         // Shadow Translate
-        if (ELAPSED_TIME > (START_TIME_SCENE_04_TERRAIN_SHADOW_START + 7) && shadowTranslate < maxShadowTranslate)
+        if (ELAPSED_TIME > (START_TIME_SCENE_04_TERRAIN_SHADOW_START + 13) && shadowTranslate < maxShadowTranslate)
         {
             shadowTranslate += 0.07f;
         }

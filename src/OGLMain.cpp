@@ -75,7 +75,7 @@ float objIncrement = 0.1f;
 float scaleX = 0.0;
 float scaleY = 0.0;
 float scaleZ = 0.0;
-float scaleIncrement = 10.0f;
+float scaleIncrement = 1.0f;
 
 float globalTime = 0.0f;
 float ELAPSED_TIME;
@@ -83,7 +83,7 @@ float ELAPSED_TIME;
 float light_objX = 0.0f;
 float light_objY = 0.0f;
 float light_objZ = 0.0f;
-float lightObjIncrement = 70.0f;
+float lightObjIncrement = 0.1f;
 
 float objAngle = 0.0f;
 float objAngleIncrement = 1.0f;
@@ -99,200 +99,22 @@ float VOLUME_LEVEL = 0.8f;
 
 BOOL start_fade_out_opening = FALSE;
 std::vector<std::vector<float>> bezierPoints = {
-	{65.199997f, -5.199998f, -167.500000f},
-	{66.699997f, -5.199998f, -168.000000f},
-	{64.699997f, -5.199998f, -168.000000f},
-	{64.199997f, -5.199998f, -168.500000f},
-	{63.699997f, -5.199998f, -169.000000f},
-	{66.199997f, -5.199998f, -167.500000f},
-	{67.199997f, -5.199998f, -167.000000f},
-	{68.699997f, -5.199998f, -166.500000f},
-	{70.199997f, -5.199998f, -165.500000f},
-	{69.699997f, -5.199998f, -166.000000f},
-	{69.199997f, -5.199998f, -166.500000f},
-	{68.199997f, -5.199998f, -167.000000f},
-	{67.699997f, -5.199998f, -167.000000f},
-	{70.699997f, -5.199998f, -166.000000f},
-	{71.199997f, -5.199998f, -165.000000f},
-	{70.699997f, -5.199998f, -165.000000f},
-	{72.199997f, -5.199998f, -165.000000f},
-	{72.199997f, -5.199998f, -166.000000f},
-	{71.699997f, -5.199998f, -166.000000f},
-	{73.699997f, -5.199998f, -166.500000f},
-	{73.199997f, -5.199998f, -166.500000f},
-	{72.199997f, -5.199998f, -166.500000f},
-	{74.199997f, -5.199998f, -167.000000f},
-	{74.199997f, -5.199998f, -168.000000f},
-	{74.199997f, -5.199998f, -169.500000f},
-	{74.699997f, -5.199998f, -170.000000f},
-	{75.199997f, -5.199998f, -171.000000f},
-	{75.699997f, -5.199998f, -170.000000f},
-	{75.699997f, -5.199998f, -170.500000f},
-	{74.699997f, -5.199998f, -168.000000f},
-	{75.199997f, -5.199998f, -169.000000f},
-	{74.699997f, -5.199998f, -170.500000f},
-	{73.699997f, -5.199998f, -173.000000f},
-	{73.199997f, -5.199998f, -173.500000f},
-	{74.199997f, -5.199998f, -172.000000f},
-	{74.699997f, -5.199998f, -168.500000f},
-	{70.199997f, -5.199998f, -177.500000f},
+	{-6.699996f, 0.000000f, 3.000000f},
+
 };
 
 // YAW GLOBAL
 std::vector<float> yawGlobal = {
-	119.000000f,
-	119.000000f,
-	119.000000f,
-	119.000000f,
-	119.000000f,
-	119.000000f,
-	119.000000f,
-	119.000000f,
-	119.000000f,
-	119.000000f,
-	119.000000f,
-	119.000000f,
-	119.000000f,
-	119.000000f,
-	119.000000f,
-	119.000000f,
-	119.000000f,
-	119.000000f,
-	119.000000f,
-	119.000000f,
-	119.000000f,
-	119.000000f,
-	119.000000f,
-	119.000000f,
-	119.000000f,
-	119.000000f,
-	119.000000f,
-	119.000000f,
-	119.000000f,
-	119.000000f,
-	119.000000f,
-	119.000000f,
-	119.000000f,
-	119.000000f,
-	119.000000f,
-	119.000000f,
-	119.000000f,
-	119.000000f,
-	119.000000f,
-	119.000000f,
-	119.000000f,
-	119.000000f,
-	119.000000f,
-	119.000000f,
-	119.000000f,
-	119.000000f,
-	119.000000f,
-	119.000000f,
-
+	-23.000000f,
 };
 
 // PITCH GLOBAL
 std::vector<float> pitchGlobal = {
 	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-
 };
 
 // FOV GLOBAL
 std::vector<float> fovGlobal = {
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
-	0.000000f,
 	0.000000f,
 };
 
@@ -447,9 +269,9 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 			objX = bezierPoints[bezierPoints.size() - 1][0];
 			objY = bezierPoints[bezierPoints.size() - 1][1];
 			objZ = bezierPoints[bezierPoints.size() - 1][2];
-			// scaleX = yawGlobal[yawGlobal.size() - 1];
-			// scaleY = pitchGlobal[pitchGlobal.size() - 1];
-			// scaleZ = fovGlobal[fovGlobal.size() - 1];
+			scaleX = yawGlobal[yawGlobal.size() - 1];
+			scaleY = pitchGlobal[pitchGlobal.size() - 1];
+			scaleZ = fovGlobal[fovGlobal.size() - 1];
 		}
 		break;
 	case WM_SETFOCUS:
@@ -484,9 +306,9 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 			if (enableBezierCameraControl)
 			{
 				bezierPoints.push_back({objX, objY, objZ});
-				// yawGlobal.push_back(scaleX);
-				// pitchGlobal.push_back(scaleY);
-				// fovGlobal.push_back(scaleZ);
+				yawGlobal.push_back(scaleX);
+				pitchGlobal.push_back(scaleY);
+				fovGlobal.push_back(scaleZ);
 				vectorIndex = bezierPoints.size() - 1;
 			}
 			break;
@@ -501,9 +323,9 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 					objX = bezierPoints[vectorIndex][0];
 					objY = bezierPoints[vectorIndex][1];
 					objZ = bezierPoints[vectorIndex][2];
-					// scaleX = yawGlobal[vectorIndex];
-					// scaleY = pitchGlobal[vectorIndex];
-					// scaleZ = fovGlobal[vectorIndex];
+					scaleX = yawGlobal[vectorIndex];
+					scaleY = pitchGlobal[vectorIndex];
+					scaleZ = fovGlobal[vectorIndex];
 				}
 			}
 			break;
@@ -518,9 +340,9 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 					objX = bezierPoints[vectorIndex][0];
 					objY = bezierPoints[vectorIndex][1];
 					objZ = bezierPoints[vectorIndex][2];
-					// scaleX = yawGlobal[vectorIndex];
-					// scaleY = pitchGlobal[vectorIndex];
-					// scaleZ = fovGlobal[vectorIndex];
+					scaleX = yawGlobal[vectorIndex];
+					scaleY = pitchGlobal[vectorIndex];
+					scaleZ = fovGlobal[vectorIndex];
 				}
 			}
 			break;
@@ -581,27 +403,27 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 					PrintLog("{%ff, %ff, %ff},\n", bezierPoints[i][0], bezierPoints[i][1], bezierPoints[i][2]);
 				}
 				PrintLog("};\n");
-				// PrintLog("\n\n// YAW GLOBAL\n");
-				// PrintLog("std::vector<float> yawGlobal = {\n");
-				// for (int i = 0; i < yawGlobal.size(); i++)
-				// {
-				// 	PrintLog("%ff,\n", yawGlobal[i]);
-				// }
-				// PrintLog("};\n");
-				// PrintLog("\n\n// PITCH GLOBAL\n");
-				// PrintLog("std::vector<float> pitchGlobal = {\n");
-				// for (int i = 0; i < pitchGlobal.size(); i++)
-				// {
-				// 	PrintLog("%ff,\n\t", pitchGlobal[i]);
-				// }
-				// PrintLog("};\n");
+				PrintLog("\n\n// YAW GLOBAL\n");
+				PrintLog("std::vector<float> yawGlobal = {\n");
+				for (int i = 0; i < yawGlobal.size(); i++)
+				{
+					PrintLog("%ff,\n", yawGlobal[i]);
+				}
+				PrintLog("};\n");
+				PrintLog("\n\n// PITCH GLOBAL\n");
+				PrintLog("std::vector<float> pitchGlobal = {\n");
+				for (int i = 0; i < pitchGlobal.size(); i++)
+				{
+					PrintLog("%ff,\n\t", pitchGlobal[i]);
+				}
+				PrintLog("};\n");
 				// PrintLog("\n\n// FOV GLOBAL\n");
 				// PrintLog("std::vector<float> fovGlobal = {\n");
 				// for (int i = 0; i < fovGlobal.size(); i++)
 				// {
 				// 	PrintLog("%ff,\n\t", fovGlobal[i]);
 				// }
-				PrintLog("};\n");
+				// PrintLog("};\n");
 			}
 			PostQuitMessage(0);
 		}
@@ -894,8 +716,8 @@ void display(void)
 		bezierPoints[vectorIndex][0] = objX;
 		bezierPoints[vectorIndex][1] = objY;
 		bezierPoints[vectorIndex][2] = objZ;
-		// yawGlobal[vectorIndex] = scaleX;
-		// pitchGlobal[vectorIndex] = scaleY;
+		yawGlobal[vectorIndex] = scaleX;
+		pitchGlobal[vectorIndex] = scaleY;
 		// fovGlobal[vectorIndex] = scaleZ;
 	}
 

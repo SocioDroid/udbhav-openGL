@@ -13,6 +13,7 @@ enum SCENE
     SCENE_02_EARTH_COOLDOWN,
     SCENE_03_TERRAIN_WITH_HEAVY_RAIN,
     SCENE_04_TERRAIN_SHADOW,
+    SCENE_05_OUTRO,
 };
 
 // SCENE START TIMINGS
@@ -118,4 +119,3 @@ void initializePlaneVAO(const int res, const int width, GLuint *planeVAO, GLuint
 vmath::vec3 genRandomVec3();
 void resetElapsedTime();
 std::vector<float> flatten(const std::vector<std::vector<float>> &nestedVector);
-

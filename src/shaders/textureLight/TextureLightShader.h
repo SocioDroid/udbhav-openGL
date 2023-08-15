@@ -14,6 +14,8 @@ public:
     GLuint viewMatrixUniform;
     GLuint modelMatrixUniform;
     GLuint textureSamplerUniform;
+    GLuint textureNormalSamplerUniform;
+    GLuint isNormalMapUniform;
     GLuint alphaValueUniform;
     GLuint vao;
     GLuint vbo_position;
@@ -49,6 +51,8 @@ public:
         viewMatrixUniform = glGetUniformLocation(shaderProgramObject, "u_viewMatrix");
         modelMatrixUniform = glGetUniformLocation(shaderProgramObject, "u_modelMatrix");
         textureSamplerUniform = glGetUniformLocation(shaderProgramObject, "u_textureSampler");
+        textureNormalSamplerUniform = glGetUniformLocation(shaderProgramObject, "u_textureNormalSampler");
+        isNormalMapUniform = glGetUniformLocation(shaderProgramObject, "isNormalMap");
         alphaValueUniform = glGetUniformLocation(shaderProgramObject, "u_alphaVal");
 
         // VAO For QUAD

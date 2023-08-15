@@ -8,6 +8,7 @@
 #include "../02-EarthCooldownScene/EarthCooldownScene.h"
 #include "../03-TerrainFirstRainScene/TerrainFirstRainScene.h"
 #include "../04-TerrainShadowScene/TerrainShadowScene.h"
+#include "../05-OutroScene/OutroScene.h"
 
 BOOL bDoneAllInitialization = FALSE;
 extern Camera camera;
@@ -25,6 +26,8 @@ public:
     EarthCooldownScene *earthCooldownScene02;
     TerrainFirstRainScene *terrainFirstRainScene03;
     TerrainShadowScene *terrainShadowScene04;
+    OutroScene *outroScene;
+
     // member functions
     MainScene()
     {
@@ -33,6 +36,7 @@ public:
         earthCooldownScene02 = new EarthCooldownScene();
         terrainFirstRainScene03 = new TerrainFirstRainScene();
         terrainShadowScene04 = new TerrainShadowScene();
+        outroScene = new OutroScene();
 
         // SCENE CONTROLS
         START_E2E_DEMO = TRUE;
@@ -48,6 +52,7 @@ public:
             terrainShadowScene04->initialize();
             terrainFirstRainScene03->initialize();
             earthCooldownScene02->initialize();
+            outroScene->initialize();
             // Need to initialize at the end
             earthBirthScene01->initialize();
         }
@@ -63,9 +68,12 @@ public:
                 break;
             case SCENE_03_TERRAIN_WITH_HEAVY_RAIN:
                 terrainFirstRainScene03->initialize();
-                // break;
+                break;
             case SCENE_04_TERRAIN_SHADOW:
                 terrainShadowScene04->initialize();
+                break;
+            case SCENE_05_OUTRO:
+                outroScene->initialize();
                 break;
             default:
                 break;
@@ -91,6 +99,9 @@ public:
         case SCENE_04_TERRAIN_SHADOW:
             terrainShadowScene04->display();
             break;
+        case SCENE_05_OUTRO:
+            outroScene->display();
+            break;
         default:
             break;
         }
@@ -114,9 +125,13 @@ public:
             {
                 setSelectedScene(SCENE_03_TERRAIN_WITH_HEAVY_RAIN);
             }
-            else if (ELAPSED_TIME > START_TIME_SCENE_04_TERRAIN_SHADOW)
+            else if (ELAPSED_TIME > START_TIME_SCENE_04_TERRAIN_SHADOW && ELAPSED_TIME < (START_TIME_SCENE_04_TERRAIN_SHADOW_END + 1))
             {
                 setSelectedScene(SCENE_04_TERRAIN_SHADOW);
+            }
+            else if (ELAPSED_TIME > (START_TIME_SCENE_04_TERRAIN_SHADOW_END + 1))
+            {
+                setSelectedScene(SCENE_05_OUTRO);
             }
         }
 
@@ -133,6 +148,9 @@ public:
             break;
         case SCENE_04_TERRAIN_SHADOW:
             terrainShadowScene04->update();
+            break;
+        case SCENE_05_OUTRO:
+            outroScene->update();
             break;
         default:
             break;
