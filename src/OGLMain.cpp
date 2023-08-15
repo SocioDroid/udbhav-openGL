@@ -69,7 +69,7 @@ CommonModels *commonModels;
 float objX = 0.0f;
 float objY = 0.0f;
 float objZ = 0.0f;
-float objIncrement = 1.0f;
+float objIncrement = 0.1f;
 
 // Scale
 float scaleX = 0.0;
@@ -91,63 +91,51 @@ float objAngleIncrement = 1.0f;
 // =============================== GLOBAL CONTROLS
 int PHASE_CURRENT = PHASE_MAIN;
 BOOL USE_FPV_CAM = FALSE;
-BOOL playMusic = FALSE;
-BOOL enableBezierCameraControl = TRUE;
+BOOL playMusic = TRUE;
+BOOL enableBezierCameraControl = FALSE;
 BOOL spaceBarIsPressed = FALSE;
 float VOLUME_LEVEL = 0.8f;
 // ==============================================//
 
 BOOL start_fade_out_opening = FALSE;
 std::vector<std::vector<float>> bezierPoints = {
-	{-0.200000f, -4.699998f, 18.200033f},
-	{-2.000000f, -4.699998f, 18.300034f},
-	{-2.000000f, -4.699998f, 16.800028f},
-	{-3.399999f, -4.699998f, 17.900032f},
-	{-3.399999f, -4.699998f, 16.100025f},
-	{-4.899998f, -4.699998f, 16.300026f},
-	{-4.899998f, -4.699998f, 14.700020f},
-	{-4.899998f, -4.699998f, 13.100014f},
-	{-6.399996f, -4.699998f, 13.100014f},
-	{-8.499996f, -4.699998f, 13.100014f},
-	{-8.499996f, -4.699998f, 14.400019f},
-	{-6.799996f, -4.699998f, 14.400019f},
-	{-6.699996f, -4.699998f, 11.500008f},
-	{-8.099995f, -4.699998f, 11.500008f},
-	{-9.199999f, -4.699998f, 11.500008f},
-	{-9.299999f, -4.699998f, 10.300003f},
-	{-9.299999f, -4.699998f, 8.699997f},
-	{-9.299999f, -4.699998f, 6.999996f},
-	{-10.299999f, -4.699998f, 4.999996f},
-	{-8.299999f, -4.699998f, 4.999996f},
-	{-8.299999f, -4.699998f, 3.999996f},
-	{-10.299999f, -4.699998f, 3.999996f},
-	{-11.299999f, -4.699998f, 1.999996f},
-	{-9.299999f, -4.699998f, 1.999996f},
-	{-9.299999f, -3.699998f, -1.000004f},
-	{-11.299999f, -4.699998f, -1.000004f},
-	{-11.299999f, -4.699998f, -0.000004f},
-	{-10.299999f, -4.699998f, -0.000004f},
-	{-12.299999f, -4.699998f, -3.000004f},
-	{-14.299999f, -4.699998f, -3.000004f},
-	{-14.299999f, -4.699998f, -5.000004f},
-	{-16.299999f, -4.699998f, -5.000004f},
-	{-18.299999f, -4.699998f, -4.000004f},
-	{-16.299999f, -4.699998f, -4.000004f},
-	{-20.299999f, -4.699998f, -3.000004f},
-	{-22.299999f, -4.699998f, -2.000004f},
-	{-25.299999f, -4.699998f, -1.000004f},
-	{-24.299999f, -4.699998f, -2.000004f},
-	{-26.299999f, -4.699998f, 0.999996f},
-	{-26.299999f, -4.699998f, 2.999996f},
-	{-28.299999f, -4.699998f, 4.999996f},
-	{-27.299999f, -4.699998f, 4.999996f},
-	{-29.299999f, -4.699998f, 6.999996f},
-	{-30.299999f, -4.699998f, 7.999996f},
-	{-32.299999f, -4.699998f, 8.999996f},
-	{-33.299999f, -4.699998f, 9.999996f},
-	{-35.299999f, -4.699998f, 9.999996f},
-	{-37.299999f, -4.699998f, 9.999996f},
-
+	{65.199997f, -5.199998f, -167.500000f},
+	{66.699997f, -5.199998f, -168.000000f},
+	{64.699997f, -5.199998f, -168.000000f},
+	{64.199997f, -5.199998f, -168.500000f},
+	{63.699997f, -5.199998f, -169.000000f},
+	{66.199997f, -5.199998f, -167.500000f},
+	{67.199997f, -5.199998f, -167.000000f},
+	{68.699997f, -5.199998f, -166.500000f},
+	{70.199997f, -5.199998f, -165.500000f},
+	{69.699997f, -5.199998f, -166.000000f},
+	{69.199997f, -5.199998f, -166.500000f},
+	{68.199997f, -5.199998f, -167.000000f},
+	{67.699997f, -5.199998f, -167.000000f},
+	{70.699997f, -5.199998f, -166.000000f},
+	{71.199997f, -5.199998f, -165.000000f},
+	{70.699997f, -5.199998f, -165.000000f},
+	{72.199997f, -5.199998f, -165.000000f},
+	{72.199997f, -5.199998f, -166.000000f},
+	{71.699997f, -5.199998f, -166.000000f},
+	{73.699997f, -5.199998f, -166.500000f},
+	{73.199997f, -5.199998f, -166.500000f},
+	{72.199997f, -5.199998f, -166.500000f},
+	{74.199997f, -5.199998f, -167.000000f},
+	{74.199997f, -5.199998f, -168.000000f},
+	{74.199997f, -5.199998f, -169.500000f},
+	{74.699997f, -5.199998f, -170.000000f},
+	{75.199997f, -5.199998f, -171.000000f},
+	{75.699997f, -5.199998f, -170.000000f},
+	{75.699997f, -5.199998f, -170.500000f},
+	{74.699997f, -5.199998f, -168.000000f},
+	{75.199997f, -5.199998f, -169.000000f},
+	{74.699997f, -5.199998f, -170.500000f},
+	{73.699997f, -5.199998f, -173.000000f},
+	{73.199997f, -5.199998f, -173.500000f},
+	{74.199997f, -5.199998f, -172.000000f},
+	{74.699997f, -5.199998f, -168.500000f},
+	{70.199997f, -5.199998f, -177.500000f},
 };
 
 // YAW GLOBAL
@@ -459,9 +447,9 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 			objX = bezierPoints[bezierPoints.size() - 1][0];
 			objY = bezierPoints[bezierPoints.size() - 1][1];
 			objZ = bezierPoints[bezierPoints.size() - 1][2];
-			scaleX = yawGlobal[yawGlobal.size() - 1];
-			scaleY = pitchGlobal[pitchGlobal.size() - 1];
-			scaleZ = fovGlobal[fovGlobal.size() - 1];
+			// scaleX = yawGlobal[yawGlobal.size() - 1];
+			// scaleY = pitchGlobal[pitchGlobal.size() - 1];
+			// scaleZ = fovGlobal[fovGlobal.size() - 1];
 		}
 		break;
 	case WM_SETFOCUS:
@@ -496,9 +484,9 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 			if (enableBezierCameraControl)
 			{
 				bezierPoints.push_back({objX, objY, objZ});
-				yawGlobal.push_back(scaleX);
-				pitchGlobal.push_back(scaleY);
-				fovGlobal.push_back(scaleZ);
+				// yawGlobal.push_back(scaleX);
+				// pitchGlobal.push_back(scaleY);
+				// fovGlobal.push_back(scaleZ);
 				vectorIndex = bezierPoints.size() - 1;
 			}
 			break;
@@ -513,9 +501,9 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 					objX = bezierPoints[vectorIndex][0];
 					objY = bezierPoints[vectorIndex][1];
 					objZ = bezierPoints[vectorIndex][2];
-					scaleX = yawGlobal[vectorIndex];
-					scaleY = pitchGlobal[vectorIndex];
-					scaleZ = fovGlobal[vectorIndex];
+					// scaleX = yawGlobal[vectorIndex];
+					// scaleY = pitchGlobal[vectorIndex];
+					// scaleZ = fovGlobal[vectorIndex];
 				}
 			}
 			break;
@@ -530,9 +518,9 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 					objX = bezierPoints[vectorIndex][0];
 					objY = bezierPoints[vectorIndex][1];
 					objZ = bezierPoints[vectorIndex][2];
-					scaleX = yawGlobal[vectorIndex];
-					scaleY = pitchGlobal[vectorIndex];
-					scaleZ = fovGlobal[vectorIndex];
+					// scaleX = yawGlobal[vectorIndex];
+					// scaleY = pitchGlobal[vectorIndex];
+					// scaleZ = fovGlobal[vectorIndex];
 				}
 			}
 			break;
@@ -587,32 +575,32 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 			if (enableBezierCameraControl)
 			{
 				// Required  for camera
-				PrintLog("std::vector<std::vector<float>> bezierPoints = {\n");
+				PrintLog("\n\nstd::vector<std::vector<float>> bezierPoints = {\n");
 				for (int i = 0; i < bezierPoints.size(); i++)
 				{
 					PrintLog("{%ff, %ff, %ff},\n", bezierPoints[i][0], bezierPoints[i][1], bezierPoints[i][2]);
 				}
 				PrintLog("};\n");
-				PrintLog("\n\n// YAW GLOBAL\n");
-				PrintLog("std::vector<float> yawGlobal = {\n");
-				for (int i = 0; i < yawGlobal.size(); i++)
-				{
-					PrintLog("%ff,\n", yawGlobal[i]);
-				}
-				PrintLog("};\n");
-				PrintLog("\n\n// PITCH GLOBAL\n");
-				PrintLog("std::vector<float> pitchGlobal = {\n");
-				for (int i = 0; i < pitchGlobal.size(); i++)
-				{
-					PrintLog("%ff,\n\t", pitchGlobal[i]);
-				}
-				PrintLog("};\n");
-				PrintLog("\n\n// FOV GLOBAL\n");
-				PrintLog("std::vector<float> fovGlobal = {\n");
-				for (int i = 0; i < fovGlobal.size(); i++)
-				{
-					PrintLog("%ff,\n\t", fovGlobal[i]);
-				}
+				// PrintLog("\n\n// YAW GLOBAL\n");
+				// PrintLog("std::vector<float> yawGlobal = {\n");
+				// for (int i = 0; i < yawGlobal.size(); i++)
+				// {
+				// 	PrintLog("%ff,\n", yawGlobal[i]);
+				// }
+				// PrintLog("};\n");
+				// PrintLog("\n\n// PITCH GLOBAL\n");
+				// PrintLog("std::vector<float> pitchGlobal = {\n");
+				// for (int i = 0; i < pitchGlobal.size(); i++)
+				// {
+				// 	PrintLog("%ff,\n\t", pitchGlobal[i]);
+				// }
+				// PrintLog("};\n");
+				// PrintLog("\n\n// FOV GLOBAL\n");
+				// PrintLog("std::vector<float> fovGlobal = {\n");
+				// for (int i = 0; i < fovGlobal.size(); i++)
+				// {
+				// 	PrintLog("%ff,\n\t", fovGlobal[i]);
+				// }
 				PrintLog("};\n");
 			}
 			PostQuitMessage(0);
@@ -906,8 +894,8 @@ void display(void)
 		bezierPoints[vectorIndex][0] = objX;
 		bezierPoints[vectorIndex][1] = objY;
 		bezierPoints[vectorIndex][2] = objZ;
-		yawGlobal[vectorIndex] = scaleX;
-		pitchGlobal[vectorIndex] = scaleY;
+		// yawGlobal[vectorIndex] = scaleX;
+		// pitchGlobal[vectorIndex] = scaleY;
 		// fovGlobal[vectorIndex] = scaleZ;
 	}
 

@@ -46,7 +46,7 @@ void main(void) {
 
             // phong_ads_color = (ambiant + diffuse +  specular);
         if(noTexture)
-            phong_ads_color = (ambiant + diffuse + specular);
+            phong_ads_color = u_kd;
         else
             phong_ads_color = (ambiant + diffuse + specular) * vec3(texture_color);
 

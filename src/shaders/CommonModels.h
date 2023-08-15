@@ -10,6 +10,8 @@ public:
     Model *model_prastut;
     Model *model_bharatEkKhoj;
     Model *model_tree;
+    Model *model_treeGroup2;
+    Model *model_treeSingle;
 
     CommonModels()
     {
@@ -18,6 +20,8 @@ public:
         model_prastut = new Model();
         model_bharatEkKhoj = new Model();
         model_tree = new Model();
+        model_treeGroup2 = new Model();
+        model_treeSingle = new Model();
     }
 
     // Member Functions
@@ -38,6 +42,8 @@ public:
         }
 
         model_tree->initializeModel(".\\assets\\models\\trees\\pineTree.obj");
+        model_treeGroup2->initializeModel(".\\assets\\models\\trees\\pineTree2.obj");
+        model_treeSingle->initializeModel(".\\assets\\models\\trees\\pineTreeSingle.obj");
 
         return TRUE;
     }

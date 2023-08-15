@@ -35,8 +35,8 @@ public:
         terrainShadowScene04 = new TerrainShadowScene();
 
         // SCENE CONTROLS
-        START_E2E_DEMO = FALSE;
-        selected_scene = SCENE_04_TERRAIN_SHADOW;
+        START_E2E_DEMO = TRUE;
+        selected_scene = SCENE_00_BLANK;
     }
 
     BOOL initialize()
