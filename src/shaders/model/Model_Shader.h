@@ -124,6 +124,78 @@ public:
         glUseProgram(0);
     }
 
+    void render_Models_Without_Texture(const int numberOfInstances, float *instancesPositionArray)
+    {
+
+        float matrix[3] = {objX, objY, objZ};
+
+        // Use The Shader Program Object
+        glUseProgram(commonShaders->modelShaderCommon->shaderProgramObject);
+
+        static const GLfloat ones[] = {1.0f};
+
+        if (isDOFTrue)
+            glClearBufferfv(GL_DEPTH, 0, ones); // depth buffer clear
+
+        // Transformations
+        glUniformMatrix4fv(commonShaders->modelShaderCommon->modelMatrixUniform, 1, GL_FALSE, modelMatrix);
+        glUniformMatrix4fv(commonShaders->modelShaderCommon->viewMatrixUniform, 1, GL_FALSE, viewMatrix);
+        glUniformMatrix4fv(commonShaders->modelShaderCommon->projectMatrixUniform, 1, GL_FALSE, perspectiveProjectionMatrix);
+
+        glUniform3fv(commonShaders->modelShaderCommon->matrixUniform, numberOfInstances, instancesPositionArray);
+
+        if (USE_FPV_CAM)
+            glUniform3fv(commonShaders->modelShaderCommon->viewPosUniform, 1, camera.getEye());
+        else
+        {
+            if (globalBezierCamera)
+                glUniform3fv(commonShaders->modelShaderCommon->viewPosUniform, 1, globalBezierCamera->getCameraPosition());
+        }
+
+        // Return if object being drawn is blank
+        if (alpha <= 0.0f)
+            return;
+
+        if (alpha < 1.0f)
+        {
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            glEnable(GL_BLEND);
+        }
+
+        glUniform1f(commonShaders->modelShaderCommon->alphaUniform, alpha);
+        glUniform1i(glGetUniformLocation(commonShaders->modelShaderCommon->shaderProgramObject, "noTexture"), 1);
+        glUniform1i(glGetUniformLocation(commonShaders->modelShaderCommon->shaderProgramObject, "isInstanced"), 1);
+
+        // Sending Light Related Uniforms
+        if (bLight == TRUE)
+        {
+
+            glUniform1i(commonShaders->modelShaderCommon->lightingEnabledUniform_PF, 1);
+
+            glUniform3fv(commonShaders->modelShaderCommon->laUniform_PF, 1, lightAmbiant);
+            glUniform3fv(commonShaders->modelShaderCommon->ldUniform_PF, 1, lightDiffuse);
+            glUniform3fv(commonShaders->modelShaderCommon->lsUniform_PF, 1, lightSpecular);
+            glUniform4fv(commonShaders->modelShaderCommon->lighPositionUniform_PF, 1, lightPositions);
+
+            glUniform3fv(commonShaders->modelShaderCommon->kaUniform_PF, 1, materialAmbiant);
+            glUniform3fv(commonShaders->modelShaderCommon->kdUniform_PF, 1, meterialDeffuse);
+            glUniform3fv(commonShaders->modelShaderCommon->ksUniform_PF, 1, materialSpecular);
+            glUniform1f(commonShaders->modelShaderCommon->materialShininessUniform_PF, materialShineeness);
+        }
+        else
+        {
+            glUniform1i(commonShaders->modelShaderCommon->lightingEnabledUniform_PF, 0);
+        }
+
+        ourModel->RenderInstanced(commonShaders->modelShaderCommon->shaderProgramObject, numberOfInstances);
+
+        if (alpha < 1.0f)
+        {
+            glDisable(GL_BLEND);
+        }
+        glUseProgram(0);
+    }
+
     void render_Models(const int numberOfInstances, float *instancesPositionArray, BOOL isUP)
     {
         GLfloat eqn[] = {0.0f, -1.0f, 0.0f, 0.0f};

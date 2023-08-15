@@ -21,6 +21,8 @@ public:
     SphereAish *shadowSphere;
     ShadowShader shadowShader;
 
+    ModelShader model_tree;
+
     // Fadein Fadeout
     float fadeAlpha = 1.0f;
     float scaleFactor = 2.0f;
@@ -28,6 +30,109 @@ public:
     // shadow
     float maxShadowTranslate = 158.0f;
     float shadowTranslate = 0.0f;
+
+    std::vector<std::vector<float>> bezierPointsScene = {
+        {4800.000000f, 1950.000000f, 43950.000000f},
+        {4800.000000f, 1950.000000f, 43950.000000f},
+        {4800.000000f, 1950.000000f, 43950.000000f},
+        {4800.000000f, 2550.000000f, 43950.000000f},
+        {5850.000000f, 2550.000000f, 43050.000000f},
+        {5850.000000f, 2550.000000f, 40650.000000f},
+        {6900.000000f, 2550.000000f, 38400.000000f},
+        {7500.000000f, 2550.000000f, 36300.000000f},
+        {11100.000000f, 2550.000000f, 32100.000000f},
+        {15300.000000f, 3300.000000f, 28200.000000f},
+        {15300.000000f, 3300.000000f, 25950.000000f},
+        {17100.000000f, 3300.000000f, 23400.000000f},
+        {17100.000000f, 3300.000000f, 21600.000000f},
+        {17100.000000f, 2850.000000f, 17700.000000f},
+        {13650.000000f, 2850.000000f, 13500.000000f},
+        {11550.000000f, 3450.000000f, 11100.000000f},
+        {9600.000000f, 3600.000000f, 9000.000000f},
+        {7050.000000f, 3450.000000f, 2850.000000f},
+        {4650.000000f, 2850.000000f, 450.000000f},
+        {3150.000000f, 2700.000000f, -450.000000f},
+        {3000.000000f, 2850.000000f, -600.000000f},
+        {3000.000000f, 3000.000000f, -750.000000f},
+        {3000.000000f, 3150.000000f, -750.000000f},
+        {3000.000000f, 3450.000000f, -750.000000f},
+        {3000.000000f, 3750.000000f, -750.000000f},
+        {3000.000000f, 4200.000000f, -750.000000f},
+        {3000.000000f, 4800.000000f, -750.000000f},
+        {3000.000000f, 6000.000000f, -750.000000f},
+        {3000.000000f, 5700.000000f, -750.000000f},
+        {3000.000000f, 5700.000000f, -750.000000f},
+    };
+
+    // YAW GLOBAL
+    std::vector<float> yawScene = {
+        120.000000f,
+        120.000000f,
+        120.000000f,
+        120.000000f,
+        120.000000f,
+        120.000000f,
+        120.000000f,
+        120.000000f,
+        120.000000f,
+        119.000000f,
+        119.000000f,
+        106.000000f,
+        98.000000f,
+        92.000000f,
+        87.000000f,
+        61.000000f,
+        61.000000f,
+        57.000000f,
+        63.000000f,
+        72.000000f,
+        65.000000f,
+        65.000000f,
+        65.000000f,
+        65.000000f,
+        65.000000f,
+        65.000000f,
+        65.000000f,
+        65.000000f,
+        65.000000f,
+        65.000000f,
+        65.000000f,
+    };
+
+    // PITCH GScene
+    std::vector<float> pitchScene = {
+        -67.000000f,
+        -67.000000f,
+        -67.000000f,
+        -67.000000f,
+        -51.000000f,
+        -34.000000f,
+        -22.000000f,
+        -16.000000f,
+        -16.000000f,
+        -19.000000f,
+        -19.000000f,
+        -16.000000f,
+        -13.000000f,
+        -16.000000f,
+        -10.000000f,
+        -10.000000f,
+        -13.000000f,
+        -13.000000f,
+        -11.000000f,
+        -11.000000f,
+        -11.000000f,
+        -11.000000f,
+        -11.000000f,
+        -11.000000f,
+        -11.000000f,
+        -11.000000f,
+        -15.000000f,
+        -15.000000f,
+        -19.000000f,
+        -20.000000f,
+        -20.000000f,
+    };
 
     // member functions
     TerrainShadowScene()
@@ -65,7 +170,11 @@ public:
 
         // Shadow Initialization
         shadowShader.initialize();
+        sceneCamera.setBezierPoints(bezierPointsScene, yawScene, pitchScene);
         shadowSphere = new SphereAish(1000.0f, 50, 50);
+
+        // Trees
+        model_tree.initialize_ModelShaderObject(commonModels->model_tree);
 
         // Camera
         sceneCamera.initialize();
@@ -81,7 +190,7 @@ public:
         viewMatrix = mat4::identity();
 
         setGlobalBezierCamera(&sceneCamera);
-        sceneCamera.setBezierPoints(bezierPoints, yawGlobal, pitchGlobal);
+        // sceneCamera.setBezierPoints(bezierPoints, yawGlobal, pitchGlobal);
         sceneCamera.update();
         updateGlobalViewMatrix();
 
@@ -243,6 +352,13 @@ public:
                 terrain->draw(true);
         }
         modelMatrix = popMatrix();
+
+        pushMatrix(modelMatrix);
+        {
+            modelMatrix = modelMatrix * vmath::translate(8050.000000f, 1190.000000f, 38710.000000f) * scale(100.0f + scaleX, 100.0f + scaleX, 100.0f + scaleX);
+            model_tree.render_Models_Without_Texture(bezierPoints.size(), &(flatten(bezierPoints).at(0)));
+        }
+        modelMatrix = popMatrix();
     }
 
     void displayShadowObject(bool isDepthBuffer)
@@ -299,17 +415,17 @@ public:
         // sceneCamera.time = globalTime;
         terrain->updateTilesPositions();
 
-        // // Trigger fadeout
-        if (ELAPSED_TIME > (START_TIME_SCENE_04_TERRAIN_SHADOW_END - 2))
-        {
-            isFadeout = true;
-        }
+        // // // Trigger fadeout
+        // if (ELAPSED_TIME > (START_TIME_SCENE_04_TERRAIN_SHADOW_END - 2))
+        // {
+        //     isFadeout = true;
+        // }
 
-        // Shadow Translate
-        if (ELAPSED_TIME > (START_TIME_SCENE_04_TERRAIN_SHADOW_START - 3) && shadowTranslate < maxShadowTranslate)
-        {
-            shadowTranslate += 0.07f;
-        }
+        // // Shadow Translate
+        // if (ELAPSED_TIME > (START_TIME_SCENE_04_TERRAIN_SHADOW_START - 3) && shadowTranslate < maxShadowTranslate)
+        // {
+        //     shadowTranslate += 0.07f;
+        // }
 
         terrain->setGrassCoverage(0.36f);
         terrain->setTextureTransitionFactor(0.8f);

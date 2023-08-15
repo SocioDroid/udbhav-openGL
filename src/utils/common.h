@@ -117,3 +117,5 @@ extern BOOL start_fade_out_opening;
 void initializePlaneVAO(const int res, const int width, GLuint *planeVAO, GLuint *planeVBO, GLuint *planeEBO);
 vmath::vec3 genRandomVec3();
 void resetElapsedTime();
+std::vector<float> flatten(const std::vector<std::vector<float>> &nestedVector);
+

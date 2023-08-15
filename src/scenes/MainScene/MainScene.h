@@ -36,7 +36,7 @@ public:
 
         // SCENE CONTROLS
         START_E2E_DEMO = FALSE;
-        selected_scene = SCENE_03_TERRAIN_WITH_HEAVY_RAIN;
+        selected_scene = SCENE_04_TERRAIN_SHADOW;
     }
 
     BOOL initialize()

@@ -9,6 +9,7 @@ public:
     Model *model_amc;
     Model *model_prastut;
     Model *model_bharatEkKhoj;
+    Model *model_tree;
 
     CommonModels()
     {
@@ -16,6 +17,7 @@ public:
         model_amc = new Model();
         model_prastut = new Model();
         model_bharatEkKhoj = new Model();
+        model_tree = new Model();
     }
 
     // Member Functions
@@ -34,6 +36,8 @@ public:
                 break;
             }
         }
+
+        model_tree->initializeModel(".\\assets\\models\\trees\\pineTree.obj");
 
         return TRUE;
     }

@@ -105,37 +105,37 @@ public:
     void unInitialize(void)
     {
 
-        if(vao)
+        if (vao)
         {
             glDeleteVertexArrays(1, &vao);
             vao = 0;
         }
 
-        if(vaoParticles)
+        if (vaoParticles)
         {
             glDeleteVertexArrays(1, &vaoParticles);
             vaoParticles = 0;
         }
 
-        if(vbo)
+        if (vbo)
         {
             glDeleteBuffers(1, &vbo);
             vbo = 0;
         }
 
-        if(vbo_Indices)
+        if (vbo_Indices)
         {
             glDeleteBuffers(1, &vbo_Indices);
             vbo_Indices = 0;
         }
 
-        if(vboParticlesPosition)
+        if (vboParticlesPosition)
         {
             glDeleteBuffers(1, &vboParticlesPosition);
             vboParticlesPosition = 0;
         }
 
-        if(vboParticlesColor)
+        if (vboParticlesColor)
         {
             glDeleteBuffers(1, &vboParticlesColor);
             vboParticlesColor = 0;
@@ -144,8 +144,6 @@ public:
 
     ~Mesh()
     {
-       
-        
     }
 
     void Render(GLuint shaderProgramObject)
@@ -200,6 +198,58 @@ public:
             glBindTexture(GL_TEXTURE_2D, 0);
         }
     }
+    void RenderInstanced(GLuint shaderProgramObject, int numberOfInstances)
+    {
+
+        unsigned int diffuseNr = 1;
+        unsigned int specularNr = 1;
+        unsigned int normalNr = 1;
+        unsigned int heightNr = 1;
+        for (unsigned int i = 0; i < textures.size(); i++)
+        {
+            glActiveTexture(GL_TEXTURE0 + i);
+
+            string number;
+            string name = textures[i].type;
+            if (name == "texture_diffuse")
+                number = std::to_string(diffuseNr++);
+            else if (name == "texture_specular")
+                number = std::to_string(specularNr++);
+            else if (name == "texture_normal")
+                number = std::to_string(normalNr++);
+            else if (name == "texture_height")
+                number = std::to_string(heightNr++);
+
+            glUniform1i(glGetUniformLocation(shaderProgramObject, (name + number).c_str()), i);
+
+            glBindTexture(GL_TEXTURE_2D, textures[i].id);
+        }
+
+        glUniform3fv(glGetUniformLocation(shaderProgramObject, "u_ka"), 1, color.ambiant_color);
+        glUniform3fv(glGetUniformLocation(shaderProgramObject, "u_kd"), 1, color.diffus_color);
+        glUniform3fv(glGetUniformLocation(shaderProgramObject, "u_ks"), 1, color.specular_color);
+
+        if (textures.size() > 1)
+        {
+            glUniform1i(glGetUniformLocation(shaderProgramObject, "normalMappingEnabled"), 1);
+        }
+        else
+        {
+            glUniform1i(glGetUniformLocation(shaderProgramObject, "normalMappingEnabled"), 0);
+        }
+
+        // draw mesh
+        glBindVertexArray(vao);
+        glDrawElementsInstanced(GL_TRIANGLES, static_cast<unsigned int>(indices.size()), GL_UNSIGNED_INT, 0, numberOfInstances);
+        glBindVertexArray(0);
+        // PrintLog("static_cast<unsigned int>(indices.size()) : %d \n", static_cast<unsigned int>(indices.size() * 3));
+
+        for (unsigned int i = 0; i < textures.size(); i++)
+        {
+            glActiveTexture(GL_TEXTURE0 + i);
+            glBindTexture(GL_TEXTURE_2D, 0);
+        }
+    }
 
     void Render_Ktx(GLuint shaderProgramObject)
     {
@@ -234,8 +284,6 @@ public:
         glDisable(GL_BLEND);
         glDisable(GL_PROGRAM_POINT_SIZE);
     }
-
-    
 
     void initializeModel()
     {

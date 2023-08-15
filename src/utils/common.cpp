@@ -336,7 +336,7 @@ void initializePlaneVAO(const int res, const int width, GLuint *planeVAO, GLuint
             }
         }
     }
-    
+
     glGenVertexArrays(1, planeVAO);
     glGenBuffers(1, planeVBO);
     glGenBuffers(1, planeEBO);
@@ -372,6 +372,15 @@ vmath::vec3 genRandomVec3()
     z = dis(gen);
 
     return vmath::vec3(x, y, z);
+}
+std::vector<float> flatten(const std::vector<std::vector<float>> &nestedVector)
+{
+    std::vector<float> flattened;
+    for (const auto &innerVector : nestedVector)
+    {
+        flattened.insert(flattened.end(), innerVector.begin(), innerVector.end());
+    }
+    return flattened;
 }
 // float getXOSC(float minVal, float maxVal)
 // {

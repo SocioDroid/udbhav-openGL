@@ -62,12 +62,20 @@ public:
             meshes[i].initializeModel();
         }
     }
+
     // =========================
     void Render(GLuint shaderProgramObject)
     {
         for (unsigned int i = 0; i < meshes.size(); i++)
             meshes[i].Render(shaderProgramObject);
     }
+
+    void RenderInstanced(GLuint shaderProgramObject, int numInstances)
+    {
+        for (unsigned int i = 0; i < meshes.size(); i++)
+            meshes[i].RenderInstanced(shaderProgramObject, numInstances);
+    }
+
     void RenderParticles(float particleSpeed, BOOL disintegrate, BOOL integrate, int direction, float maxDistance)
     {
         for (unsigned int i = 0; i < meshes.size(); i++)
@@ -87,7 +95,6 @@ public:
         }
     }
 
-
 private:
     void loadModel(string const &path)
     {
@@ -106,7 +113,6 @@ private:
         processNode(scene->mRootNode, scene);
     }
 
-   
     void processNode(aiNode *node, const aiScene *scene)
     {
         for (unsigned int i = 0; i < node->mNumMeshes; i++)
