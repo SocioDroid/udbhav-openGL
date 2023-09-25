@@ -40,7 +40,7 @@ public:
 
     // Fadin Fadeout
     float fadeAlpha = 1.0f;
-
+    float spinEarthTime = 0.0f;
     // Camera
     BezierCamera sceneCamera;
     std::vector<std::vector<float>> bezierPointsScene = {
@@ -240,7 +240,10 @@ public:
         // Camera
         // sceneCamera.displayBezierCurve();
     }
-
+    float lerp(float a, float b, float time)
+    {
+        return a + (b - a) * time;
+    }
     void drawBloomObjects()
     {
         if (sceneCamera.time < 0.35f)
@@ -253,15 +256,20 @@ public:
         }
         pushMatrix(modelMatrix);
         {
-            modelMatrix = modelMatrix * translate(15.0f, 0.0f, 0.0f);
-            drawEarth(EARTH_STONE);
-        }
-        modelMatrix = popMatrix();
-        // Cloud earth
-        pushMatrix(modelMatrix);
-        {
-            modelMatrix = modelMatrix * translate(15.0f, 0.0f, 0.0f);
-            drawEarth(EARTH_CLOUD);
+
+            pushMatrix(modelMatrix);
+            {
+                modelMatrix = modelMatrix * translate(15.0f, 0.0f, 0.0f) * vmath::rotate(lerp(100000.0f, 0.0f, spinEarthTime) - (ELAPSED_TIME * 4.0f), 0.0f, 1.0f, 0.0f);
+                drawEarth(EARTH_STONE);
+            }
+            modelMatrix = popMatrix();
+            // Cloud earth
+            pushMatrix(modelMatrix);
+            {
+                modelMatrix = modelMatrix * translate(15.0f, 0.0f, 0.0f) * vmath::rotate(lerp(100000.0f, 0.0f, spinEarthTime), 0.0f, 1.0f, 0.0f);
+                drawEarth(EARTH_CLOUD);
+            }
+            modelMatrix = popMatrix();
         }
         modelMatrix = popMatrix();
     }
@@ -305,6 +313,7 @@ public:
                 glUniform1i(commonShaders->textureLightShader->textureSamplerUniform, 0);
 
                 // Second texture
+                glUniform1i(glGetUniformLocation(commonShaders->textureLightShader->shaderProgramObject, "isLight"), 0);
                 glUniform1i(glGetUniformLocation(commonShaders->textureLightShader->shaderProgramObject, "isMultiTexture"), 1);
                 glUniform1f(glGetUniformLocation(commonShaders->textureLightShader->shaderProgramObject, "u_time"), ELAPSED_TIME);
                 glUniform1f(glGetUniformLocation(commonShaders->textureLightShader->shaderProgramObject, "multiTextureInterpolation"), earthTextureInterpolate);
@@ -342,9 +351,10 @@ public:
                 glActiveTexture(GL_TEXTURE0);
                 glBindTexture(GL_TEXTURE_2D, texture_cloudEarth);
                 glUniform1i(commonShaders->textureLightShader->textureSamplerUniform, 0);
-                glUniform1f(commonShaders->textureLightShader->alphaValueUniform, 0.5f);
+                glUniform1f(commonShaders->textureLightShader->alphaValueUniform, 0.3f);
 
                 // Controlling Light position
+                glUniform1i(glGetUniformLocation(commonShaders->textureLightShader->shaderProgramObject, "isLight"), 0);
                 glUniform1f(glGetUniformLocation(commonShaders->textureLightShader->shaderProgramObject, "lightX"), -2.0f + 2.300000f);
                 glUniform1f(glGetUniformLocation(commonShaders->textureLightShader->shaderProgramObject, "lightY"), -1.0f + 0.300000f);
                 glUniform1f(glGetUniformLocation(commonShaders->textureLightShader->shaderProgramObject, "lightZ"), 1.0f + -0.100000f);
@@ -362,9 +372,10 @@ public:
         }
     }
     bool isFadeout = false;
+    float spinEarthTimeIncr = 0.0003f;
     void update()
     {
-        ////////////////////////////////// FADING
+        ////////////////////////////////// FADI NG
         // Fade In
         if (!isFadeout)
         {
@@ -392,6 +403,16 @@ public:
             {
                 earthTextureInterpolate += 0.0007f;
             }
+        }
+
+        if (spinEarthTime < 1.0f)
+        {
+            if (spinEarthTime > 0.2)
+            {
+                if (spinEarthTimeIncr > 0.0f)
+                    spinEarthTimeIncr -= 0.00000015f;
+            }
+            spinEarthTime += spinEarthTimeIncr;
         }
     }
     void uninitialize()
