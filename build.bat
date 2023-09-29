@@ -26,7 +26,7 @@ rc.exe /Fo".\\bin\\OGLMain.res" ./src/OGLMain.rc
 
 
 echo ==================================================================Compiling cuda
-@REM nvcc -c -o bin\VertexUpdate.cu.obj src\utils\model_using_assim\VertexUpdate.cu
+nvcc -c -o bin\TerrainGPU.cu.obj src\effects\terrain\TerrainGPU.cu
 
 echo ==================================================================Compilation completed
 

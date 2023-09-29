@@ -3,6 +3,8 @@
 #include "../../utils/camera/Camera.h"
 #include "../../shaders/terrain/TerrainShader.h"
 #include "../water/Water.h"
+#include "TerrainGPU.h"
+#include <utility>
 
 extern Camera camera;
 
@@ -34,7 +36,7 @@ float sign(float x)
 class Terrain
 {
 public:
-    vmath::vec2 position, eps;
+    pair<float, float> position, eps;
     float up = 0.0;
     int tileW = 10. * 100.;
     float waterHeight;
@@ -122,7 +124,9 @@ public:
         }
 
         positionVec.resize(gridLength * gridLength);
-        generateTileGrid(vmath::vec2(0.0, 0.0));
+        // generateTileGrid(pair<float, float>(0.0f, 0.0f));
+
+        generateTileGridGPU(positionVec, std::make_pair(0.0f, 0.0f), gridLength, tileW);
 
         setPositionsArray(positionVec);
 
@@ -216,31 +220,15 @@ public:
         up = 0.0;
     }
 
-    void updateTilesPositions()
+    void setPositionsArray(std::vector<pair<float, float>> &pos)
     {
-        int whichTile = -1;
-        int howManyTiles = 0;
+        std::vector<vmath::vec2> pos_vec2;
 
-        vmath::vec2 currentTile;
-        if (getWhichTileCameraIs(currentTile))
+        for (auto &p : pos)
         {
-            vmath::vec2 center = getPos(gridLength / 2, gridLength / 2);
-            for (vmath::vec2 &p : positionVec)
-            {
-                p += currentTile - center;
-            }
-            setPositionsArray(positionVec);
-
-            if (waterPtr)
-            {
-                vmath::vec2 center = getPos(gridLength / 2, gridLength / 2);
-                waterPtr->setPosition(center, 1.0 * gridLength, waterPtr->getHeight());
-            }
+            pos_vec2.push_back(vmath::vec2(p.first, p.second));
         }
-    }
 
-    void setPositionsArray(std::vector<vmath::vec2> &pos)
-    {
         if (posBuffer)
         {
             this->deleteBuffer();
@@ -249,7 +237,7 @@ public:
         // vertex Buffer Object
         glGenBuffers(1, &posBuffer);
         glBindBuffer(GL_ARRAY_BUFFER, posBuffer);
-        glBufferData(GL_ARRAY_BUFFER, pos.size() * sizeof(vmath::vec2), &pos[0], GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, pos_vec2.size() * sizeof(vmath::vec2), &pos_vec2[0], GL_STATIC_DRAW);
 
         glBindVertexArray(planeVAO);
         glEnableVertexAttribArray(3);
@@ -259,13 +247,13 @@ public:
         glBindVertexArray(0);
     }
 
-    bool inTile(Camera cam, vmath::vec2 pos)
+    bool inTile(Camera cam, pair<float, float> pos)
     {
         float camX = cam.getEye()[0];
         float camY = cam.getEye()[2];
 
-        float x = pos[0];
-        float y = pos[1];
+        float x = pos.first;
+        float y = pos.second;
 
         bool inX = false;
         if ((camX <= x + 1.0f * tileW / 2.0f) && (camX >= x - 1.0f * tileW / 2.0f))
@@ -281,13 +269,13 @@ public:
         return inX && inY;
     }
 
-    bool inTile(BezierCamera *cam, vmath::vec2 pos)
+    bool inTile(BezierCamera *cam, pair<float, float> pos)
     {
         float camX = cam->getEye()[0];
         float camY = cam->getEye()[2];
 
-        float x = pos[0];
-        float y = pos[1];
+        float x = pos.first;
+        float y = pos.second;
 
         bool inX = false;
         if ((camX <= x + 1.0f * tileW / 2.0f) && (camX >= x - 1.0f * tileW / 2.0f))
@@ -331,7 +319,7 @@ public:
     void setScale(float scale)
     {
         vmath::mat4 scaleMatrix = vmath::scale(scale, 0.0f, scale);
-        vmath::mat4 positionMatrix = vmath::translate(position[0] * scale / this->scaleFactor, 0.0f, position[1] * scale / this->scaleFactor);
+        vmath::mat4 positionMatrix = vmath::translate(position.first * scale / this->scaleFactor, 0.0f, position.second * scale / this->scaleFactor);
         modelMatrix = positionMatrix * scaleMatrix;
         scaleFactor = scale;
     }
@@ -382,7 +370,7 @@ private:
     TerrainShader *shad;
     vmath::mat4 modelMatrix;
 
-    std::vector<vmath::vec2> positionVec;
+    std::vector<pair<float, float>> positionVec;
 
     void drawVertices(int nInstances)
     {
@@ -392,44 +380,34 @@ private:
         glBindVertexArray(0);
     }
 
-    void setPos(int row, int col, vmath::vec2 pos)
+    void setPos(int row, int col, pair<float, float> pos)
     {
         positionVec[col + row * gridLength] = pos;
     }
 
-    vmath::vec2 getPos(int row, int col)
+    pair<float, float> getPos(int row, int col)
     {
         return positionVec[col + row * gridLength];
     }
 
-    void generateTileGrid(vmath::vec2 offset)
+    void generateTileGrid(std::pair<float, float> offset)
     {
         float sc = tileW;
 
-        vmath::vec2 I = vmath::vec2(1, 0) * sc;
-        vmath::vec2 J = vmath::vec2(0, 1) * sc;
+        std::pair<float, float> I = std::make_pair(1.0f * sc, 0.0f);
+        std::pair<float, float> J = std::make_pair(0.0f, 1.0f * sc);
 
         for (int i = 0; i < gridLength; i++)
         {
             for (int j = 0; j < gridLength; j++)
             {
-                vmath::vec2 pos = (float)(j - gridLength / 2) * vmath::vec2(I) + (float)(i - gridLength / 2) * vmath::vec2(J);
-                setPos(i, j, pos + offset);
+                std::pair<float, float> pos = std::make_pair((float)(j - gridLength / 2) * I.first + (float)(i - gridLength / 2) * J.first,
+                                                             (float)(j - gridLength / 2) * I.second + (float)(i - gridLength / 2) * J.second);
+                setPos(i, j, std::make_pair(pos.first + offset.first, pos.second + offset.second));
+
+                positionVec[j + i * gridLength] = std::make_pair(pos.first + offset.first, pos.second + offset.second);
             }
         }
-    }
-
-    bool getWhichTileCameraIs(vmath::vec2 &result)
-    {
-        // for (vmath::vec2 p : positionVec)
-        // {
-        //     if ((USE_FPV_CAM ? inTile(camera, p) : inTile(globalBezierCamera, p)))
-        //     {
-        //         result = p;
-        //         return true;
-        //     }
-        // }
-        return false;
     }
 
     void getColRow(int i, int &col, int &row)

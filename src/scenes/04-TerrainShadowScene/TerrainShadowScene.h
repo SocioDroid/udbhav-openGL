@@ -642,7 +642,7 @@ public:
         // sceneCamera.time = globalTime;
 
         // sceneCamera.time = globalTime;
-        terrain->updateTilesPositions();
+        // terrain->updateTilesPositions();
 
         // // Trigger fadeout
         if (ELAPSED_TIME > (START_TIME_SCENE_04_TERRAIN_SHADOW_END - 2))

@@ -544,7 +544,7 @@ public:
         //     setSelectedScene(SCENE_04_TERRAIN_SHADOW);
         // sceneCamera.time = globalTime;
 
-        terrain->updateTilesPositions();
+        // terrain->updateTilesPositions();
         // Transition to green texture
         if (terrain->getTextureTransitionFactor() < 1.0f)
         {

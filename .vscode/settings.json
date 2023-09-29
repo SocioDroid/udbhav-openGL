@@ -84,7 +84,15 @@
         "__locale": "cpp",
         "numeric": "cpp",
         "random": "cpp",
-        "__node_handle": "cpp"
+        "__node_handle": "cpp",
+        "any": "cpp",
+        "cinttypes": "cpp",
+        "codecvt": "cpp",
+        "condition_variable": "cpp",
+        "future": "cpp",
+        "regex": "cpp",
+        "unordered_set": "cpp",
+        "variant": "cpp"
     },
     "liveServer.settings.port": 5501
 }
